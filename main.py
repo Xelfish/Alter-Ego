@@ -1,13 +1,33 @@
 # This is the main entry-point for Alter Ego
 
-# IMPORT of necessary Libraries
+import socket
+from ftplib import FTP
+import asyncio
+#implement more powerful ssh client handler
+import subprocess
+import paramiko
+import json
 
+with open("project-settings.json") as settings:
+    aeSettings = json.load(settings)
 
-# load Data from "project-settings.json" and store it as an object
-
+inPi = aeSettings["input-pi"]
 # connect to the two PIs and Initialize them (project-settings)
 
-# run "camera" on IN and OUT Pis
+# implement asyncronous architecture with "asyncio"
+# run "camera" on IN and OUT Pis with subprocess or ssh
+ssh = subprocess.Popen(["ssh", inPi["user"] + "@" + inPi["ip"], aeSettings["commands"]["camera"]],
+                       shell=False,
+                       stdin=subprocess.PIPE,
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.PIPE
+                    )
+stdout, stderr = ssh.communicate(inPi["password"].encode("UTF-8"))
+print(stdout)
+
+# connect with ftp to both pis and setup listener pattern on output-folder
+with FTP(inPi["ip"], inPi["user"], inPi["password"]) as ftpIn:
+    print(ftpIn.pwd())
 
 # listen for pictures from IN and when new picture comes in run it through "face-recognition" API
 
