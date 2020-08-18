@@ -9,22 +9,27 @@ import paramiko
 import json
 
 with open("project-settings.json") as settings:
-    aeSettings = json.load(settings)
+    settings = json.load(settings)
 
-inPi = aeSettings["input-pi"]
+inPi = settings["input-pi"]
 # connect to the two PIs and Initialize them (project-settings)
 
 # implement asyncronous architecture with "asyncio"
 # run "camera" on IN and OUT Pis with subprocess or ssh
-ssh = subprocess.Popen(["ssh", inPi["user"] + "@" + inPi["ip"], aeSettings["commands"]["camera"]],
-                       shell=False,
-                       stdin=subprocess.PIPE,
-                       stdout=subprocess.PIPE,
-                       stderr=subprocess.PIPE
-                    )
-stdout, stderr = ssh.communicate(inPi["password"].encode("UTF-8"))
-print(stdout)
+#TODO: Make asyncronous
+def execOnPi(pi, command):
+    client = paramiko.SSHClient()
+    client.load_system_host_keys()
+    client.connect(pi["ip"], username=pi["user"], password=pi["password"])
+    print('started...')
+    stdin, stdout, stderr = client.exec_command(command)
+    # TODO: Get live Output stream from external script
+    for line in iter(stdout.readline, ""):
+        print(line, end="")
+    print('finished.')
+    client.close()
 
+execOnPi(inPi, settings["commands"]["camera"])
 # connect with ftp to both pis and setup listener pattern on output-folder
 with FTP(inPi["ip"], inPi["user"], inPi["password"]) as ftpIn:
     print(ftpIn.pwd())
