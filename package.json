@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/Xelfish/Alter-Ego#readme",
   "dependencies": {
+    "merge-stream": "^2.0.0",
+    "vinyl-ftp": "^0.6.1"
+  },
+  "devDependencies": {
     "gulp": "^4.0.2"
   }
 }

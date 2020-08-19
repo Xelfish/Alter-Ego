@@ -26,6 +26,7 @@ camera.exposure_mode = 'off'
 
 for i in range(10):
     take_picture(camera)
+    print(i)
 
 camera.stop_preview()
 
