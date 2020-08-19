@@ -4,6 +4,7 @@ const {
 const settings = require('./project-settings.json')
 const ftp = require('vinyl-ftp')
 const merge = require('merge-stream')
+const {argv} = require('yargs')
 
 function connectToPi(target){
     const conn = ftp.create({
@@ -25,17 +26,32 @@ function copyToPi(target){
 
 function initPis(){
 
-    const conn = connectToPi("input-pi")
-    return src("./virtual/input-pi/*")
+    const hasArguments = Object.keys(argv).length > 2
+    if (hasArguments){
+        if (argv.input){
+            // only do input pi
+        } else if (argv.output){
+            // only do output pi
+        }
+    } else {
+        console.log("Ahaha! Nothing at all!")
+    }
+}
+
+function initPi(target){
+    const conn = connectToPi(target)
+    return src("./virtual/" + target +"/*")
     .pipe(conn.dest("/home/pi"))
 }
 
+// TODO: Make async somehow
 function cleanPi(target){
-    //TODO: Clear files from directories
+    const conn = connectToPi(target)
+    conn.clean(["/home/pi/MyPics/**"])
 }
 
-function deployToInputPi(cb){
-   return copyToPi('input-pi')
+function deployToPi(target){
+   return copyToPi(target)
 }
 
 function defaultTask(cb) {
