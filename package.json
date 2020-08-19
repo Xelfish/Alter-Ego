@@ -1,0 +1,22 @@
+{
+  "name": "alter-ego",
+  "version": "1.0.0",
+  "description": "deepfake installation",
+  "main": "main.py",
+  "scripts": {
+    "test": "py test.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xelfish/Alter-Ego.git"
+  },
+  "author": "Sebastian Wilhelm",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Xelfish/Alter-Ego/issues"
+  },
+  "homepage": "https://github.com/Xelfish/Alter-Ego#readme",
+  "dependencies": {
+    "gulp": "^4.0.2"
+  }
+}
