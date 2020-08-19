@@ -1,0 +1,1 @@
+print("This is the output of a TEST command")
