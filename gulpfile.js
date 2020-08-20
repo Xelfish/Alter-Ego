@@ -38,11 +38,16 @@ function initPi(target){
     .pipe(conn.dest("/home/pi"))
 }
 
-function cleanPi(target){
+function cleanPi(target, cb){
     console.log("Cleaning: ", target)
     const conn = connectToPi(target)
-    conn.clean(["/home/pi/MyPics", "/home/pi/MyScripts"], "./virtual/" + target + "/**")
+    const targetDirectories = ["MyScripts", "MyPics"]
+    for (const dir of targetDirectories){
+        const path = '/home/pi/' + dir
+        conn.rmdir(path, cb)
+    }
 }
+    
 
 function deployToPi(target){
     console.log("Deploying: ", target)
@@ -78,7 +83,7 @@ function initInputPi(cb){
 }
 
 function cleanInputPi(cb){
-    cleanPi('input-pi')
+    cleanPi('input-pi', cb)
     cb()
 }
 
