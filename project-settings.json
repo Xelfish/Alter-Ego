@@ -5,18 +5,37 @@
     "input-pi": {
         "ip": "192.168.2.106",
         "user": "pi",
-        "password": "raspberry"
+        "password": "raspberry",
+        "camera": {
+            "iso": 800,
+            "res": {
+                "x": 1270,
+                "y": 740
+            }
+        }
     },
     "output-pi": {
+        "ip": "192.168.2.106",
+        "user": "pi",
+        "password": "raspberry",
+        "camera": {
+            "iso": 800,
+            "res": {
+                "x": 1270,
+                "y": 740
+            }
+        }
     },
     "api": {
-
+    
     },
-    "scripts": [
-        "camera",
-        "init"
-    ],
     "commands": {
         "camera": "python MyScripts/camera.py"
+    },
+    "image": {
+        "resize": {
+            "width": 30,
+            "height": 30
+        }
     }
 }

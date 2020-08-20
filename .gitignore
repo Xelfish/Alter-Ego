@@ -1,1 +1,3 @@
-output
+test
+/node_modules
+/modules/__pycache__
