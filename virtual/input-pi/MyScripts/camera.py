@@ -24,7 +24,7 @@ camera.start_preview()
 camera.shutter_speed = camera.exposure_speed
 camera.exposure_mode = 'off'
 
-for i in range(10):
+for i in range(5):
     take_picture(camera)
     print(i)
 

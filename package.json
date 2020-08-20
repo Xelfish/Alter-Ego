@@ -4,7 +4,8 @@
   "description": "deepfake installation",
   "main": "main.py",
   "scripts": {
-    "test": "py test.py"
+    "test": "py test.py",
+    "start": "py main.py"
   },
   "repository": {
     "type": "git",
