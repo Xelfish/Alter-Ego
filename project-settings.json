@@ -15,11 +15,27 @@
         }
     },
     "output-pi": {
+        "ip": "192.168.2.106",
+        "user": "pi",
+        "password": "raspberry",
+        "camera": {
+            "iso": 800,
+            "res": {
+                "x": 1270,
+                "y": 740
+            }
+        }
     },
     "api": {
     
     },
     "commands": {
         "camera": "python MyScripts/camera.py"
+    },
+    "image": {
+        "resize": {
+            "width": 100,
+            "height": 100
+        }
     }
 }

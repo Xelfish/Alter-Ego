@@ -3,8 +3,6 @@
 import socket
 from ftplib import FTP
 import asyncio
-#implement more powerful ssh client handler
-import subprocess
 import paramiko
 import json
 
@@ -12,28 +10,31 @@ with open("project-settings.json") as settings:
     settings = json.load(settings)
 
 inPi = settings["input-pi"]
-# connect to the two PIs and Initialize them (project-settings)
+commands =  settings["commands"]
 
-# implement asyncronous architecture with "asyncio"
-# run "camera" on IN and OUT Pis with subprocess or ssh
-#TODO: Make asyncronous
-def execOnPi(pi, command):
+# TODO: Find a way to pass parameters from (project-settings) to child-processes
+
+# TODO: implement asyncronous architecture with "asyncio"
+
+
+# run "camera" or other script on IN and OUT Pis with subprocess or ssh
+# TODO: Avoid that this function blocks execution flow
+async def execOnPi(pi, command):
     client = paramiko.SSHClient()
     client.load_system_host_keys()
     client.connect(pi["ip"], username=pi["user"], password=pi["password"])
     print('started...')
-    stdin, stdout, stderr = client.exec_command(command)
-    # TODO: Get live Output stream from external script
+    stdin, stdout, stderr = client.exec_command(command, get_pty=True)
     for line in iter(stdout.readline, ""):
         print(line, end="")
     print('finished.')
     client.close()
 
-execOnPi(inPi, settings["commands"]["camera"])
+#TODO: create FTP Folder-listener
+async def connectToFtp(pi):
+    with FTP(pi["ip"], pi["user"], pi["password"]) as ftpIn:
+        print(ftpIn.pwd())
 # connect with ftp to both pis and setup listener pattern on output-folder
-with FTP(inPi["ip"], inPi["user"], inPi["password"]) as ftpIn:
-    print(ftpIn.pwd())
-
 # listen for pictures from IN and when new picture comes in run it through "face-recognition" API
 
     # collect valid faces
@@ -56,3 +57,11 @@ with FTP(inPi["ip"], inPi["user"], inPi["password"]) as ftpIn:
 
     # send media-server URL to PI and command "display"
 
+#run concurrent tasks
+async def main():
+    exec_camera_1 = asyncio.create_task(execOnPi(inPi, commands["camera"]))
+    exec_ftp_1 = asyncio.create_task(connectToFtp(inPi))
+    await exec_camera_1
+    await exec_ftp_1
+    
+asyncio.run(main())

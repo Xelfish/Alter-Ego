@@ -51,7 +51,8 @@ function deployToPi(target){
 
 function copyScriptsToPi(target){
     const conn = connectToPi(target)
-    return src('./virtual/' + target + '/MyScripts/**')
+    globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json']
+    return src(globs)
         .pipe(conn.newer('/home/pi/MyScripts/'))
         .pipe(conn.dest('/home/pi/MyScripts/'))
 }
