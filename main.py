@@ -6,20 +6,21 @@ import asyncio
 import paramiko
 import json
 
+#setup
+
 with open("project-settings.json") as settings:
     settings = json.load(settings)
 
 inPi = settings["input-pi"]
 commands =  settings["commands"]
 
-# TODO: Find a way to pass parameters from (project-settings) to child-processes
+# run "camera" on IN and OUT Pis with subprocess or ssh
 
-# TODO: implement asyncronous architecture with "asyncio"
+async def run_camera():
+    loop = asyncio.get_running_loop()
+    await loop.run_in_executor(None, execOnPi, inPi, commands['camera'])
 
-
-# run "camera" or other script on IN and OUT Pis with subprocess or ssh
-# TODO: Avoid that this function blocks execution flow
-async def execOnPi(pi, command):
+def execOnPi(pi, command):
     client = paramiko.SSHClient()
     client.load_system_host_keys()
     client.connect(pi["ip"], username=pi["user"], password=pi["password"])
@@ -34,6 +35,7 @@ async def execOnPi(pi, command):
 async def connectToFtp(pi):
     with FTP(pi["ip"], pi["user"], pi["password"]) as ftpIn:
         print(ftpIn.pwd())
+
 # connect with ftp to both pis and setup listener pattern on output-folder
 # listen for pictures from IN and when new picture comes in run it through "face-recognition" API
 
@@ -43,7 +45,7 @@ async def connectToFtp(pi):
 
     # bundle images as training data
 
-    # send bundle to AI-Api for training
+    # send bundle to A.I. Api for training
 
 # listen for api response and save output video to media-server
 
@@ -53,15 +55,14 @@ async def connectToFtp(pi):
 
     # upload face with video pair
 
-# listen for pictures from OUT and when new picture comes in find matching face
+# listen for pictures from OUT and find matching face when a new picture is detected
 
     # send media-server URL to PI and command "display"
 
 #run concurrent tasks
-async def main():
-    exec_camera_1 = asyncio.create_task(execOnPi(inPi, commands["camera"]))
-    exec_ftp_1 = asyncio.create_task(connectToFtp(inPi))
-    await exec_camera_1
-    await exec_ftp_1
-    
-asyncio.run(main())
+async def tasks():
+    task_run_camera = asyncio.create_task(run_camera())
+    await task_run_camera
+
+# CORE Async Loop CORE Async Loop
+asyncio.run(tasks())

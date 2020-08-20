@@ -4,6 +4,9 @@ from modules.util.files import *
 
 settings = get_json_settings('project-settings.json')['image']
 RESIZE_FORMAT = (settings["resize"]["width"], settings["resize"]["height"])
+
+#TODO: Develop list of image processing
+
 def loadImage(path):
     return Image.open(path)
 
