@@ -18,3 +18,5 @@ def resizeImage(sourceImage):
     filename = get_new_file_name('test/output/resized/')
     destinationImage.save(filename)
     return filename
+
+def prepare_deepfake_preview():

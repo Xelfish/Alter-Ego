@@ -10,7 +10,7 @@ camera.shutter_speed = camera.exposure_speed
 camera.exposure_mode = 'off'
 
 def take_picture(camera):
-    time.sleep(0.3)
+    time.sleep(cameraSettings['interval'])
     print ("Taking a picture...")
     path = get_new_file_name("MyPics/")
     camera.capture(path)

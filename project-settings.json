@@ -3,11 +3,12 @@
         "ip": "192.168.2.227"
     },
     "input-pi": {
-        "ip": "192.168.2.106",
+        "ip": "192.168.2.129",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "iso": 800,
+            "interval": 1,
             "res": {
                 "x": 1270,
                 "y": 740

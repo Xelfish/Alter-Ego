@@ -3,7 +3,6 @@ import time
 from modules.image import *
 from modules.util.files import *
 
-
 settings = get_json_settings('project-settings.json')
 
 def testResize():
@@ -56,6 +55,6 @@ async def helloFromEarth():
 
 print("This is the output of a TEST command")
 #print(settings)
-testResize()
-#asyncio.run(testConcurrency())
-#asyncio.run(testConcurrency2())
+#testResize()
+asyncio.run(testConcurrency())
+asyncio.run(testConcurrency2())

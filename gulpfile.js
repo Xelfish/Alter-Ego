@@ -28,6 +28,7 @@ function connectToPi(target){
         user:     settings[target].user,
         password: settings[target].password,
     })
+    console.log(conn)
     return conn
 }
 
@@ -47,7 +48,6 @@ function cleanPi(target, cb){
         conn.rmdir(path, cb)
     }
 }
-    
 
 function deployToPi(target){
     console.log("Deploying: ", target)
@@ -56,7 +56,7 @@ function deployToPi(target){
 
 function copyScriptsToPi(target){
     const conn = connectToPi(target)
-    globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json']
+    const globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json']
     return src(globs)
         .pipe(conn.newer('/home/pi/MyScripts/'))
         .pipe(conn.dest('/home/pi/MyScripts/'))
