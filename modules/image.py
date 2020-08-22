@@ -20,3 +20,5 @@ def resizeImage(sourceImage):
     return filename
 
 def prepare_deepfake_preview():
+    # Make a still frame from target video
+    pass

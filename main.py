@@ -23,7 +23,7 @@ async def run_camera_in():
 
 async def run_camera_out():
     # async camera task for output PI
-
+    pass
 #TODO: create FTP Folder listener
 async def run_ftp_listener_in():
     ftp = await asyncLoop.run_in_executor(None, connectToFtp, "input-pi")
@@ -31,6 +31,7 @@ async def run_ftp_listener_in():
 
 async def run_ftp_listener_out():
     # listen for pictures from Input-PI and if new picture comes in run event
+    pass
 
 async def watch_directory_for_change(ftp_connection, on_new_file, interval=1.0):
     path_to_watch = "/home/pi/MyPics"

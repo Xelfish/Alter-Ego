@@ -21,6 +21,8 @@ def get_new_file_name(dir):
 
 def create_file_bundle():
     # Create a folder for new collection of files
+    pass
 
 def bundle_files():
     # Bundle files, in this case images
+    pass

@@ -17,7 +17,7 @@ def take_picture(camera):
 
 camera.start_preview()
 
-for i in range(5):
+for i in range(6):
     take_picture(camera)
     print(i)
 

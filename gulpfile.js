@@ -28,7 +28,6 @@ function connectToPi(target){
         user:     settings[target].user,
         password: settings[target].password,
     })
-    console.log(conn)
     return conn
 }
 
