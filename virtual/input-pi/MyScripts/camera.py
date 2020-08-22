@@ -3,9 +3,9 @@ from picamera import PiCamera
 import time
 from files import *
 
-camera = PiCamera(resolution=(1280, 1280), framerate=30)
 cameraSettings = get_json_settings('MyScripts/project-settings.json')['input-pi']['camera']
-#camera.iso = 800#cameraSettings["iso"]
+camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['y']))
+#camera.iso = cameraSettings["iso"]
 #camera.shutter_speed = camera.exposure_speed
 #camera.exposure_mode = 'off'
 
