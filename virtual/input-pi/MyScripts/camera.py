@@ -3,11 +3,11 @@ from picamera import PiCamera
 import time
 from files import *
 
-camera = PiCamera(resolution=(1280, 720), framerate=30)
+camera = PiCamera(resolution=(1280, 1280), framerate=30)
 cameraSettings = get_json_settings('MyScripts/project-settings.json')['input-pi']['camera']
-camera.iso = cameraSettings["iso"]
-camera.shutter_speed = camera.exposure_speed
-camera.exposure_mode = 'off'
+#camera.iso = 800#cameraSettings["iso"]
+#camera.shutter_speed = camera.exposure_speed
+#camera.exposure_mode = 'off'
 
 def take_picture(camera):
     time.sleep(cameraSettings['interval'])
@@ -17,7 +17,7 @@ def take_picture(camera):
 
 camera.start_preview()
 
-for i in range(6):
+for i in range(2):
     take_picture(camera)
     print(i)
 

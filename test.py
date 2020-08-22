@@ -22,10 +22,10 @@ async def async1(id, secs):
     print(id, ' done after ', secs, '...')
 
 def testFaceRecognition():
-    img = open("./test/input/seb-mask.jpg", "rb")
+    img = open("./test/input/facey01.png", "rb")
     if validate_face(img):
         print("That's a Face!")
-    else: print ("Not a Face...")
+    else: print("Not a Face...")
 
 async def testConcurrency():
     task1 = asyncio.create_task(async1('task 1', 2))
@@ -62,7 +62,7 @@ async def helloFromEarth():
 
 print("This is the output of a TEST command")
 #print(settings)
-testFaceRecognition()
+#testFaceRecognition()
 #testResize()
 #asyncio.run(testConcurrency())
 #asyncio.run(testConcurrency2())

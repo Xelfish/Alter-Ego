@@ -4,30 +4,35 @@ import socket
 import asyncio
 import paramiko
 import json
-import modules.image
-import modules.ai_operations
+from modules.image import *
+from modules.ai_operations import *
+from modules.util.files import *
 
 # setup
 
-with open("project-settings.json") as settings:
-    settings = json.load(settings)
+settings = get_json_settings('project-settings.json')
+
+print(settings)
 
 inPi = settings["input-pi"]
 outPi = settings["output-pi"]
 commands =  settings["commands"]
-asyncLoop = asyncio.get_running_loop()
+
+def getLoop():
+    asyncLoop = asyncio.get_running_loop()
+    return asyncLoop
 
 # run "camera" on IN and OUT Pis with subprocess or ssh
 async def run_camera_in():
-    await asyncLoop.run_in_executor(None, execOnPi, inPi, commands['camera'])
+    await getLoop().run_in_executor(None, execOnPi, inPi, commands['camera'])
 
 async def run_camera_out():
     # async camera task for output PI
     pass
 #TODO: create FTP Folder listener
 async def run_ftp_listener_in():
-    ftp = await asyncLoop.run_in_executor(None, connectToFtp, "input-pi")
-    await watch_directory_for_change(on_new_file_in)
+    ftp = await getLoop().run_in_executor(None, connectToFtp, inPi)
+    await watch_directory_for_change(ftp, on_new_file_in)
 
 async def run_ftp_listener_out():
     # listen for pictures from Input-PI and if new picture comes in run event
@@ -35,23 +40,30 @@ async def run_ftp_listener_out():
 
 async def watch_directory_for_change(ftp_connection, on_new_file, interval=1.0):
     path_to_watch = "/home/pi/MyPics"
+    print("starting to watch ", path_to_watch, "...")
     before = dict([(f, None) for f in ftp_connection.listdir(path_to_watch)])
     while True:
-        asyncio.sleep(interval)
+        await asyncio.sleep(interval)
         after = dict([(f, None) for f in ftp_connection.listdir(path_to_watch)])
         added = [f for f in after if not f in before]
-        ftp_connection.open(added[0])
-        if added: on_new_file(added)
+        if added:
+            path = path_to_watch + "/" + added[0]
+            print(path)
+            print(ftp_connection.getcwd())
+            newFile = ftp_connection.open(path) 
+            await on_new_file(newFile)
         before = after
 
-def on_new_file_in(newFile):
-    
+async def on_new_file_in(newFile):
+    loop = getLoop()
     # collect valid faces
-    if validate_face(newFile):
-        image = loadImage(newFile)
-        newPath = 'test/output/resized_images'
-        resizeImage(newPath)
-        
+    print("new file detected: ", newFile)
+    if await loop.run_in_executor(None, validate_face, newFile):
+        print("is a face")
+        image = await loop.run_in_executor(None, loadImage, newFile)
+        resizedImage = resizeImage(image)
+        newPath = saveImage(resizedImage, "test/output/resized/")
+    else: print("is not a face")
         # bundle images as training data
 
         # send bundle to A.I. Api for training
@@ -66,6 +78,7 @@ def execOnPi(pi, command):
     client = openSSH(pi)
     print('started...')
     stdin, stdout, stderr = client.exec_command(command, get_pty=True)
+    # TODO: Implement KeyBoardInterrupt for Child process
     for line in iter(stdout.readline, ""):
         print(line, end="")
     print('finished.')
@@ -91,7 +104,9 @@ def connectToFtp(pi):
 #run concurrent tasks
 async def tasks():
     task_run_camera = asyncio.create_task(run_camera_in())
+    task_run_ftp_listener_in = asyncio.create_task(run_ftp_listener_in())
     await task_run_camera
+    await task_run_ftp_listener_in
 
 # Operations before loop
 

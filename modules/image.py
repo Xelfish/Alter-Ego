@@ -15,9 +15,12 @@ def openImage(image):
 
 def resizeImage(sourceImage):
     destinationImage = sourceImage.resize(RESIZE_FORMAT)
-    filename = get_new_file_name('test/output/resized/')
-    destinationImage.save(filename)
-    return filename
+    return destinationImage
+
+def saveImage(image, path):
+    path = get_new_file_name(path)
+    image.save(path)
+    return path
 
 def prepare_deepfake_preview():
     # Make a still frame from target video

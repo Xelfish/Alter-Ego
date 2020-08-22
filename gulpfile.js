@@ -93,7 +93,5 @@ exports.watch = watchScripts
 exports.deploy = deployToInputPi
 exports.init = initInputPi
 exports.clean = cleanInputPi
-//TODO: Make clean task
-//exports.clean = parallel()
-//TODO: Make init task + vargs "--input , --output"
+//TODO: Make vargs "--input , --output"
 
