@@ -16,6 +16,14 @@ def testResize():
 def testAsync(seconds):
     time.sleep(seconds)
 
+def testDeepFake(name):
+    img = loadImage('test/input/' + name)
+    rimg = resizeImage(img)
+    path = saveImage(rimg, "test/output/resized/")
+    get_deep_fake(open(path, 'rb'))
+
+
+
 async def async1(id, secs):
     loop = asyncio.get_running_loop()
     await loop.run_in_executor(None, testAsync, secs)
@@ -66,3 +74,4 @@ print("This is the output of a TEST command")
 #testResize()
 #asyncio.run(testConcurrency())
 #asyncio.run(testConcurrency2())
+testDeepFake("pratt.jpg")

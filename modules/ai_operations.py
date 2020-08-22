@@ -20,10 +20,12 @@ def validate_face(image):
         return False
 
 def get_deep_fake(image):
+    print("sending request...")
     response = requests.post(
         api["deepfake"]["url"],
-        
+        files={"image": image}
     )
+    print("response: ", response)
 
 def match_face(subject, matchingCandidates):
     # match face with existing face

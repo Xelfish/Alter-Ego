@@ -34,7 +34,7 @@ function connectToPi(target){
 function initPi(target){
     console.log("Initializing: ", target)
     const conn = connectToPi(target)
-    return src("./virtual/" + target +"/*")
+    return src("./virtual/" + target + "/*")
     .pipe(conn.dest("/home/pi"))
 }
 
@@ -86,7 +86,6 @@ function cleanInputPi(cb){
     cb()
 }
 
-  
 exports.default = series(cleanInputPi, initInputPi, deployToInputPi, watchScripts)
 exports.test = testTask
 exports.watch = watchScripts

@@ -11,7 +11,7 @@ def get_json_settings(path):
 
 def make_padded_number(number):
     fileNumberString = str(number)
-    return fileNumberString.zfill(4)
+    return fileNumberString.zfill(4)   
 
 def get_new_file_name(dir):
     fileNumber = 0

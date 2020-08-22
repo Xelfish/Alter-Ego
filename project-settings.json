@@ -31,6 +31,9 @@
         "face_recognition": {
             "url": "https://api.deepai.org/api/facial-recognition",
             "key": "46520ef2-c1ab-4ad3-8000-6be0c7a0d686"
+        },
+        "deepfake": {
+            "url": "https://magdalenastorage.blob.core.windows.net"
         }
     
     },
