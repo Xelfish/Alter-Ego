@@ -1,5 +1,6 @@
 import requests
 from modules.util.files import *
+from modules.image import *
 
 # This is the main module for ai-tasks
 
@@ -14,10 +15,15 @@ def validate_face(image):
     },
     headers={'api-key': api["face_recognition"]["key"]})
     result = response.json()
-    if result:
-        return (len(result["output"]["faces"]) == 1)
-    else:
-        return False
+    print(result)
+    if result and not ("err" in result.keys()):
+        faces = result["output"]["faces"]
+        if len(faces) == 1:
+            face = faces[0]
+            if float(face["confidence"]) > 0.97:
+                return evaluate_face_ratio(image, face["bounding_box"])
+    return False
+
 
 def get_deep_fake(image):
     print("sending request...")

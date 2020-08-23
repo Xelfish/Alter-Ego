@@ -17,6 +17,7 @@ print(settings)
 inPi = settings["input-pi"]
 outPi = settings["output-pi"]
 commands =  settings["commands"]
+timing = settings["timing"]
 
 def getLoop():
     asyncLoop = asyncio.get_running_loop()
@@ -38,18 +39,17 @@ async def run_ftp_listener_out():
     # listen for pictures from Input-PI and if new picture comes in run event
     pass
 
-async def watch_directory_for_change(ftp_connection, on_new_file, interval=1.0):
+async def watch_directory_for_change(ftp_connection, on_new_file, interval=timing["interval"]):
     path_to_watch = "/home/pi/MyPics"
     print("starting to watch ", path_to_watch, "...")
     before = dict([(f, None) for f in ftp_connection.listdir(path_to_watch)])
     while True:
-        await asyncio.sleep(interval)
         after = dict([(f, None) for f in ftp_connection.listdir(path_to_watch)])
         added = [f for f in after if not f in before]
-        if added:
+        if len(added) > 0:
+            await asyncio.sleep(interval)
             path = path_to_watch + "/" + added[0]
             print(path)
-            print(ftp_connection.getcwd())
             newFile = ftp_connection.open(path) 
             await on_new_file(newFile)
         before = after
@@ -62,7 +62,8 @@ async def on_new_file_in(newFile):
         print("is a face")
         image = await loop.run_in_executor(None, loadImage, newFile)
         resizedImage = resizeImage(image)
-        newPath = saveImage(resizedImage, "test/output/resized/")
+        newPath = await loop.run_in_executor(None, saveImage, resizedImage, "test/output/resized/")
+        await asyncio.sleep(timing["timeout"])
     else: print("is not a face")
         # bundle images as training data
 
@@ -76,7 +77,7 @@ def openSSH(pi):
 
 def execOnPi(pi, command):
     client = openSSH(pi)
-    print('started...')
+    print('started exec of ' + command + '...')
     stdin, stdout, stderr = client.exec_command(command, get_pty=True)
     # TODO: Implement KeyBoardInterrupt for Child process
     for line in iter(stdout.readline, ""):

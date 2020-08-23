@@ -22,18 +22,18 @@ def testDeepFake(name):
     path = saveImage(rimg, "test/output/resized/")
     get_deep_fake(open(path, 'rb'))
 
-
-
 async def async1(id, secs):
     loop = asyncio.get_running_loop()
     await loop.run_in_executor(None, testAsync, secs)
     print(id, ' done after ', secs, '...')
 
 def testFaceRecognition():
-    img = open("./test/input/facey01.png", "rb")
+    name = "genius-monkey.jpg"
+    img = open("./test/input/" + name, "rb")
+    print(name)
     if validate_face(img):
-        print("That's a Face!")
-    else: print("Not a Face...")
+        print("That's a valid Face!")
+    else: print("Not a valid Face...")
 
 async def testConcurrency():
     task1 = asyncio.create_task(async1('task 1', 2))
@@ -70,8 +70,8 @@ async def helloFromEarth():
 
 print("This is the output of a TEST command")
 #print(settings)
-#testFaceRecognition()
+testFaceRecognition()
 #testResize()
 #asyncio.run(testConcurrency())
 #asyncio.run(testConcurrency2())
-testDeepFake("pratt.jpg")
+#testDeepFake("pratt.jpg")

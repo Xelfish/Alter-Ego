@@ -3,16 +3,17 @@
         "ip": "192.168.2.227"
     },
     "input-pi": {
-        "ip": "192.168.2.129",
+        "ip": "192.168.2.106",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "iso": 800,
-            "interval": 1,
+            "interval": 2.0,
             "res": {
                 "x": 1000,
                 "y": 1000
-            }
+            },
+            "zoom": 0.65
         }
     },
     "output-pi": {
@@ -44,6 +45,14 @@
         "resize": {
             "width": 256,
             "height": 256
+        },
+        "face-ratio":{
+            "min": 0.20,
+            "max": 0.40
         }
+    },
+    "timing": {
+        "interval": 1.0,
+        "timeout": 5.0
     }
 }
