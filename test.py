@@ -27,6 +27,9 @@ async def async1(id, secs):
     await loop.run_in_executor(None, testAsync, secs)
     print(id, ' done after ', secs, '...')
 
+def testFreezeVideo(path):
+    prepare_deepfake_preview(path)
+
 def testFaceRecognition():
     name = "genius-monkey.jpg"
     img = open("./test/input/" + name, "rb")
@@ -70,7 +73,8 @@ async def helloFromEarth():
 
 print("This is the output of a TEST command")
 #print(settings)
-testFaceRecognition()
+testFreezeVideo("test/input/alterego.mp4")
+#testFaceRecognition()
 #testResize()
 #asyncio.run(testConcurrency())
 #asyncio.run(testConcurrency2())

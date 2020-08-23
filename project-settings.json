@@ -49,6 +49,11 @@
         "face-ratio":{
             "min": 0.20,
             "max": 0.40
+        },
+        "preview":{
+            "frames":[
+                    100
+                ]
         }
     },
     "timing": {

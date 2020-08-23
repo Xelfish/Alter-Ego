@@ -1,5 +1,6 @@
 # This is the main module for image manipulations
 from PIL import Image
+import cv2
 from modules.util.files import *
 
 settings = get_json_settings('project-settings.json')['image']
@@ -29,9 +30,22 @@ def saveImage(image, path):
     image.save(path)
     return path
 
-def prepare_deepfake_preview():
-    # Make a still frame from target video
-    pass
+def prepare_deepfake_preview(path):
+    targetFrames = {tf for tf in settings["preview"]["frames"]}
+    cam = cv2.VideoCapture(path) 
+    frameCount = 0; 
+    while True:
+        material, frame = cam.read()
+        if not material:
+            break 
+        if frameCount in targetFrames:
+            print(frameCount)
+            name = get_new_file_name('test/output/stills/')
+            print ('Creating...' + name) 
+            cv2.imwrite(name, frame) 
+        frameCount += 1
+    cam.release() 
+    cv2.destroyAllWindows() 
 
 def get_bounding_box_area(bounding_box):
     left, top, right, bottom = bounding_box
