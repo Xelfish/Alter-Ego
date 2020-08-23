@@ -34,7 +34,7 @@ function connectToPi(target){
 function initPi(target){
     console.log("Initializing: ", target)
     const conn = connectToPi(target)
-    return src("./virtual/" + target +"/*")
+    return src("./virtual/" + target + "/*")
     .pipe(conn.dest("/home/pi"))
 }
 
@@ -47,7 +47,6 @@ function cleanPi(target, cb){
         conn.rmdir(path, cb)
     }
 }
-    
 
 function deployToPi(target){
     console.log("Deploying: ", target)
@@ -56,7 +55,7 @@ function deployToPi(target){
 
 function copyScriptsToPi(target){
     const conn = connectToPi(target)
-    globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json']
+    const globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json']
     return src(globs)
         .pipe(conn.newer('/home/pi/MyScripts/'))
         .pipe(conn.dest('/home/pi/MyScripts/'))
@@ -87,14 +86,11 @@ function cleanInputPi(cb){
     cb()
 }
 
-  
 exports.default = series(cleanInputPi, initInputPi, deployToInputPi, watchScripts)
 exports.test = testTask
 exports.watch = watchScripts
 exports.deploy = deployToInputPi
 exports.init = initInputPi
 exports.clean = cleanInputPi
-//TODO: Make clean task
-//exports.clean = parallel()
-//TODO: Make init task + vargs "--input , --output"
+//TODO: Make vargs "--input , --output"
 

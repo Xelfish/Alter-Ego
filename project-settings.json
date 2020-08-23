@@ -3,14 +3,15 @@
         "ip": "192.168.2.227"
     },
     "input-pi": {
-        "ip": "192.168.2.106",
+        "ip": "192.168.2.129",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "iso": 800,
+            "interval": 1,
             "res": {
-                "x": 1270,
-                "y": 740
+                "x": 1000,
+                "y": 1000
             }
         }
     },
@@ -21,12 +22,19 @@
         "camera": {
             "iso": 800,
             "res": {
-                "x": 1270,
-                "y": 740
+                "x": 740,
+                "y": 560
             }
         }
     },
     "api": {
+        "face_recognition": {
+            "url": "https://api.deepai.org/api/facial-recognition",
+            "key": "46520ef2-c1ab-4ad3-8000-6be0c7a0d686"
+        },
+        "deepfake": {
+            "url": "https://magdalenastorage.blob.core.windows.net"
+        }
     
     },
     "commands": {
@@ -34,8 +42,8 @@
     },
     "image": {
         "resize": {
-            "width": 30,
-            "height": 30
+            "width": 256,
+            "height": 256
         }
     }
 }

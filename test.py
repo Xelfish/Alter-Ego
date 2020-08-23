@@ -2,7 +2,7 @@ import asyncio
 import time
 from modules.image import *
 from modules.util.files import *
-
+from modules.ai_operations import *
 
 settings = get_json_settings('project-settings.json')
 
@@ -16,10 +16,24 @@ def testResize():
 def testAsync(seconds):
     time.sleep(seconds)
 
+def testDeepFake(name):
+    img = loadImage('test/input/' + name)
+    rimg = resizeImage(img)
+    path = saveImage(rimg, "test/output/resized/")
+    get_deep_fake(open(path, 'rb'))
+
+
+
 async def async1(id, secs):
     loop = asyncio.get_running_loop()
     await loop.run_in_executor(None, testAsync, secs)
     print(id, ' done after ', secs, '...')
+
+def testFaceRecognition():
+    img = open("./test/input/facey01.png", "rb")
+    if validate_face(img):
+        print("That's a Face!")
+    else: print("Not a Face...")
 
 async def testConcurrency():
     task1 = asyncio.create_task(async1('task 1', 2))
@@ -56,6 +70,8 @@ async def helloFromEarth():
 
 print("This is the output of a TEST command")
 #print(settings)
-testResize()
+#testFaceRecognition()
+#testResize()
 #asyncio.run(testConcurrency())
 #asyncio.run(testConcurrency2())
+testDeepFake("pratt.jpg")
