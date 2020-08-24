@@ -33,6 +33,10 @@ def get_deep_fake(image):
     )
     print("response: ", response)
 
-def match_face(subject, matchingCandidates):
-    # match face with existing face
+def get_face_id_for_person(deepfakeStill):
+    # for entered deepfake still API returns a unique face-id
+    pass
+
+def find_matching_face(image)
+    # find the matching face_id in the API-Database
     pass

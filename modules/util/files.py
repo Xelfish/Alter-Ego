@@ -19,10 +19,5 @@ def get_new_file_name(dir):
         fileNumber += 1
     return (dir + "image" + make_padded_number(fileNumber) + ".jpg")
 
-def create_file_bundle():
-    # Create a folder for new collection of files
-    pass
-
-def bundle_files():
-    # Bundle files, in this case images
-    pass
+def rename_and_match_still_and_video(oldname, newname)
+    # given the oldname rename the still and the respective video with the newname
