@@ -59,5 +59,16 @@
     "timing": {
         "interval": 1.0,
         "timeout": 5.0
+    },
+    "dir": {
+        "root": "./output/",
+        "faces": {
+            "input-pi": "in_faces/",
+            "output-pi": "out_faces/"
+        },
+        "deepfake": {
+            "root": "deepfakes/",
+            "preview": "stills/"
+        }
     }
 }
