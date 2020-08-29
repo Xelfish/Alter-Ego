@@ -30,6 +30,11 @@ async def async1(id, secs):
 def testFreezeVideo(path):
     prepare_deepfake_preview(path)
 
+def testBetafaceApi():
+    print(get_admin_info())
+    image = open("./test/input/pratt.jpg", "rb")
+    print(get_face_id_by_post(image))
+
 def testFaceRecognition():
     name = "genius-monkey.jpg"
     img = open("./test/input/" + name, "rb")
@@ -73,8 +78,9 @@ async def helloFromEarth():
 
 print("This is the output of a TEST command")
 #print(settings)
-testFreezeVideo("test/input/alterego.mp4")
+#testFreezeVideo("test/input/alterego.mp4")
 #testFaceRecognition()
+testBetafaceApi()
 #testResize()
 #asyncio.run(testConcurrency())
 #asyncio.run(testConcurrency2())

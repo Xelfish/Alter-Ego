@@ -35,6 +35,25 @@
         },
         "deepfake": {
             "url": "https://magdalenastorage.blob.core.windows.net"
+        },
+        "beta-face": {
+            "url": {
+                "base": "https://www.betafaceapi.com/api",
+                "admin": "/v2/admin/usage",
+                "face": {
+                    "normal": "/v2/face",
+                    "cropped": "/v2/face/cropped"
+                },
+                "media": {
+                    "normal": "/v2/media",
+                    "hash": "/v2/media/hash",
+                    "file": "/v2/media/file"
+                },
+                "person": "/v2/person",
+                "recognize": "/v2/recognize"
+            },
+            "key": "d45fd466-51e2-4701-8da8-04351c872236",
+            "namespace": "alterego"
         }
     
     },

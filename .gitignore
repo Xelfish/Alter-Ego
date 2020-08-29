@@ -2,3 +2,4 @@ test
 output
 /node_modules
 /modules/__pycache__
+secret.txt

@@ -24,6 +24,9 @@ def validate_face(image):
                 return evaluate_face_ratio(image, face["bounding_box"])
     return False
 
+def get_matching_deepfake_id(image):
+    uuid_target = get_face_id_by_post(image)
+    find_matching_face(uuid_target)
 
 def get_deep_fake(image):
     print("sending request...")
@@ -33,10 +36,37 @@ def get_deep_fake(image):
     )
     print("response: ", response)
 
-def get_face_id_for_person(deepfakeStill):
+def post_deepfake_identity(deepfake):
+    name = generate_identity_name()
+    image = deepfake
+    # Post image and get face-uuid
+    uuid = get_face_id_by_post(image)
+    request(uuid)
+    # set person identity in name space
+
+def get_face_id_by_post(image):
     # for entered deepfake still API returns a unique face-id
+    uuid = requests.post(
+        get_betaface_api(api["beta-face"]["url"]["media"]["file"]),
+        data = {image}
+    )
+    return uuid
     pass
 
-def find_matching_face(image)
+def find_matching_face(uuid):
     # find the matching face_id in the API-Database
     pass
+
+def generate_identity_name():
+    # given current time and date generate a unique identity "ego-ddhhmmss"
+    name = timedate.getdate()
+    return name
+
+def get_admin_info():
+    apiInfo = {"api_key":api["beta-face"]["key"], "api_secret": get_secret()}
+    response = requests.get(get_betaface_api(api["beta-face"]["url"]["admin"]), params=apiInfo)
+    return response
+
+def get_betaface_api(suffix):
+    prefix = api["beta-face"]["url"]["base"]
+    return prefix + suffix

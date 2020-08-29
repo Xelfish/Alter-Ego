@@ -13,11 +13,21 @@ def make_padded_number(number):
     fileNumberString = str(number)
     return fileNumberString.zfill(4)   
 
-def get_new_file_name(dir):
+def get_new_file_name(targetdir, basename="image"):
     fileNumber = 0
-    while (os.path.isfile(dir + "image" + make_padded_number(fileNumber) + ".jpg")):
+    while (os.path.isfile(targetdir + basename + make_padded_number(fileNumber) + ".jpg")):
         fileNumber += 1
-    return (dir + "image" + make_padded_number(fileNumber) + ".jpg")
+    return (targetdir + basename + make_padded_number(fileNumber) + ".jpg")
 
-def rename_and_match_still_and_video(oldname, newname)
+def rename_and_match_still_and_video(oldname, newname):
     # given the oldname rename the still and the respective video with the newname
+    pass
+
+def get_video_name(path):
+    base = os.path.basename(path)
+    return os.path.splitext(base)[0]
+
+def get_secret():
+    with open("./secret.txt") as secret:
+        content = secret.read()
+        return content
