@@ -13,7 +13,7 @@
                 "x": 1000,
                 "y": 1000
             },
-            "zoom": 0.65
+            "zoom": 0
         }
     },
     "output-pi": {
@@ -34,7 +34,10 @@
             "key": "46520ef2-c1ab-4ad3-8000-6be0c7a0d686"
         },
         "deepfake": {
-            "url": "https://magdalenastorage.blob.core.windows.net"
+            "url": {
+                "videourl": " https://alterego123.azurewebsites.net/api/UploadPicture?code=bgAyJiyTQxOtpzzkK/BSWIv64CXVKjXFoIUOAi3DRAUSFXO35UG2uQ==",
+                "swapref": "https://alterego123.azurewebsites.net/api/UploadVideo?code=onDF6LQBuHhzsUWt/etSACUoFHyDzcioOhOGneXIyR3KUd3J1QuLhQ=="
+            }
         },
         "beta-face": {
             "url": {

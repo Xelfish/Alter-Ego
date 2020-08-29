@@ -1,6 +1,8 @@
 import requests
 from modules.util.files import *
 from modules.image import *
+import datetime
+
 
 # This is the main module for ai-tasks
 
@@ -28,13 +30,25 @@ def get_matching_deepfake_id(image):
     uuid_target = get_face_id_by_post(image)
     find_matching_face(uuid_target)
 
-def get_deep_fake(image):
+def generate_deepfake(image):
     print("sending request...")
+    print(datetime.datetime.now())
     response = requests.post(
-        api["deepfake"]["url"],
-        files={"image": image}
+        api["deepfake"]["url"]["videourl"],
+        files={"image":image}
     )
-    print("response: ", response)
+    if response.ok:
+        print("response: ", response.json()["video"])
+        print(datetime.datetime.now())
+        return response.json()["video"]
+    else:
+        print (response)
+
+def download_deepfake(url):
+    print("trying to download...")
+    response = requests.get(url, allow_redirects=True)
+    return response
+    pass
 
 def post_deepfake_identity(deepfake):
     name = generate_identity_name()
@@ -65,7 +79,7 @@ def generate_identity_name():
 def get_admin_info():
     apiInfo = {"api_key":api["beta-face"]["key"], "api_secret": get_secret()}
     response = requests.get(get_betaface_api(api["beta-face"]["url"]["admin"]), params=apiInfo)
-    return response
+    return response.content
 
 def get_betaface_api(suffix):
     prefix = api["beta-face"]["url"]["base"]

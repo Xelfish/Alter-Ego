@@ -4,6 +4,7 @@ import socket
 import asyncio
 import paramiko
 import json
+
 from modules.image import *
 from modules.ai_operations import *
 from modules.util.files import *
@@ -11,8 +12,6 @@ from modules.util.files import *
 # setup
 
 settings = get_json_settings('project-settings.json')
-
-print(settings)
 
 inPi = settings["input-pi"]
 outPi = settings["output-pi"]
@@ -25,6 +24,7 @@ def getLoop():
 
 # run "camera" on IN and OUT Pis with subprocess or ssh
 async def run_camera_in():
+    print("STARTED: Run Camera Input")
     await getLoop().run_in_executor(None, execOnPi, inPi, commands['camera'])
 
 async def run_camera_out():
@@ -32,27 +32,59 @@ async def run_camera_out():
     pass
 #TODO: create FTP Folder listener
 async def run_ftp_listener_in():
+    print("STARTED: FTP Listener Input Pics")
     ftp = await getLoop().run_in_executor(None, connectToFtp, inPi)
-    await watch_directory_for_change(ftp, on_new_file_in)
+    await watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
 
 async def run_ftp_listener_out():
     # listen for pictures from Input-PI and if new picture comes in run event
     pass
 
-async def watch_directory_for_change(ftp_connection, on_new_file, interval=timing["interval"]):
-    path_to_watch = "/home/pi/MyPics"
+async def run_deepfake():
+    print("STARTED: Listen for Deepfake Input")
+    await watch_directory_for_change("test/output/resized", get_deepfake)
+
+async def get_deepfake(image):
+    print("Uploading Image to Deepfake API...")
+    loop = getLoop()
+    url = await loop.run_in_executor(None, generate_deepfake, image)
+    await asyncio.sleep(20)
+    while True: 
+        response = await loop.run_in_executor(None, download_deepfake, url)
+        if response.ok:
+            path = save_video(response.content)
+            await process_deepfake(path)
+            break
+        await asyncio.sleep(1)
+
+async def process_deepfake(path):
+    pass
+# refactor this to be remote and normal
+async def watch_directory_for_change(directory, on_new_file, interval=timing["interval"], remote=None):
+    path_to_watch = directory
+    target = get_os()
+    if remote:
+        target = remote
     print("starting to watch ", path_to_watch, "...")
-    before = dict([(f, None) for f in ftp_connection.listdir(path_to_watch)])
+    before = dict([(f, None) for f in target.listdir(path_to_watch)])
     while True:
-        after = dict([(f, None) for f in ftp_connection.listdir(path_to_watch)])
+        printpath = path_to_watch
+        if remote: 
+            printpath = printpath + " : " + str(remote.get_channel().get_id())
+        print("listening on: ", printpath, "...")
+        after = dict([(f, None) for f in target.listdir(path_to_watch)])
         added = [f for f in after if not f in before]
         if len(added) > 0:
             await asyncio.sleep(interval)
             path = path_to_watch + "/" + added[0]
             print(path)
-            newFile = ftp_connection.open(path) 
+            if remote: 
+                newFile = remote.open(path, "rb") 
+            else:
+                newFile = open(path, "rb")
             await on_new_file(newFile)
         before = after
+        await asyncio.sleep(interval/2)
 
 async def on_new_file_in(newFile):
     loop = getLoop()
@@ -106,8 +138,10 @@ def connectToFtp(pi):
 async def tasks():
     task_run_camera = asyncio.create_task(run_camera_in())
     task_run_ftp_listener_in = asyncio.create_task(run_ftp_listener_in())
+    task_run_deepfake = asyncio.create_task(run_deepfake())
     await task_run_camera
     await task_run_ftp_listener_in
+    await task_run_deepfake
 
 # Operations before loop
 
