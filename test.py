@@ -55,16 +55,17 @@ def testFaceRecognition():
         print("That's a valid Face!")
     else: print("Not a valid Face...")
 
+def longtask(countId):
+    for i in range(10):
+        print("Thread started on ", countId, ": ", i)
+
 def testMultithreading():
     count = 0
-    for i in range(5):
+    while True: 
         count += 1
-        print ("Cycle: ", count)
-        print("Number of active threads:", threading.active_count())
-        print("hello my friend")
-        thread = threading.Thread(target=oneHundred)
-        thread.start()
-        print("this is the main thread")
+        print("tick. Current threads: ", threading.active_count())
+        threading.Thread(None, target=validate_face, args=(open("test\input\pratt.jpg", "rb"),)).start()
+        time.sleep(1)
 
 
 def testMultiprocessing():

@@ -15,19 +15,17 @@ def setZoom():
     return (x, y, width, height)
 
 def take_picture(camera):
-    time.sleep(cameraSettings['interval'])
-    print ("Taking a picture...")
     path = get_new_file_name("MyPics/")
     camera.capture(path)
 
 camera.zoom = setZoom()
-print(camera.zoom)
 
 camera.start_preview()
 
-for i in range(1):
+for i in range(10):
+    time.sleep(cameraSettings['interval'])
+    print("Taking a picture: " + str(i) + "...")
     take_picture(camera)
-    print(i)
 
 camera.stop_preview()
 

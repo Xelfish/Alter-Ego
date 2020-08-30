@@ -1,11 +1,9 @@
 # This is the main entry-point for Alter Ego
 
 import socket
-import asyncio
 import paramiko
 import json
 import time
-from multiprocessing import Process, freeze_support
 import threading
 
 from modules.image import *
@@ -23,42 +21,25 @@ timing = settings["timing"]
 
 # concurrency helpers
 
-def getLoop():
-    asyncLoop = asyncio.get_running_loop()
-    return asyncLoop
-
 def parallel(func):
     def parallel_func(*args, **kw):
-        if __name__ == "__main__":
-            p = Process(target=func, args=args)
-            p.start()
+        t = threading.Thread(None, target=func, args=args, kwargs=kw)
+        t.setName(func.__name__ + " as Parallel")
+        t.start()
     return parallel_func
-
-def thread_parallel(func):
+    
+def parallel_daemon(func):
     def parallel_func(*args, **kw):
-        try:
-            p = Process(target=func, args=args)
-            p.start()
-        except KeyboardInterrupt:
-            sys.exit()
+        t = threading.Thread(None, target=func, args=args, kwargs=kw, daemon=True)
+        t.setName(func.__name__ + " as Parallel Daemon")
+        t.start()
     return parallel_func
 
-def fire_and_forget(func):
-    def parallel_func(*args, **kw):
-        p = Process(target=func, args=args)
-        p.daemon = True
-        p.start()
-    parallel_func.__module__ = "__main__"
-    return parallel_func
-
-def run_new_process(func, *args):
-    p = Process(target=func, args=args)
-    p.daemon = True
-    p.start()
-    return p
-
+def monitor_threads():
+    print ("Number of Threads: ", threading.active_count())
+    for thread in threading.enumerate():
+        print(thread)
 # run "camera" on IN and OUT Pis with ssh
-#@parallel
 def run_camera_in():
     print("STARTED: Run Camera Input")
     execOnPi(inPi, commands['camera'])
@@ -66,11 +47,6 @@ def run_camera_in():
 def run_camera_out():
     # async camera task for output PI
     pass
-
-def oneHundred():
-    print("Gawh... I am so tire...zzz")
-    time.sleep(10)
-    print("Aaah... I slept so well")
 
 # Run FTP Folder listener on IN and OUT Pis
 def run_ftp_listener_in():
@@ -87,6 +63,7 @@ def run_deepfake():
     print("STARTED: Listen for Deepfake Input")
     watch_directory_for_change("test/output/resized", prepare_deepfake)
 
+@parallel_daemon
 def watch_directory_for_change(directory, on_new_file, interval=timing["interval"], remote=None):
     path_to_watch = directory
     target = get_os()
@@ -98,7 +75,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         printpath = path_to_watch
         if remote: 
             printpath = printpath + " : " + str(remote.get_channel().get_id())
-        print("listening on: ", printpath, "...")
+        #print("listening on: ", printpath, "...")
         after = dict([(f, None) for f in target.listdir(path_to_watch)])
         added = [f for f in after if not f in before]
         if len(added) > 0:
@@ -106,36 +83,35 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
             path = path_to_watch + "/" + added[0]
             print(path)
             if remote: 
-                newFile = remote.open(path, "rb") 
+                newFile = remote.open(path) 
             else:
                 newFile = open(path, "rb")
-            #on_new_file(newFile)
-            threading.Thread(None, target=on_new_file_in, args=(newFile,), daemon=True).start()
-            #run_new_process(on_new_file, newFile)
+            on_new_file(newFile)
         before = after
         time.sleep(interval/2)
 
-
 def on_new_file_in(newFile):
     print("new file detected: ", newFile)
-    if validate_face(newFile):
+    valid = validate_face(newFile)
+    print(valid)
+    if valid:
         print("is a face")
         image = loadImage(newFile)
         resizedImage = resizeImage(image)
-        newPath = saveImage("test/output/resized/")
-        time.sleep(timing["timeout"])
+        newPath = saveImage(resizedImage, "test/output/resized/")
     else: print("is not a face")
 
-
+@parallel
 def prepare_deepfake(image):
     print("Uploading Image to Deepfake API...")
-    loop = getLoop()
     url = generate_deepfake(image)
+    start = time.time()
     time.sleep(timing["process"])
     while True: 
         response = download_deepfake(url)
         if response.ok:
             path = save_video(response.content)
+            print("Downloaded Deepfake at: " + path + "in: " + str(time.time() - start))
             process_deepfake(path)
             break
         time.sleep(1)
@@ -151,6 +127,7 @@ def openSSH(pi):
     client.connect(pi["ip"], username=pi["user"], password=pi["password"])
     return client
 
+@parallel_daemon
 def execOnPi(pi, command):
     client = openSSH(pi)
     print('started exec of ' + command + '...')
@@ -179,18 +156,12 @@ def connectToFtp(pi):
     # send media-server URL to PI and command "display"
 
 def main():
-    processes = []
-    try: 
-        processes.append(threading.Thread(target=run_camera_in))
-        processes.append(threading.Thread(target=run_ftp_listener_in))
-        processes.append(threading.Thread(target=run_deepfake))
-        for p in processes:
-            p.start()
-    except KeyboardInterrupt:
-        sys.exit()
-
-
-
+    run_camera_in()
+    run_ftp_listener_in()
+    run_deepfake()
+    while True:
+        time.sleep(5)
+        monitor_threads()
 # Operations before loop
 # CORE Async Loop
 if __name__ == '__main__':

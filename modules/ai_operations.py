@@ -9,7 +9,6 @@ import datetime
 api = get_json_settings('project-settings.json')["api"]
 
 def validate_face(image):
-    print("Starting Validation...")
     response = requests.post(
     api["face_recognition"]["url"],
     files={
@@ -17,6 +16,7 @@ def validate_face(image):
     },
     headers={'api-key': api["face_recognition"]["key"]})
     result = response.json()
+    print(response)
     print(result)
     if result and not ("err" in result.keys()):
         faces = result["output"]["faces"]
@@ -45,7 +45,7 @@ def generate_deepfake(image):
         print (response)
 
 def download_deepfake(url):
-    print("trying to download...")
+    print("trying to download " + url + "...")
     response = requests.get(url, allow_redirects=True)
     return response
     pass
