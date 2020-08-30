@@ -67,7 +67,6 @@ def testMultithreading():
         threading.Thread(None, target=validate_face, args=(open("test\input\pratt.jpg", "rb"),)).start()
         time.sleep(1)
 
-
 def testMultiprocessing():
     if __name__ == "__main__":
         Process(target=subprocess).start()

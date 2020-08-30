@@ -61,7 +61,8 @@
     
     },
     "commands": {
-        "camera": "python MyScripts/camera.py"
+        "camera": "python MyScripts/camera.py",
+        "play": "python MyScripts/playDeepfake.py"
     },
     "image": {
         "resize": {

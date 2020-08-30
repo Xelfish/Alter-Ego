@@ -26,7 +26,7 @@ def rename_video(oldname, newname):
 def get_os():
     return os
 
-def get_video_name(path):
+def get_file_name(path):
     base = os.path.basename(path)
     return os.path.splitext(base)[0]
 

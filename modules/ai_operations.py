@@ -1,10 +1,9 @@
+# This is the main module for AI related processing and API Interactions
+
 import requests
 from modules.util.files import *
 from modules.image import *
 import datetime
-
-
-# This is the main module for ai-tasks
 
 api = get_json_settings('project-settings.json')["api"]
 
@@ -26,9 +25,10 @@ def validate_face(image):
                 return evaluate_face_ratio(image, face["bounding_box"])
     return False
 
-def get_matching_deepfake_id(image):
+def get_matching_deepfake_identity(image):
     uuid_target = get_face_id_by_post(image)
-    find_matching_face(uuid_target)
+    name = recognize_face(uuid_target)
+    return name
 
 def generate_deepfake(image):
     print("sending request...")
@@ -50,25 +50,22 @@ def download_deepfake(url):
     return response
     pass
 
-def post_deepfake_identity(deepfake):
-    name = generate_identity_name()
-    image = deepfake
-    # Post image and get face-uuid
-    uuid = get_face_id_by_post(image)
-    request(uuid)
-    # set person identity in name space
-
-def get_face_id_by_post(image):
-    # for entered deepfake still API returns a unique face-id
-    uuid = requests.post(
-        get_betaface_api(api["beta-face"]["url"]["media"]["file"]),
-        data = {image}
-    )
-    return uuid
+def set_deepfake_identity(faceIds, deepfakeId):
+    name = deepfakeId + "@" + api["beta-face"]["namespace"]
+    # needs faceIds(list)
+    # needs personId("name@namespace")
+    # assigns an Identity to different faces
     pass
 
-def find_matching_face(uuid):
-    # find the matching face_id in the API-Database
+def get_face_id_by_post(image):
+    # needs an image (formData)
+    # returns faces (list) with face-uuid (entry)
+    pass
+
+def recognize_face(id):
+    # needs IDs (list)
+    # needs Targets (list)
+    # returns matches (list) with entry "identity"
     pass
 
 def generate_identity_name():
@@ -76,11 +73,17 @@ def generate_identity_name():
     name = timedate.getdate()
     return name
 
+def compose_namespace(name):
+    pass
+
+def extract_name(identity):
+    pass
+
 def get_admin_info():
     apiInfo = {"api_key":api["beta-face"]["key"], "api_secret": get_secret()}
-    response = requests.get(get_betaface_api(api["beta-face"]["url"]["admin"]), params=apiInfo)
+    response = requests.get(get_betaface_url(api["beta-face"]["url"]["admin"]), params=apiInfo)
     return response.content
 
-def get_betaface_api(suffix):
+def get_betaface_url(suffix):
     prefix = api["beta-face"]["url"]["base"]
     return prefix + suffix

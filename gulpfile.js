@@ -93,4 +93,3 @@ exports.deploy = deployToInputPi
 exports.init = initInputPi
 exports.clean = cleanInputPi
 //TODO: Make vargs "--input , --output"
-

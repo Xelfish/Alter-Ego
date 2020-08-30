@@ -1,12 +1,10 @@
-# This is the main module for image manipulations
+# This is the main module for image and video manipulations
 from PIL import Image
 import cv2
 from modules.util.files import *
 
 settings = get_json_settings('project-settings.json')['image']
 RESIZE_FORMAT = (settings["resize"]["width"], settings["resize"]["height"])
-
-#TODO: Develop list of image processing
 
 def evaluate_face_ratio(image, bounding_box):
     faceArea = get_bounding_box_area(bounding_box)
@@ -30,9 +28,9 @@ def saveImage(image, path):
     image.save(path)
     return path
 
-def prepare_deepfake_preview(path):
+def prepare_deepfake_preview(sourcePath):
     targetFrames = {tf for tf in settings["preview"]["frames"]}
-    cam = cv2.VideoCapture(path) 
+    cam = cv2.VideoCapture(sourcePath) 
     frameCount = 0; 
     while True:
         material, frame = cam.read()
@@ -40,7 +38,7 @@ def prepare_deepfake_preview(path):
             break 
         if frameCount in targetFrames:
             print(frameCount)
-            name = get_new_file_name('test/output/stills/')
+            name = get_new_file_name('test/output/stills/', get_file_name(sourcePath))
             print ('Creating...' + name) 
             cv2.imwrite(name, frame) 
         frameCount += 1

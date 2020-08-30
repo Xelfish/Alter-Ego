@@ -39,13 +39,17 @@ def monitor_threads():
     print ("Number of Threads: ", threading.active_count())
     for thread in threading.enumerate():
         print(thread)
+
+# Parallel High-Level Tasks
+
 # run "camera" on IN and OUT Pis with ssh
 def run_camera_in():
     print("STARTED: Run Camera Input")
     execOnPi(inPi, commands['camera'])
 
 def run_camera_out():
-    # async camera task for output PI
+    print("STARTED: Run Camera Output")
+    execOnPi(outPi, commands['camera'])
     pass
 
 # Run FTP Folder listener on IN and OUT Pis
@@ -56,10 +60,12 @@ def run_ftp_listener_in():
 
 def run_ftp_listener_out():
     # listen for pictures from Input-PI and if new picture comes in run event
+    ftp = connectToFtp(outPi)
+    watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
     pass
 
 # Run Deepfake generator
-def run_deepfake():
+def run_deepfake_listener():
     print("STARTED: Listen for Deepfake Input")
     watch_directory_for_change("test/output/resized", prepare_deepfake)
 
@@ -90,6 +96,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         before = after
         time.sleep(interval/2)
 
+#TODO: Fix threading for this function
 def on_new_file_in(newFile):
     print("new file detected: ", newFile)
     valid = validate_face(newFile)
@@ -115,8 +122,21 @@ def prepare_deepfake(image):
             process_deepfake(path)
             break
         time.sleep(1)
+def on_new_file_out(newFile):
+    identity = get_matching_deepfake_identity(newFile)
+    if identity:
+        show_deepfake(identity)
 
 def process_deepfake(path):
+    name = generate_identity_name()
+    new_path = rename_video(path, name)
+    file_paths = prepare_deepfake_preview(new_path)
+    face_ids = []
+    for file in file_paths:
+        image = open(file, "rb")
+        face_ids.append(get_face_id_by_post(image))
+    set_deepfake_identity(face_ids, name)
+    scale_deepfake(new_path)
     pass
 
 # Remote Communication tasks
@@ -132,7 +152,6 @@ def execOnPi(pi, command):
     client = openSSH(pi)
     print('started exec of ' + command + '...')
     stdin, stdout, stderr = client.exec_command(command, get_pty=True)
-    # TODO: Implement KeyBoardInterrupt for Child process
     for line in iter(stdout.readline, ""):
         print(line, end="")
     print('finished.')
@@ -143,22 +162,17 @@ def connectToFtp(pi):
     ftp = client.open_sftp()
     return ftp
 
-# listen for api response and save output video to media-server
-
-    # download Video and take sample still-frames
-
-    # run samples through face recognition and pair face with video
-
-    # upload face with video pair
-
-# listen for pictures from OUT and find matching face when a new picture is detected
-
-    # send media-server URL to PI and command "display"
+def show_deepfake(identity):
+    name = extract_name(identity)
+    sourcePath = "test/output/deepfake/" + name
+    playDeepfake = command["play"] + sourcePath
+    execOnPi(outPi, playDeepfake)
+    pass
 
 def main():
     run_camera_in()
     run_ftp_listener_in()
-    run_deepfake()
+    run_deepfake_listener()
     while True:
         time.sleep(5)
         monitor_threads()
