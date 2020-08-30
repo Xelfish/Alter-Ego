@@ -9,7 +9,7 @@ import datetime
 api = get_json_settings('project-settings.json')["api"]
 
 def validate_face(image):
-    print("Starting Validation")
+    print("Starting Validation...")
     response = requests.post(
     api["face_recognition"]["url"],
     files={

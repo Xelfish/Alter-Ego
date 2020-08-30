@@ -80,7 +80,8 @@
     },
     "timing": {
         "interval": 1.0,
-        "timeout": 5.0
+        "timeout": 5.0,
+        "process": 300.0
     },
     "dir": {
         "root": "./output/",

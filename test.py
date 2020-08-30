@@ -1,8 +1,10 @@
 import asyncio
 import time
+import threading
 from modules.image import *
 from modules.util.files import *
 from modules.ai_operations import *
+from multiprocessing import Process
 
 settings = get_json_settings('project-settings.json')
 
@@ -53,7 +55,23 @@ def testFaceRecognition():
         print("That's a valid Face!")
     else: print("Not a valid Face...")
 
-async def testConcurrency():
+def testMultithreading():
+    count = 0
+    for i in range(5):
+        count += 1
+        print ("Cycle: ", count)
+        print("Number of active threads:", threading.active_count())
+        print("hello my friend")
+        thread = threading.Thread(target=oneHundred)
+        thread.start()
+        print("this is the main thread")
+
+
+def testMultiprocessing():
+    if __name__ == "__main__":
+        Process(target=subprocess).start()
+
+async def testAsyncConcurrency():
     task1 = asyncio.create_task(async1('task 1 1', 2))
     task2 = asyncio.create_task(async2('task 2 1', 2.2))
     task3 = asyncio.create_task(async2('task 2 2', 1.8))
@@ -66,12 +84,17 @@ async def testConcurrency():
     await task4
     await task5
 
-async def testConcurrency2():
+async def testAsyncConcurrency2():
     await async1('task 1', 1)
     await async1('task 2', 1)
     await async1('task 3', 1)
     await async1('task 4', 1)
     await async1('task 5', 1)
+
+def oneHundred():
+    for i in range(1,100):
+        print("R: ", i)
+
 
 async def helloFromMars():
     await asyncio.sleep(3.5)
@@ -80,6 +103,9 @@ async def helloFromMars():
 def syncSleeper():
     time.sleep(2)
     print("...Aaah I slept so well")
+
+def subprocess():
+    print("Subprocess of DOOOOOOOM")
 
 async def helloFromEarth():
     await helloFromMars()
@@ -92,7 +118,8 @@ print("This is the output of a TEST command")
 #testFreezeVideo("test/input/alterego.mp4")
 #testDeepFake("pickachu2.jpg")
 #testFaceRecognition()
-testBetafaceApi()
+#testBetafaceApi()
+testMultithreading()
 #testResize()
 #asyncio.run(testConcurrency())
 #asyncio.run(testConcurrency2())
