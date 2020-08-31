@@ -69,6 +69,7 @@ def run_deepfake_listener():
     print("STARTED: Listen for Deepfake Input")
     watch_directory_for_change("test/output/resized", prepare_deepfake)
 
+#FIXME: Refactor for better readability
 @parallel_daemon
 def watch_directory_for_change(directory, on_new_file, interval=timing["interval"], remote=None):
     path_to_watch = directory
@@ -81,7 +82,6 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         printpath = path_to_watch
         if remote: 
             printpath = printpath + " : " + str(remote.get_channel().get_id())
-        #print("listening on: ", printpath, "...")
         after = dict([(f, None) for f in target.listdir(path_to_watch)])
         added = [f for f in after if not f in before]
         if len(added) > 0:
@@ -96,7 +96,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         before = after
         time.sleep(interval/2)
 
-#TODO: Fix threading for this function
+#FIXME: Fix threading for this function
 def on_new_file_in(newFile):
     print("new file detected: ", newFile)
     valid = validate_face(newFile)
