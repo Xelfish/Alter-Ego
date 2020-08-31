@@ -4,6 +4,7 @@ import requests
 from modules.util.files import *
 from modules.image import *
 import datetime
+import re
 
 api = get_json_settings('project-settings.json')["api"]
 
@@ -51,38 +52,67 @@ def download_deepfake(url):
     pass
 
 def set_deepfake_identity(faceIds, deepfakeId):
-    name = deepfakeId + "@" + api["beta-face"]["namespace"]
-    # needs faceIds(list)
-    # needs personId("name@namespace")
-    # assigns an Identity to different faces
-    pass
+    name = compose_namespace(deepfakeId)
+    response = requests.post(
+        get_betaface_url(api["beta-face"]["url"]["person"]),
+        json = {
+            "api_key": "d45fd466-51e2-4701-8da8-04351c872236",
+            "faces_uuids": faceIds,
+            "person_id": name
+        }
+    )
+    if response.ok:
+        print("Successfully set new Identity: ", name)
+        return True
+    else:
+        return False
 
 def get_face_id_by_post(image):
-    # needs an image (formData)
-    # returns faces (list) with face-uuid (entry)
-    pass
+    payload = {"api_key": api["beta-face"]["key"], "file": image}
+    response = requests.post(
+        get_betaface_url(api["beta-face"]["url"]["media"]["file"]), 
+        data={"api_key": api["beta-face"]["key"]},
+        files={'file': image}
+    )
+    face = response.json()["media"]["faces"][0]
+    print("New Face ID: ", face["face_uuid"])
+    return face["face_uuid"]
 
-def recognize_face(id):
-    # needs IDs (list)
-    # needs Targets (list)
-    # returns matches (list) with entry "identity"
-    pass
+def recognize_face(uuid):
+    response = requests.post(
+        get_betaface_url(api["beta-face"]["url"]["recognize"]),
+        json = {
+            "api_key": "d45fd466-51e2-4701-8da8-04351c872236",
+            "faces_uuids": [
+                uuid
+            ],
+            "targets": [
+                "all@celebrities.betaface.com"
+            ]
+        }
+    )
+    matches = response.json()["results"][0]["matches"]
+    for match in matches:
+        print(match["person_id"], ": ", match["confidence"])
+    return match[0]["person_id"]
 
 def generate_identity_name():
-    # given current time and date generate a unique identity "ego-ddhhmmss"
-    name = timedate.getdate()
+    now = datetime.datetime.now()
+    hours = str(now.hour).zfill(2)
+    minutes = str(now.minute).zfill(2)
+    seconds = str(now.second).zfill(2)
+    day = str(now.day).zfill(2)
+    name = "ego" + "_" + day + "_" + hours + "_" + minutes + "_" + seconds
+    print("New EGO: ", name)
     return name
 
 def compose_namespace(name):
-    pass
+    return  name + "@" + api["beta-face"]["namespace"]
 
 def extract_name(identity):
-    pass
-
-def get_admin_info():
-    apiInfo = {"api_key":api["beta-face"]["key"], "api_secret": get_secret()}
-    response = requests.get(get_betaface_url(api["beta-face"]["url"]["admin"]), params=apiInfo)
-    return response.content
+    pattern = re.compile("@" + api["beta-face"]["namespace"] + "$")
+    name = re.sub(pattern, "" , identity)
+    return name
 
 def get_betaface_url(suffix):
     prefix = api["beta-face"]["url"]["base"]

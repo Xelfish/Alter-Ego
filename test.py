@@ -33,19 +33,39 @@ def testDownloadDeepfake(url):
     video = download_deepfake(url)
     save_video(video)
 
+def testNameGen():
+    generate_identity_name()
+
+def testRenameDeepFake():
+    rename_video("deepfake0002.mp4", generate_identity_name())
+
 def testDeepFake(name):
     img = loadImage('test/input/' + name)
     rimg = resizeImage(img)
     path = saveImage(rimg, "test/output/resized/")
     generate_deep_fake(open(path, 'rb'))
 
+def testExtractIdentity():
+    extract_name("test@alterego")
+
+def testSetNewIdentity():
+    name = generate_identity_name()
+    path = rename_video("deepfake0000.mp4", name)
+    paths = prepare_deepfake_preview (path)
+    face_ids = []
+    for path in paths:
+        image = open(path, "rb")
+        face_ids.append(get_face_id_by_post(image))
+    set_deepfake_identity(face_ids, name)
+
 def testFreezeVideo(path):
-    prepare_deepfake_preview(path)
+    paths = prepare_deepfake_preview(path)
+    print(paths)
 
 def testBetafaceApi():
-    print(get_admin_info())
-    image = open("./test/input/pratt.jpg", "rb")
-    print(get_face_id_by_post(image))
+    image = open("test/input/pratt.jpg", "rb")
+    uuid = get_face_id_by_post(image)
+    recognize_face(uuid)
 
 def testFaceRecognition():
     name = "genius-monkey.jpg"
@@ -64,7 +84,7 @@ def testMultithreading():
     while True: 
         count += 1
         print("tick. Current threads: ", threading.active_count())
-        threading.Thread(None, target=validate_face, args=(open("test\input\pratt.jpg", "rb"),)).start()
+        threading.Thread(None, target=validate_face, args=(open("test\input\pratt.jpg", "rb").read(),)).start()
         time.sleep(1)
 
 def testMultiprocessing():
@@ -113,14 +133,4 @@ async def helloFromEarth():
     print("hello back from Earth")
 
 print("This is the output of a TEST command")
-#testDownloadDeepfake(" https://magdalenastorage.blob.core.windows.net/download/c4c5834e-752c-4dd6-8b42-e5d9fb2a09c4.mp4")
-#print(settings)
-#testFreezeVideo("test/input/alterego.mp4")
-#testDeepFake("pickachu2.jpg")
-#testFaceRecognition()
-#testBetafaceApi()
-testMultithreading()
-#testResize()
-#asyncio.run(testConcurrency())
-#asyncio.run(testConcurrency2())
-#testDeepFake("pratt.jpg")
+testSetNewIdentity()

@@ -20,8 +20,10 @@ def get_new_file_name(targetdir, basename="image", filetype="jpg"):
     return (targetdir + basename + make_padded_number(fileNumber) + "." + filetype)
 
 def rename_video(oldname, newname):
-    # given the oldname rename the still and the respective video with the newname
-    pass
+    directory = "test/output/deepfake/"
+    newpath = directory + newname + ".mp4"
+    os.rename(directory + oldname, newpath)
+    return newpath
 
 def get_os():
     return os
@@ -37,3 +39,6 @@ def get_secret():
 
 def save_video(video):
     open(get_new_file_name('test/output/deepfake/', 'deepfake', 'mp4'), 'wb').write(video)
+
+def find_file(directory, name):
+    pass

@@ -122,6 +122,7 @@ def prepare_deepfake(image):
             process_deepfake(path)
             break
         time.sleep(1)
+        
 def on_new_file_out(newFile):
     identity = get_matching_deepfake_identity(newFile)
     if identity:

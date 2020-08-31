@@ -31,19 +31,21 @@ def saveImage(image, path):
 def prepare_deepfake_preview(sourcePath):
     targetFrames = {tf for tf in settings["preview"]["frames"]}
     cam = cv2.VideoCapture(sourcePath) 
-    frameCount = 0; 
+    frameCount = 0
+    paths = [] 
     while True:
         material, frame = cam.read()
         if not material:
             break 
         if frameCount in targetFrames:
-            print(frameCount)
-            name = get_new_file_name('test/output/stills/', get_file_name(sourcePath))
-            print ('Creating...' + name) 
+            name = get_new_file_name('test/output/stills/', get_file_name(sourcePath + "_"))
+            print ('Creating' + name + " from f. " + str(frameCount) + "...") 
             cv2.imwrite(name, frame) 
+            paths.append(name)
         frameCount += 1
     cam.release() 
-    cv2.destroyAllWindows() 
+    cv2.destroyAllWindows()
+    return paths
 
 def get_bounding_box_area(bounding_box):
     left, top, right, bottom = bounding_box
