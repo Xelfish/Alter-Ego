@@ -3,16 +3,17 @@
         "ip": "192.168.2.227"
     },
     "input-pi": {
-        "ip": "192.168.2.129",
+        "ip": "192.168.2.106",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "iso": 800,
-            "interval": 1,
+            "interval": 2.0,
             "res": {
                 "x": 1000,
                 "y": 1000
-            }
+            },
+            "zoom": 0
         }
     },
     "output-pi": {
@@ -33,17 +34,67 @@
             "key": "46520ef2-c1ab-4ad3-8000-6be0c7a0d686"
         },
         "deepfake": {
-            "url": "https://magdalenastorage.blob.core.windows.net"
+            "url": {
+                "videourl": " https://alterego123.azurewebsites.net/api/UploadPicture?code=bgAyJiyTQxOtpzzkK/BSWIv64CXVKjXFoIUOAi3DRAUSFXO35UG2uQ==",
+                "swapref": "https://alterego123.azurewebsites.net/api/UploadVideo?code=onDF6LQBuHhzsUWt/etSACUoFHyDzcioOhOGneXIyR3KUd3J1QuLhQ=="
+            }
+        },
+        "beta-face": {
+            "url": {
+                "base": "https://www.betafaceapi.com/api",
+                "admin": "/v2/admin/usage",
+                "face": {
+                    "normal": "/v2/face",
+                    "cropped": "/v2/face/cropped"
+                },
+                "media": {
+                    "normal": "/v2/media",
+                    "hash": "/v2/media/hash",
+                    "file": "/v2/media/file"
+                },
+                "person": "/v2/person",
+                "recognize": "/v2/recognize"
+            },
+            "key": "d45fd466-51e2-4701-8da8-04351c872236",
+            "namespace": "alterego"
         }
     
     },
     "commands": {
-        "camera": "python MyScripts/camera.py"
+        "camera": "python MyScripts/camera.py",
+        "play": "python MyScripts/playDeepfake.py"
     },
     "image": {
         "resize": {
             "width": 256,
             "height": 256
+        },
+        "face-ratio":{
+            "min": 0.20,
+            "max": 0.40
+        },
+        "preview":{
+            "frames":[
+                    100,
+                    150,
+                    200
+                ]
+        }
+    },
+    "timing": {
+        "interval": 1.0,
+        "timeout": 5.0,
+        "process": 300.0
+    },
+    "dir": {
+        "root": "./output/",
+        "faces": {
+            "input-pi": "in_faces/",
+            "output-pi": "out_faces/"
+        },
+        "deepfake": {
+            "root": "deepfakes/",
+            "preview": "stills/"
         }
     }
 }

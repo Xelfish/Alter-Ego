@@ -9,17 +9,23 @@ camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['
 #camera.shutter_speed = camera.exposure_speed
 #camera.exposure_mode = 'off'
 
+def setZoom():
+    x = y = cameraSettings["zoom"] / 2
+    width = height = 1.0 - x * 2
+    return (x, y, width, height)
+
 def take_picture(camera):
-    time.sleep(cameraSettings['interval'])
-    print ("Taking a picture...")
     path = get_new_file_name("MyPics/")
     camera.capture(path)
 
+camera.zoom = setZoom()
+
 camera.start_preview()
 
-for i in range(2):
+for i in range(10):
+    time.sleep(cameraSettings['interval'])
+    print("Taking a picture: " + str(i) + "...")
     take_picture(camera)
-    print(i)
 
 camera.stop_preview()
 

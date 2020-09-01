@@ -13,16 +13,32 @@ def make_padded_number(number):
     fileNumberString = str(number)
     return fileNumberString.zfill(4)   
 
-def get_new_file_name(dir):
+def get_new_file_name(targetdir, basename="image", filetype="jpg"):
     fileNumber = 0
-    while (os.path.isfile(dir + "image" + make_padded_number(fileNumber) + ".jpg")):
+    while (os.path.isfile(targetdir + basename + make_padded_number(fileNumber) + "." + filetype)):
         fileNumber += 1
-    return (dir + "image" + make_padded_number(fileNumber) + ".jpg")
+    return (targetdir + basename + make_padded_number(fileNumber) + "." + filetype)
 
-def create_file_bundle():
-    # Create a folder for new collection of files
-    pass
+def rename_video(oldname, newname):
+    directory = "test/output/deepfake/"
+    newpath = directory + newname + ".mp4"
+    os.rename(directory + oldname, newpath)
+    return newpath
 
-def bundle_files():
-    # Bundle files, in this case images
+def get_os():
+    return os
+
+def get_file_name(path):
+    base = os.path.basename(path)
+    return os.path.splitext(base)[0]
+
+def get_secret():
+    with open("./secret.txt") as secret:
+        content = secret.read()
+        return content
+
+def save_video(video):
+    open(get_new_file_name('test/output/deepfake/', 'deepfake', 'mp4'), 'wb').write(video)
+
+def find_file(directory, name):
     pass
