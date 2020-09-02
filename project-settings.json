@@ -57,12 +57,33 @@
             },
             "key": "d45fd466-51e2-4701-8da8-04351c872236",
             "namespace": "alterego"
+        },
+        "video-enhancer": {
+            "dir": "C:/Program Files/Topaz Labs LLC/Topaz Video Enhance AI",
+            "scale": 4.0,
+            "models": [
+                "thd",
+                "thf",
+                "ghq",
+                "gcg",
+                "ahq",
+                "alq"
+            ],
+            "model-names": {
+                "thd": "Theia-Detail: EU,P",
+                "thf": "Theia-Fidelity: EU,P",
+                "ghq": "Gaia-HQ: P,HQ",
+                "gcg": "Gaia-CG: P,CG,HQ",
+                "ahq": "Artemis-HQ: P,HQ,MC",
+                "alq": "Artemis-LQ: P,LQ,MC"
+            }
         }
     
     },
     "commands": {
         "camera": "python MyScripts/camera.py",
-        "play": "python MyScripts/playDeepfake.py"
+        "play": "python MyScripts/playDeepfake.py",
+        "upscale": "veai.exe -f mp4"
     },
     "image": {
         "resize": {
