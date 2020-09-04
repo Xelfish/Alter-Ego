@@ -77,8 +77,11 @@
                 "ahq": "Artemis-HQ: P,HQ,MC",
                 "alq": "Artemis-LQ: P,LQ,MC"
             }
+        },
+        "isize": {
+            "key": "RdlCixsRfUTjcrNtlQhjVg73+cK3saYgflQnFbQvnUDi2kbCWJV0Ag",
+            "url": "https://api.bitsave.tech/encode/1.01/"
         }
-    
     },
     "commands": {
         "camera": "python MyScripts/camera.py",
