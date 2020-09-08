@@ -131,14 +131,21 @@ def on_new_file_out(newFile):
 def process_deepfake(path):
     name = generate_identity_name()
     new_path = rename_video(path, name)
+    final_path = 
     file_paths = prepare_deepfake_preview(new_path)
     face_ids = []
     for file in file_paths:
         image = open(file, "rb")
         face_ids.append(get_face_id_by_post(image))
     set_deepfake_identity(face_ids, name)
-    scale_deepfake(new_path)
+    scale_deepfake(new_path, final_path)
+    save_on_ftp(outPi, final_path, remote_path)
     pass
+
+def save_on_ftp(outPi, local_path, remote_path):
+    ftp = connectToFtp(outPi)
+    ftp.put()
+    pass 
 
 # Remote Communication tasks
 

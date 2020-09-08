@@ -84,7 +84,7 @@ def testFaceRecognition():
     else: print("Not a valid Face...")
 
 def testSuperRes():
-    time_function(upscale_video, "test/output/deepfake/deepfake0002.mp4", "test\\output\\deepfake\\upscaled\\deepfake.avi")
+    time_function(upscale_video, "test\\input\\deep-pasi.mp4", "test\\output\\deepfake\\upscaled\\deepfake.avi")
 
 def longtask(countId):
     for i in range(10):
@@ -142,6 +142,11 @@ async def helloFromEarth():
     await asyncio.sleep(1.0)
     print("hello back from Earth")
 
+def testRecursivePathBuilder():
+    path = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"])
+    print(path)
+
 print("This is the output of a TEST command")
 #testFreezeVideo("test/input/hottie.mp4")
 testSuperRes()
+#testRecursivePathBuilder()

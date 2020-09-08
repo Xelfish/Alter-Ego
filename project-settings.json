@@ -119,14 +119,15 @@
         "process": 300.0
     },
     "dir": {
-        "root": "./output/",
+        "root": "output/",
         "faces": {
             "input-pi": "in_faces/",
             "output-pi": "out_faces/"
         },
         "deepfake": {
             "root": "deepfakes/",
-            "preview": "stills/"
+            "preview": "stills/",
+            "upscaled": "upscaled/"
         }
     }
 }

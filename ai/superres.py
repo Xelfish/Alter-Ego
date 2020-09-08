@@ -6,6 +6,8 @@ video_settings = get_json_settings("project-settings.json")["video"]
 CODEC = video_settings["codec"]
 FPS = video_settings["fps"]
 
+#TODO: Build Open-CV with Cuda Support and H264 Codec
+
 def upscale_video(sourcePath, destPath):
     cam = cv2.VideoCapture(sourcePath)
     fourcc = cv2.VideoWriter_fourcc(*CODEC)
@@ -15,7 +17,6 @@ def upscale_video(sourcePath, destPath):
         material, frame = cam.read()
         if not material:
             break 
-        
         print("Upscaling Frame...")
         upscaled_frame = superscale_frame(frame)
         fixed_size=cv2.resize(frame,(1000,1000))
