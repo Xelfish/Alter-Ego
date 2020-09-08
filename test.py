@@ -1,10 +1,13 @@
 import asyncio
 import time
 import threading
+
+from multiprocessing import Process
+
 from modules.image import *
 from modules.util.files import *
 from modules.ai_operations import *
-from multiprocessing import Process
+from ai.superres import *
 
 settings = get_json_settings('project-settings.json')
 
@@ -75,6 +78,9 @@ def testFaceRecognition():
         print("That's a valid Face!")
     else: print("Not a valid Face...")
 
+def testSuperRes():
+    superscale()
+
 def longtask(countId):
     for i in range(10):
         print("Thread started on ", countId, ": ", i)
@@ -115,7 +121,6 @@ def oneHundred():
     for i in range(1,100):
         print("R: ", i)
 
-
 async def helloFromMars():
     await asyncio.sleep(3.5)
     print("hello from Mars")
@@ -133,4 +138,5 @@ async def helloFromEarth():
     print("hello back from Earth")
 
 print("This is the output of a TEST command")
-testSetNewIdentity()
+testFreezeVideo("test/input/hottie.mp4")
+#testSuperRes()
