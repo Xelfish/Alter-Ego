@@ -1,23 +1,45 @@
 import cv2
 from cv2 import dnn_superres
+from modules.util.files import *
 
+video_settings = get_json_settings("project-settings.json")["video"]
+CODEC = video_settings["codec"]
+FPS = video_settings["fps"]
 
-def superscale():
-    # Create an super_res object
+def upscale_video(sourcePath, destPath):
+    cam = cv2.VideoCapture(sourcePath)
+    fourcc = cv2.VideoWriter_fourcc(*CODEC)
+    print("Creating video: ", destPath, "...")
+    video= cv2.VideoWriter(destPath, fourcc, int(FPS), (1000, 1000)) 
+    while True:
+        material, frame = cam.read()
+        if not material:
+            break 
+        
+        print("Upscaling Frame...")
+        upscaled_frame = superscale_frame(frame)
+        fixed_size=cv2.resize(frame,(1000,1000))
+        print("Frame written!")
+        video.write(fixed_size) 
+    cam.release() 
+    video.release()
+    print("Video done")
+    cv2.destroyAllWindows()
+
+def calc_frame_size():
+    return (1000, 1000)
+
+def superscale_frame(image):
     super_res = dnn_superres.DnnSuperResImpl_create()
-
-    # Read image
-    image = cv2.imread('test/input/mario.jpg').astype('uint8')
-
-    # Read the desired model
-    path = "ai/models/ESPCN_x4.pb"
+    path = get_model_path()
     super_res.readModel(path)
-
-    # Set the desired model and scale to get correct pre- and post-processing
     super_res.setModel("espcn", 4)
-
-    # Upscale the image
     result = super_res.upsample(image)
+    return result
 
-    # Save the image
-    cv2.imwrite("test/output/upscaled.png", result)
+def get_model_path():
+    superres_settings = get_json_settings("project-settings.json")["api"]["superres"]
+    name = superres_settings["model"].upper()
+    scale = str(superres_settings["scale"])
+    fullname = name + "_" + "x" + scale
+    return "ai/models/" + fullname + ".pb"

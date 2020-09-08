@@ -81,6 +81,10 @@
         "isize": {
             "key": "RdlCixsRfUTjcrNtlQhjVg73+cK3saYgflQnFbQvnUDi2kbCWJV0Ag",
             "url": "https://api.bitsave.tech/encode/1.01/"
+        },
+        "superres": {
+            "model": "espcn",
+            "scale": 4
         }
     },
     "commands": {
@@ -104,6 +108,10 @@
                     200
                 ]
         }
+    },
+    "video": {
+        "codec": "XVID",
+        "fps": "30"
     },
     "timing": {
         "interval": 1.0,

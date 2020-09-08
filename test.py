@@ -11,6 +11,11 @@ from ai.superres import *
 
 settings = get_json_settings('project-settings.json')
 
+def time_function(function, *args):
+    start = time.time()
+    function(*args)
+    print("It took ", time.time() - start , "to finish.")
+
 def testResize():
     image = loadImage("test/input/mario.jpg")
     newImagePath = resizeImage(image)
@@ -79,7 +84,7 @@ def testFaceRecognition():
     else: print("Not a valid Face...")
 
 def testSuperRes():
-    superscale()
+    time_function(upscale_video, "test/output/deepfake/deepfake0002.mp4", "test\\output\\deepfake\\upscaled\\deepfake.avi")
 
 def longtask(countId):
     for i in range(10):
@@ -138,5 +143,5 @@ async def helloFromEarth():
     print("hello back from Earth")
 
 print("This is the output of a TEST command")
-testFreezeVideo("test/input/hottie.mp4")
-#testSuperRes()
+#testFreezeVideo("test/input/hottie.mp4")
+testSuperRes()
