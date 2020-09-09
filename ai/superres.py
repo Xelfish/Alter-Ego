@@ -6,7 +6,7 @@ video_settings = get_json_settings("project-settings.json")["video"]
 CODEC = video_settings["codec"]
 FPS = video_settings["fps"]
 
-#TODO: Build Open-CV with Cuda Support and H264 Codec
+#TODO: Build Open-CV with Cuda Support
 
 def upscale_video(sourcePath, destPath):
     cam = cv2.VideoCapture(sourcePath)

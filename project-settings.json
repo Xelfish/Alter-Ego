@@ -110,7 +110,7 @@
         }
     },
     "video": {
-        "codec": "XVID",
+        "codec": "H264",
         "fps": "30"
     },
     "timing": {

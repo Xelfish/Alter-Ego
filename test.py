@@ -84,7 +84,7 @@ def testFaceRecognition():
     else: print("Not a valid Face...")
 
 def testSuperRes():
-    time_function(upscale_video, "test\\input\\deep-pasi.mp4", "test\\output\\deepfake\\upscaled\\deepfake.avi")
+    time_function(upscale_video, "test\\input\\deep-pasi.mp4", "test\\output\\deepfake\\upscaled\\deepfake.mp4")
 
 def longtask(countId):
     for i in range(10):
