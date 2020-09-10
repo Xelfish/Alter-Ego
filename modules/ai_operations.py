@@ -3,6 +3,7 @@
 import requests
 from modules.util.files import *
 from modules.image import *
+from ai.superres import *
 import os
 import datetime
 import re
@@ -119,10 +120,6 @@ def get_betaface_url(suffix):
     prefix = api["beta-face"]["url"]["base"]
     return prefix + suffix
 
-def scale_deepfake(source):
-    #save current working directory location
-    #change working directory to video enhancer folder
-    #form command by parameters
-    #exec command
-    #restore working directory
+def scale_deepfake(sourcePath, destPath):
+    upscale_video(sourcePath, destPath)
     pass

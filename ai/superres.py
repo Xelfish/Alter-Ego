@@ -3,23 +3,26 @@ from cv2 import dnn_superres
 from modules.util.files import *
 
 video_settings = get_json_settings("project-settings.json")["video"]
+SIZE = (video_settings["size"]["x"], video_settings["size"]["y"])
+FORMAT = video_settings["format"]
 CODEC = video_settings["codec"]
 FPS = video_settings["fps"]
 
 #TODO: Build Open-CV with Cuda Support
 
 def upscale_video(sourcePath, destPath):
+    formattedDestPath = destPath + "." + FORMAT
     cam = cv2.VideoCapture(sourcePath)
     fourcc = cv2.VideoWriter_fourcc(*CODEC)
     print("Creating video: ", destPath, "...")
-    video= cv2.VideoWriter(destPath, fourcc, int(FPS), (1000, 1000)) 
+    video= cv2.VideoWriter(formattedDestPath, fourcc, int(FPS), SIZE) 
     while True:
         material, frame = cam.read()
         if not material:
             break 
         print("Upscaling Frame...")
         upscaled_frame = superscale_frame(frame)
-        fixed_size=cv2.resize(frame,(1000,1000))
+        fixed_size=cv2.resize(frame, SIZE)
         print("Frame written!")
         video.write(fixed_size) 
     cam.release() 
@@ -27,14 +30,11 @@ def upscale_video(sourcePath, destPath):
     print("Video done")
     cv2.destroyAllWindows()
 
-def calc_frame_size():
-    return (1000, 1000)
-
 def superscale_frame(image):
     super_res = dnn_superres.DnnSuperResImpl_create()
     path = get_model_path()
     super_res.readModel(path)
-    super_res.setModel("espcn", 4)
+    super_res.setModel(superres_settings["model"], str(superres_settings["scale"])
     result = super_res.upsample(image)
     return result
 

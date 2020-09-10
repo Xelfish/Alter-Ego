@@ -124,14 +124,19 @@ def prepare_deepfake(image):
         time.sleep(1)
         
 def on_new_file_out(newFile):
-    identity = get_matching_deepfake_identity(newFile)
-    if identity:
-        show_deepfake(identity)
+    print("new file detected: ", newFile)
+    valid = validate_face(newFile)
+    print(valid)
+    show_intro()
+    if valid:
+        identity = get_matching_deepfake_identity(newFile)
+        if identity:
+            show_deepfake(identity)
 
 def process_deepfake(path):
     name = generate_identity_name()
     new_path = rename_video(path, name)
-    final_path = 
+    final_path = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"]) + name
     file_paths = prepare_deepfake_preview(new_path)
     face_ids = []
     for file in file_paths:
@@ -144,7 +149,7 @@ def process_deepfake(path):
 
 def save_on_ftp(outPi, local_path, remote_path):
     ftp = connectToFtp(outPi)
-    ftp.put()
+    ftp.put(local_path, remote_path)
     pass 
 
 # Remote Communication tasks
@@ -170,6 +175,12 @@ def connectToFtp(pi):
     ftp = client.open_sftp()
     return ftp
 
+@parallel
+def show_intro():
+    #implement
+    pass
+
+@parallel
 def show_deepfake(identity):
     name = extract_name(identity)
     sourcePath = "test/output/deepfake/" + name
