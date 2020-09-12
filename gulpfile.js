@@ -27,6 +27,7 @@ function connectToPi(target){
         host:     settings[target].ip,
         user:     settings[target].user,
         password: settings[target].password,
+        port: 22
     })
     return conn
 }
@@ -70,7 +71,7 @@ function testTask(cb){
 }
 
 function watchScripts(){
-    watch("./virtual/**/*.py", parallel(deployToInputPi, deployToOutputPi))
+    watch("./virtual/**/*.py", series(parallel(deployToInputPi, deployToOutputPi), watchScripts))
 }
 
 function deployToInputPi(cb){

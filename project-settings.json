@@ -22,10 +22,12 @@
         "password": "raspberry",
         "camera": {
             "iso": 800,
+            "interval": 2.0,
             "res": {
-                "x": 740,
-                "y": 560
-            }
+                "x": 1000,
+                "y": 1000
+            },
+            "zoom": 0.7
         }
     },
     "api": {
