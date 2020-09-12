@@ -1,9 +1,9 @@
 {
     "main": {
-        "ip": "192.168.2.227"
+        "ip": "192.168.50.81"
     },
     "input-pi": {
-        "ip": "192.168.2.106",
+        "ip": "192.168.50.198",
         "user": "pi",
         "password": "raspberry",
         "camera": {
@@ -17,7 +17,7 @@
         }
     },
     "output-pi": {
-        "ip": "192.168.2.106",
+        "ip": "192.168.50.200",
         "user": "pi",
         "password": "raspberry",
         "camera": {

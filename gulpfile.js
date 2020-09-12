@@ -70,7 +70,7 @@ function testTask(cb){
 }
 
 function watchScripts(){
-    watch("./virtual/**/*.py", deployToInputPi)
+    watch("./virtual/**/*.py", parallel(deployToInputPi, deployToOutputPi))
 }
 
 function deployToInputPi(cb){
@@ -86,10 +86,27 @@ function cleanInputPi(cb){
     cb()
 }
 
-exports.default = series(cleanInputPi, initInputPi, deployToInputPi, watchScripts)
+function deployToOutputPi(cb){
+    return deployToPi('output-pi')
+}
+
+function initOutputPi(cb){
+    return initPi('output-pi')
+}
+
+function cleanOutputPi(cb){
+    cleanPi('output-pi', cb)
+    cb()
+}
+
+exports.default = series(
+    parallel(cleanInputPi, cleanOutputPi), 
+    parallel(initInputPi, initOutputPi), 
+    parallel(deployToInputPi, deployToOutputPi), 
+    watchScripts)
 exports.test = testTask
 exports.watch = watchScripts
-exports.deploy = deployToInputPi
-exports.init = initInputPi
-exports.clean = cleanInputPi
+exports.deploy = parallel(deployToInputPi, deployToOutputPi)
+exports.init = parallel(initInputPi, initOutputPi)
+exports.clean = parallel(cleanInputPi, cleanOutputPi)
 //TODO: Make vargs "--input , --output"
