@@ -1,14 +1,12 @@
 # This is the main entry-point for Alter Ego
 
-import socket
-import paramiko
-import json
 import time
 import threading
 
 from modules.image import *
 from modules.ai_operations import *
 from modules.util.files import *
+from modules.communication import *
 
 # setup
 
@@ -42,7 +40,6 @@ def monitor_threads():
 
 # Parallel High-Level Tasks
 
-# run "camera" on IN and OUT Pis with ssh
 def run_camera_in():
     print("STARTED: Run Camera Input")
     execOnPi(inPi, commands['camera'])
@@ -52,19 +49,16 @@ def run_camera_out():
     execOnPi(outPi, commands['camera'])
     pass
 
-# Run FTP Folder listener on IN and OUT Pis
 def run_ftp_listener_in():
     print("STARTED: FTP Listener Input Pics")
     ftp = connectToFtp(inPi)
     watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
 
 def run_ftp_listener_out():
-    # listen for pictures from Input-PI and if new picture comes in run event
     ftp = connectToFtp(outPi)
     watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
     pass
 
-# Run Deepfake generator
 def run_deepfake_listener():
     print("STARTED: Listen for Deepfake Input")
     watch_directory_for_change("test/output/resized", prepare_deepfake)
@@ -149,33 +143,9 @@ def process_deepfake(path):
     save_on_ftp(outPi, final_path, remote_path)
     pass
 
-def save_on_ftp(outPi, local_path, remote_path):
-    ftp = connectToFtp(outPi)
-    ftp.put(local_path, remote_path)
-    pass 
-
-# Remote Communication tasks
-
-def openSSH(pi):
-    client = paramiko.SSHClient()
-    client.load_system_host_keys()
-    client.connect(pi["ip"], username=pi["user"], password=pi["password"])
-    return client
-
 @parallel_daemon
 def execOnPi(pi, command):
-    client = openSSH(pi)
-    print('started exec of ' + command + '...')
-    stdin, stdout, stderr = client.exec_command(command, get_pty=True)
-    for line in iter(stdout.readline, ""):
-        print(line, end="")
-    print('finished.')
-    client.close()
-
-def connectToFtp(pi):
-    client = openSSH(pi)
-    ftp = client.open_sftp()
-    return ftp
+    sshCommand(pi,command)
 
 @parallel
 def show_intro():
@@ -187,7 +157,7 @@ def show_deepfake(identity):
     name = extract_name(identity)
     sourcePath = "test/output/deepfake/" + name
     playDeepfake = command["play"] + sourcePath
-    execOnPi(outPi, playDeepfake)
+    sshCommand(outPi, playDeepfake)
     pass
 
 def main():
