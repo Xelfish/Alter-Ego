@@ -5,9 +5,9 @@ from files import *
 
 cameraSettings = get_json_settings('MyScripts/project-settings.json')['input-pi']['camera']
 camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['y']))
-#camera.iso = cameraSettings["iso"]
+camera.iso = cameraSettings["iso"]
 #camera.shutter_speed = camera.exposure_speed
-#camera.exposure_mode = 'off'
+camera.exposure_mode = 'night'
 
 def setZoom():
     x = y = cameraSettings["zoom"] / 2
@@ -22,7 +22,7 @@ camera.zoom = setZoom()
 
 camera.start_preview()
 
-for i in range(10):
+for i in range(2):
     time.sleep(cameraSettings['interval'])
     print("Taking a picture: " + str(i) + "...")
     take_picture(camera)

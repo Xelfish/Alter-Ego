@@ -7,13 +7,13 @@
         "user": "pi",
         "password": "raspberry",
         "camera": {
-            "iso": 800,
+            "iso": 1200,
             "interval": 2.0,
             "res": {
                 "x": 1000,
                 "y": 1000
             },
-            "zoom": 0
+            "zoom": 0.4
         }
     },
     "output-pi": {
