@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import os
 
 VIDEONAME = sys.argv[1]
 
@@ -10,13 +11,16 @@ def turnScreenOn():
     subprocess.Popen(["vcgencmd", "display_power", "1"])
 
 def playVideo(video_path):
-    subprocess.Popen(["cvlc", "--fullscreen", "--intf", "dummy", "--play-and-exit", VIDEONAME])
+    subprocess.call(["cvlc", "--fullscreen", "--intf", "dummy", "--play-and-exit", VIDEONAME])
+    command = "cvlc --fullscreen --intf 'dummy' --play-and-exit " + VIDEONAME
+    #os.system(command)
+    print(command)
     pass
 
 def main(): 
-    #turnScreenOn()
+    turnScreenOn()
     playVideo(VIDEONAME)
-    #turnScreenOff()
+    turnScreenOff()
 
 if __name__ == "__main__":
     main()
