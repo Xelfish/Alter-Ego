@@ -7,17 +7,25 @@ const merge = require('merge-stream')
 const {argv} = require('yargs')
 
 // Used to redirect tasks based on additional arguments, two input or output pi or both
-function targetPiByArgs(task){
+
+function targetPiByArgs(task, cb){
     const hasArguments = Object.keys(argv).length > 2
     if (hasArguments){
-        if (argv.input){
-           return task('input-pi')
-        } else if (argv.output){
-           return task('output-pi')
+        if (argv.in){
+            return cb ?
+                task('input-pi', cb)
+                : task('input-pi')
+        } else if (argv.out){
+            return cb ? 
+                task('output-pi', cb)
+                : task ('output-pi')
         }
     } else {
-        return mergeStream(task('input-pi'), task('output-pi'))
+        return cb ?
+            parallel(task('input-pi', cb), task('output-pi', cb))
+            : parallel(task('input-pi'), task('output-pi'))
     }
+    cb()
 }
 
 // Tasks by Target
@@ -61,52 +69,38 @@ function copyScriptsToPi(target){
         .pipe(conn.dest('/home/pi/MyScripts/'))
 }
 
+function test(pi){
+    console.log(pi)
+}
+
 // Final Tasks
-// Only *inputPi for now. Will be later expanded with 'targetPiByArgs'
 
 function testTask(cb){
-    console.log("Gulp is set up correctly and ready to go!")
+    console.log("This is a test output for Gulp. Everything seems to work fine!")
+    targetPiByArgs(test)
     cb()
 }
 
 function watchScripts(){
-    watch("./virtual/**/*.py", series(parallel(deployToInputPi, deployToOutputPi), watchScripts))
+    watch("./virtual/**/*.py", series(deployTask, watchScripts))
 }
 
-function deployToInputPi(cb){
-    return deployToPi('input-pi')
+function deployTask(cb){
+    return targetPiByArgs(deployToPi)
 }
 
-function initInputPi(cb){
-    return initPi('input-pi')
+function initTask(cb){
+    return targetPiByArgs(initPi)
 }
 
-function cleanInputPi(cb){
-    cleanPi('input-pi', cb)
-    cb()
+function cleanTask(cb){
+    targetPiByArgs(cleanPi, cb)
 }
 
-function deployToOutputPi(cb){
-    return deployToPi('output-pi')
-}
-
-function initOutputPi(cb){
-    return initPi('output-pi')
-}
-
-function cleanOutputPi(cb){
-    cleanPi('output-pi', cb)
-    cb()
-}
-
-exports.default = series(
-    parallel(cleanInputPi, cleanOutputPi), 
-    parallel(initInputPi, initOutputPi), 
-    parallel(deployToInputPi, deployToOutputPi), 
-    watchScripts)
 exports.test = testTask
 exports.watch = watchScripts
-exports.deploy = parallel(deployToInputPi, deployToOutputPi)
-exports.init = parallel(initInputPi, initOutputPi)
-exports.clean = parallel(cleanInputPi, cleanOutputPi)
-//TODO: Make vargs "--input , --output"
+exports.deploy = deployTask
+exports.init = initTask
+exports.clean = cleanTask
+
+exports.default = series(cleanTask, initTask, deployTask, watchScripts)
