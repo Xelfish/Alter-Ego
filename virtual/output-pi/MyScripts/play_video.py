@@ -14,9 +14,9 @@ def playVideo(video_path):
     pass
 
 def main(): 
-    turnScreenOn()
+    #turnScreenOn()
     playVideo(VIDEONAME)
-    turnScreenOff()
+    #turnScreenOff()
 
 if __name__ == "__main__":
     main()

@@ -81,6 +81,7 @@ function testTask(cb){
     cb()
 }
 
+//TODO: add project-settings to watch
 function watchScripts(){
     watch("./virtual/**/*.py", series(deployTask, watchScripts))
 }
