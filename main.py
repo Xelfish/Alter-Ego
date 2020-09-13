@@ -149,7 +149,10 @@ def execOnPi(pi, command):
 
 @parallel
 def show_intro():
-    #implement
+    name = "intro.mp4"
+    sourcePath = "MyVids/" + name
+    playDeepfake = command["play"] + sourcePath
+    sshCommand(outPi, playDeepfake)
     pass
 
 @parallel
