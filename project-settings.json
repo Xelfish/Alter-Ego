@@ -91,7 +91,7 @@
     },
     "commands": {
         "camera": "python MyScripts/camera.py",
-        "play": "python MyScripts/playDeepfake.py",
+        "play": "python MyScripts/play_video.py ",
         "upscale": "veai.exe -f mp4"
     },
     "image": {

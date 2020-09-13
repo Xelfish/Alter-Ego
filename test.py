@@ -24,20 +24,6 @@ def testResize():
     newImage = loadImage(newImagePath)
     openImage(newImage)
 
-async def testAsync(seconds):
-    await asyncio.sleep(seconds)
-
-async def async1(id, secs):
-    loop = asyncio.get_running_loop()
-    await testAsync(secs)
-    print(id, ' done after ', secs, '...')
-
-async def async2(id,secs):
-    loop = asyncio.get_running_loop()
-    await testAsync(secs)
-    #await loop.run_in_executor(None, testAsync, secs)
-    print(id, ' done after ', secs, '...')
-
 def testDownloadDeepfake(url):
     video = download_deepfake(url)
     save_video(video)
@@ -52,7 +38,7 @@ def testDeepFake(name):
     img = loadImage('test/input/' + name)
     rimg = resizeImage(img)
     path = saveImage(rimg, "test/output/resized/")
-    generate_deep_fake(open(path, 'rb'))
+    generate_deepfake(open(path, 'rb'))
 
 def testExtractIdentity():
     extract_name("test@alterego")
@@ -87,10 +73,6 @@ def testFaceRecognition():
 def testSuperRes():
     time_function(upscale_video, "test\\input\\deep-pasi.mp4", "test\\output\\deepfake\\upscaled\\deepfake.mp4")
 
-def longtask(countId):
-    for i in range(10):
-        print("Thread started on ", countId, ": ", i)
-
 def testMultithreading():
     count = 0
     while True: 
@@ -99,49 +81,6 @@ def testMultithreading():
         threading.Thread(None, target=validate_face, args=(open("test\input\pratt.jpg", "rb").read(),)).start()
         time.sleep(1)
 
-def testMultiprocessing():
-    if __name__ == "__main__":
-        Process(target=subprocess).start()
-
-async def testAsyncConcurrency():
-    task1 = asyncio.create_task(async1('task 1 1', 2))
-    task2 = asyncio.create_task(async2('task 2 1', 2.2))
-    task3 = asyncio.create_task(async2('task 2 2', 1.8))
-    task4 = asyncio.create_task(async1('task 1 2', 2.1))
-    task5 = asyncio.create_task(async2('task 2 3', 2.2))
-
-    await task1
-    await task2
-    await task3
-    await task4
-    await task5
-
-async def testAsyncConcurrency2():
-    await async1('task 1', 1)
-    await async1('task 2', 1)
-    await async1('task 3', 1)
-    await async1('task 4', 1)
-    await async1('task 5', 1)
-
-def oneHundred():
-    for i in range(1,100):
-        print("R: ", i)
-
-async def helloFromMars():
-    await asyncio.sleep(3.5)
-    print("hello from Mars")
-
-def syncSleeper():
-    time.sleep(2)
-    print("...Aaah I slept so well")
-
-def subprocess():
-    print("Subprocess of DOOOOOOOM")
-
-async def helloFromEarth():
-    await helloFromMars()
-    await asyncio.sleep(1.0)
-    print("hello back from Earth")
 
 def testRecursivePathBuilder():
     path = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"])
@@ -154,6 +93,6 @@ def connectionToOutputPi():
 
 print("This is the output of a TEST command")
 #testFreezeVideo("test/input/hottie.mp4")
+
 #testSuperRes()
-#testRecursivePathBuilder()
-#connectionToOutputPi()
+testDeepFake("seb-mask.jpg")

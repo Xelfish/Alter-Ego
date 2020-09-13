@@ -114,15 +114,17 @@ def prepare_deepfake(image):
     url = generate_deepfake(image)
     start = time.time()
     time.sleep(timing["process"])
+    path = get_deepfake_from_url(url)
+    print("Downloaded Deepfake at: " + path + "in: " + str(time.time() - start))
+    process_deepfake(path)
+    
+def get_deepfake_from_url(url):
     while True: 
         response = download_deepfake(url)
         if response.ok:
             path = save_video(response.content)
-            print("Downloaded Deepfake at: " + path + "in: " + str(time.time() - start))
-            process_deepfake(path)
-            break
-        time.sleep(1)
-        
+            return path
+
 def on_new_file_out(newFile):
     print("new file detected: ", newFile)
     valid = validate_face(newFile)
@@ -195,6 +197,7 @@ def main():
     while True:
         time.sleep(5)
         monitor_threads()
+
 # Operations before loop
 # CORE Async Loop
 if __name__ == '__main__':

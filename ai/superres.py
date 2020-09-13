@@ -3,6 +3,7 @@ from cv2 import dnn_superres
 from modules.util.files import *
 
 video_settings = get_json_settings("project-settings.json")["video"]
+superres_settings = get_json_settings("project-settings.json")["api"]["superres"]
 SIZE = (video_settings["size"]["x"], video_settings["size"]["y"])
 FORMAT = video_settings["format"]
 CODEC = video_settings["codec"]
@@ -34,7 +35,7 @@ def superscale_frame(image):
     super_res = dnn_superres.DnnSuperResImpl_create()
     path = get_model_path()
     super_res.readModel(path)
-    super_res.setModel(superres_settings["model"], str(superres_settings["scale"]))
+    super_res.setModel(superres_settings["model"], superres_settings["scale"])
     result = super_res.upsample(image)
     return result
 
