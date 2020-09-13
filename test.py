@@ -8,6 +8,7 @@ from modules.image import *
 from modules.util.files import *
 from modules.ai_operations import *
 from ai.superres import *
+import main
 
 settings = get_json_settings('project-settings.json')
 
@@ -146,7 +147,13 @@ def testRecursivePathBuilder():
     path = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"])
     print(path)
 
+def connectionToOutputPi():
+    settings = get_json_settings()
+    ftp = main.connectToFtp(settings["output-pi"])
+    print(ftp)
+
 print("This is the output of a TEST command")
 #testFreezeVideo("test/input/hottie.mp4")
-testSuperRes()
+#testSuperRes()
 #testRecursivePathBuilder()
+connectionToOutputPi()

@@ -2,7 +2,7 @@
 import os
 import json
 
-def get_json_settings(path):
+def get_json_settings(path="project-settings.json"):
     fileDir = os.path.dirname(os.path.realpath('__file__'))
     filename = os.path.join(fileDir, path)
     with open(path) as settings:

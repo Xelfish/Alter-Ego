@@ -26,8 +26,7 @@ function connectToPi(target){
     const conn = ftp.create({
         host:     settings[target].ip,
         user:     settings[target].user,
-        password: settings[target].password,
-        port: 22
+        password: settings[target].password
     })
     return conn
 }
