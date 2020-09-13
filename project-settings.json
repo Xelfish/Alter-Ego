@@ -1,9 +1,9 @@
 {
     "main": {
-        "ip": "192.168.2.227"
+        "ip": "192.168.50.81"
     },
     "input-pi": {
-        "ip": "192.168.2.106",
+        "ip": "192.168.50.198",
         "user": "pi",
         "password": "raspberry",
         "camera": {
@@ -17,15 +17,17 @@
         }
     },
     "output-pi": {
-        "ip": "192.168.2.106",
+        "ip": "192.168.50.200",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "iso": 800,
+            "interval": 2.0,
             "res": {
-                "x": 740,
-                "y": 560
-            }
+                "x": 1000,
+                "y": 1000
+            },
+            "zoom": 0.7
         }
     },
     "api": {
@@ -57,12 +59,40 @@
             },
             "key": "d45fd466-51e2-4701-8da8-04351c872236",
             "namespace": "alterego"
+        },
+        "video-enhancer": {
+            "dir": "C:/Program Files/Topaz Labs LLC/Topaz Video Enhance AI",
+            "scale": 4.0,
+            "models": [
+                "thd",
+                "thf",
+                "ghq",
+                "gcg",
+                "ahq",
+                "alq"
+            ],
+            "model-names": {
+                "thd": "Theia-Detail: EU,P",
+                "thf": "Theia-Fidelity: EU,P",
+                "ghq": "Gaia-HQ: P,HQ",
+                "gcg": "Gaia-CG: P,CG,HQ",
+                "ahq": "Artemis-HQ: P,HQ,MC",
+                "alq": "Artemis-LQ: P,LQ,MC"
+            }
+        },
+        "isize": {
+            "key": "RdlCixsRfUTjcrNtlQhjVg73+cK3saYgflQnFbQvnUDi2kbCWJV0Ag",
+            "url": "https://api.bitsave.tech/encode/1.01/"
+        },
+        "superres": {
+            "model": "espcn",
+            "scale": 4
         }
-    
     },
     "commands": {
         "camera": "python MyScripts/camera.py",
-        "play": "python MyScripts/playDeepfake.py"
+        "play": "python MyScripts/playDeepfake.py",
+        "upscale": "veai.exe -f mp4"
     },
     "image": {
         "resize": {
@@ -81,20 +111,30 @@
                 ]
         }
     },
+    "video": {
+        "size": {
+            "x": 1024,
+            "y": 1024
+        },
+        "format": "mp4",
+        "codec": "H264",
+        "fps": "30"
+    },
     "timing": {
         "interval": 1.0,
         "timeout": 5.0,
         "process": 300.0
     },
     "dir": {
-        "root": "./output/",
+        "root": "output/",
         "faces": {
             "input-pi": "in_faces/",
             "output-pi": "out_faces/"
         },
         "deepfake": {
             "root": "deepfakes/",
-            "preview": "stills/"
+            "preview": "stills/",
+            "upscaled": "upscaled/"
         }
     }
 }

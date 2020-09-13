@@ -2,7 +2,7 @@
 import os
 import json
 
-def get_json_settings(path):
+def get_json_settings(path="project-settings.json"):
     fileDir = os.path.dirname(os.path.realpath('__file__'))
     filename = os.path.join(fileDir, path)
     with open(path) as settings:
@@ -36,6 +36,14 @@ def get_secret():
     with open("./secret.txt") as secret:
         content = secret.read()
         return content
+
+def build_path_from_settings(path, settings, keys):
+    #find dynamic maybe recursive algorithm.
+    next_entry = settings[keys[0]] 
+    if type(next_entry) == dict:   
+        return build_path_from_settings(path + next_entry["root"], next_entry, keys[1:])
+    else:
+        return path + next_entry
 
 def save_video(video):
     open(get_new_file_name('test/output/deepfake/', 'deepfake', 'mp4'), 'wb').write(video)

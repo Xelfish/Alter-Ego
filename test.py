@@ -1,12 +1,21 @@
 import asyncio
 import time
 import threading
+
+from multiprocessing import Process
+
 from modules.image import *
 from modules.util.files import *
 from modules.ai_operations import *
-from multiprocessing import Process
+from ai.superres import *
+import main
 
 settings = get_json_settings('project-settings.json')
+
+def time_function(function, *args):
+    start = time.time()
+    function(*args)
+    print("It took ", time.time() - start , "to finish.")
 
 def testResize():
     image = loadImage("test/input/mario.jpg")
@@ -75,6 +84,9 @@ def testFaceRecognition():
         print("That's a valid Face!")
     else: print("Not a valid Face...")
 
+def testSuperRes():
+    time_function(upscale_video, "test\\input\\deep-pasi.mp4", "test\\output\\deepfake\\upscaled\\deepfake.mp4")
+
 def longtask(countId):
     for i in range(10):
         print("Thread started on ", countId, ": ", i)
@@ -115,7 +127,6 @@ def oneHundred():
     for i in range(1,100):
         print("R: ", i)
 
-
 async def helloFromMars():
     await asyncio.sleep(3.5)
     print("hello from Mars")
@@ -132,5 +143,17 @@ async def helloFromEarth():
     await asyncio.sleep(1.0)
     print("hello back from Earth")
 
+def testRecursivePathBuilder():
+    path = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"])
+    print(path)
+
+def connectionToOutputPi():
+    settings = get_json_settings()
+    ftp = main.connectToFtp(settings["output-pi"])
+    print(ftp)
+
 print("This is the output of a TEST command")
-testSetNewIdentity()
+#testFreezeVideo("test/input/hottie.mp4")
+#testSuperRes()
+#testRecursivePathBuilder()
+#connectionToOutputPi()

@@ -3,6 +3,8 @@
 import requests
 from modules.util.files import *
 from modules.image import *
+from ai.superres import *
+import os
 import datetime
 import re
 
@@ -117,3 +119,7 @@ def extract_name(identity):
 def get_betaface_url(suffix):
     prefix = api["beta-face"]["url"]["base"]
     return prefix + suffix
+
+def scale_deepfake(sourcePath, destPath):
+    upscale_video(sourcePath, destPath)
+    pass
