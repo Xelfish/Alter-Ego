@@ -46,14 +46,15 @@ function initPi(target){
     .pipe(conn.dest("/home/pi"))
 }
 
+//FIXME: Stupid Hack
 function cleanPi(target, cb){
     console.log("Cleaning: ", target)
     const conn = connectToPi(target)
-    const targetDirectories = ["MyScripts", "MyPics"]
+    const targetDirectories = target == "output-pi" ? ["MyScripts", "MyPics", "MyVids"] : ["MyScripts", "MyPics"]
     for (const dir of targetDirectories){
-        const path = '/home/pi/' + dir
-        conn.rmdir(path, cb)
+        conn.rmdir("/home/pi/" + dir, cb)
     }
+    return src("virtual/**")
 }
 
 function deployToPi(target){
@@ -69,8 +70,10 @@ function copyScriptsToPi(target){
         .pipe(conn.dest('/home/pi/MyScripts/'))
 }
 
+//FIXME: Stupid Hack
 function test(pi){
     console.log(pi)
+    return src('tasks/*')
 }
 
 // Final Tasks
