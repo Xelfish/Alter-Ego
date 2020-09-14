@@ -5,7 +5,8 @@
   "main": "main.py",
   "scripts": {
     "test": "py test.py",
-    "start": "py main.py"
+    "start": "py main.py",
+    "reboot": "py tasks/reboot.py"
   },
   "repository": {
     "type": "git",

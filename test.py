@@ -95,4 +95,5 @@ print("This is the output of a TEST command")
 #testFreezeVideo("test/input/hottie.mp4")
 
 #testSuperRes()
-testDeepFake("seb-mask.jpg")
+#testDeepFake("seb-mask.jpg")
+print(__file__)
