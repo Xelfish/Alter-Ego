@@ -1,4 +1,4 @@
-<a href="https://ibb.co/ynX6t25"><img src="https://i.ibb.co/ynX6t25/alter-ego-stage.jpg" alt="alter-ego-stage" border="0"></a>
+<a href="https://ibb.co/ynX6t25"><img src="https://i.ibb.co/gM3SNYw/alter-ego-stage.jpg" alt="alter-ego-stage" border="0"></a>
 
 # Alter-Ego
 <h1>A deepfake installation</h1>
