@@ -1,8 +1,8 @@
 import sys
-
-#FIXME: relative imports
-from .modules.util.files import *
-from .modules.communication import *
+import os
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../modules")
+from communication import *
+from util.files import *
 
 settings = get_json_settings("project-settings.json")
 
