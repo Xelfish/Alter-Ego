@@ -99,7 +99,7 @@ def on_new_file_in(newFile):
         print("is a face")
         image = loadImage(newFile)
         resizedImage = resizeImage(image)
-        newPath = saveImage(resizedImage, "test/output/resized/")
+        newPath = saveImage(resizedImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
     else: print("is not a face")
 
 @parallel

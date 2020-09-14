@@ -32,7 +32,7 @@ def testNameGen():
     generate_identity_name()
 
 def testRenameDeepFake():
-    rename_video("deepfake0002.mp4", generate_identity_name())
+    rename_video("test/output/deepfakes/adb77a0b-140a-48a5-951e-2bfafe7a7565.mp4", generate_identity_name())
 
 def testDeepFake(name):
     img = loadImage('test/input/' + name)
@@ -96,4 +96,4 @@ print("This is the output of a TEST command")
 
 #testSuperRes()
 #testDeepFake("seb-mask.jpg")
-print(__file__)
+testRenameDeepFake()

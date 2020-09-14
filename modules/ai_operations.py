@@ -81,6 +81,7 @@ def get_face_id_by_post(image):
     return face["face_uuid"]
 
 def recognize_face(uuid):
+    target = "all@celebrities.betaface.com"
     response = requests.post(
         get_betaface_url(api["beta-face"]["url"]["recognize"]),
         json = {
@@ -89,7 +90,7 @@ def recognize_face(uuid):
                 uuid
             ],
             "targets": [
-                "all@celebrities.betaface.com"
+                target
             ]
         }
     )

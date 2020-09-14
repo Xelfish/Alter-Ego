@@ -59,32 +59,8 @@
                 "person": "/v2/person",
                 "recognize": "/v2/recognize"
             },
-            "key": "d45fd466-51e2-4701-8da8-04351c872236",
+            "key": "6241915e-f5a9-11ea-9c46-0cc47a6c4dbd",
             "namespace": "alterego"
-        },
-        "video-enhancer": {
-            "dir": "C:/Program Files/Topaz Labs LLC/Topaz Video Enhance AI",
-            "scale": 4.0,
-            "models": [
-                "thd",
-                "thf",
-                "ghq",
-                "gcg",
-                "ahq",
-                "alq"
-            ],
-            "model-names": {
-                "thd": "Theia-Detail: EU,P",
-                "thf": "Theia-Fidelity: EU,P",
-                "ghq": "Gaia-HQ: P,HQ",
-                "gcg": "Gaia-CG: P,CG,HQ",
-                "ahq": "Artemis-HQ: P,HQ,MC",
-                "alq": "Artemis-LQ: P,LQ,MC"
-            }
-        },
-        "isize": {
-            "key": "RdlCixsRfUTjcrNtlQhjVg73+cK3saYgflQnFbQvnUDi2kbCWJV0Ag",
-            "url": "https://api.bitsave.tech/encode/1.01/"
         },
         "superres": {
             "model": "espcn",
@@ -93,8 +69,7 @@
     },
     "commands": {
         "camera": "python MyScripts/camera.py",
-        "play": "python MyScripts/play_video.py ",
-        "upscale": "veai.exe -f mp4"
+        "play": "python MyScripts/play_video.py "
     },
     "image": {
         "resize": {
@@ -128,10 +103,10 @@
         "process": 300.0
     },
     "dir": {
-        "root": "output/",
+        "root": "test/output/",
         "faces": {
-            "input-pi": "in_faces/",
-            "output-pi": "out_faces/"
+            "in": "in_faces/",
+            "out": "out_faces/"
         },
         "deepfake": {
             "root": "deepfakes/",
