@@ -1,6 +1,6 @@
 <a href="https://ibb.co/QjfzWWs"><img src="https://i.ibb.co/3Y7Gxxt/alter-ego-image1-druck.jpg" alt="alter-ego-image1-druck" border="0"></a>
 
-# Alter-Ego
+# ALTER EGO
 <h1>A deepfake installation</h1>
 
 <h2>'Alter Ego' fokussiert sich auf die menschliche Identität und den entstehenden Konflikt mit der Technologie der Deepfakes. Die Installation repräsentiert die Verfälschung der eigenen Realität und hinterfragt die subjektive Wahrnehmung. Das Projekt wirft die Frage auf, wem und was man noch Glauben schenken kann.</h2>
