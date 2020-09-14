@@ -7,10 +7,8 @@
 
 <h2>'Alter Ego' focusses on the human identity and the conflict together with the technology of deepfakes. The art installation represents a distortion of the own reality and questions the subjective perception. The Project also questions, whom and what we still can believe or not.</h2>
   
-<a href="https://ibb.co/jT32JYv"><img src="https://i.ibb.co/JKr43TR/alter-ego-instagram1.jpg" alt="alter-ego-instagram1" border="0"></a>
-<a href="https://ibb.co/3WmZ3GZ"><img src="https://i.ibb.co/6b0CMVC/alter-ego-instagram2.jpg" alt="alter-ego-instagram2" border="0"></a>
-<a href="https://ibb.co/XL4c1Wj"><img src="https://i.ibb.co/9gvQ6pc/alter-ego-instagram3.jpg" alt="alter-ego-instagram3" border="0"></a>  
-  
+<a href="https://ibb.co/jT32JYv"><img src="https://i.ibb.co/jT32JYv/alter-ego-instagram1.jpg" alt="alter-ego-instagram1" border="0"></a> <a href="https://ibb.co/3WmZ3GZ"><img src="https://i.ibb.co/3WmZ3GZ/alter-ego-instagram2.jpg" alt="alter-ego-instagram2" border="0"></a> <a href="https://ibb.co/XL4c1Wj"><img src="https://i.ibb.co/XL4c1Wj/alter-ego-instagram3.jpg" alt="alter-ego-instagram3" border="0"></a>
+
 <h3>Legal Notice</h3>
 <p> DE: 
 Die von uns erhobenen persönlichen Daten, in Form der aufgenommnen Bilder, werden ausschließlich zu den künstlerischen Zwecken der Installation genutzt. Diese befinden sich auf einer von uns reservierten, sicheren Domäne und werden im Anschluss an die Installation gelöscht. Bitte haben Sie Verständnis, dass genau diese Sensibilität des Datenschutzes das kommunikative Ziel der Arbeit ist.</p>
