@@ -4,7 +4,6 @@ import time
 from fractions import Fraction
 from files import *
 
-
 cameraSettings = get_json_settings('MyScripts/project-settings.json')['output-pi']['camera']
 camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['y']))
 camera.iso = 200
@@ -35,7 +34,7 @@ camera.start_preview()
 
 for i in range(2):
     time.sleep(cameraSettings['interval'])
-    print("Taking a picture: " + str(i) + "...")
+    print("Taking a picture: " + str(i + 1) + "...")
     take_picture(camera)
 
 camera.stop_preview()

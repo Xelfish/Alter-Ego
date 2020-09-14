@@ -22,8 +22,8 @@ function targetPiByArgs(task, cb){
         }
     } else {
         return cb ?
-            parallel(task('input-pi', cb), task('output-pi', cb))
-            : parallel(task('input-pi'), task('output-pi'))
+            merge(task('input-pi', cb), task('output-pi', cb))
+            : merge(task('input-pi'), task('output-pi'))
     }
     cb()
 }
@@ -63,7 +63,7 @@ function deployToPi(target){
 
 function copyScriptsToPi(target){
     const conn = connectToPi(target)
-    const globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json']
+    const globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json', './virtual/*.py']
     return src(globs)
         .pipe(conn.newer('/home/pi/MyScripts/'))
         .pipe(conn.dest('/home/pi/MyScripts/'))
@@ -86,11 +86,11 @@ function watchScripts(){
 }
 
 function deployTask(cb){
-    return targetPiByArgs(deployToPi)
+    return targetPiByArgs(deployToPi, cb)
 }
 
 function initTask(cb){
-    return targetPiByArgs(initPi)
+    return targetPiByArgs(initPi, cb)
 }
 
 function cleanTask(cb){
