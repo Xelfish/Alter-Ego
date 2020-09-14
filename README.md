@@ -1,14 +1,15 @@
 # Alter-Ego
-deepfake installation
+<h1>A deepfake installation</h1>
+
+<h2>'Alter Ego' fokussiert sich auf die menschliche Identität und den entstehenden Konflikt mit der Technologie der Deepfakes. Die Installation repräsentiert die Verfälschung der eigenen Realität und hinterfragt die subjektive Wahrnehmung. Das Projekt wirft die Frage auf, wem und was man noch Glauben schenken kann.</h2>
 
 
-
-
-<h2> DE: 
+<p> DE: 
 Die von uns erhobenen persönlichen Daten, in Form der aufgenommnen Bilder, werden ausschließlich zu den künstlerischen Zwecken der Installation genutzt. Diese befinden sich auf einer von uns reservierten, sicheren Domäne und werden im Anschluss an die Installation gelöscht. Bitte haben Sie Verständnis, dass genau diese Sensibilität des Datenschutzes das kommunikative Ziel der Arbeit.
-<br>
+</br>
+  </br>
 EN:
-The personal data that we have claimed in form of pictures are exclusively used  for the artistic means of this installation. They are saved on our private account and will be deleted after they have served their purpose. Please understand that this is imperative, since the sensitivity of personal data is exactly the point we want to express with this work.</h2>
+The personal data that we have claimed in form of pictures are exclusively used  for the artistic means of this installation. They are saved on our private account and will be deleted after they have served their purpose. Please understand that this is imperative, since the sensitivity of personal data is exactly the point we want to express with this work.</p>
 
 <!-- Begin Betafaceapi.com Attribution Snippet -->
 <a href="http://betafaceapi.com/" onclick="__gaTracker('send', 'event', 'outbound-article', 'http://betafaceapi.com/', 'Face Recognition by betafaceapi.com');" title="Face Recognition by betafaceapi.com">Face Comparison by betafaceapi.com</a>
