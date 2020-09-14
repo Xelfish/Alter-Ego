@@ -47,6 +47,17 @@ def generate_deepfake(image):
     else:
         print (response)
 
+def swap_deepfake_reference(video):
+    print("sending post request to swap video...")
+    response = requests.post(
+        api["deepfake"]["url"]["swapref"],
+        files={"file": video}
+    )
+    if response.ok:
+        print("Video swapped successfully")
+    else: 
+        print("Error occurred during the upload")
+
 def download_deepfake(url):
     print("trying to download " + url + "...")
     response = requests.get(url, allow_redirects=True)
