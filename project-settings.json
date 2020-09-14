@@ -3,6 +3,7 @@
         "ip": "192.168.50.81"
     },
     "input-pi": {
+        "name": "Input-Pi",
         "ip": "192.168.50.198",
         "user": "pi",
         "password": "raspberry",
@@ -17,6 +18,7 @@
         }
     },
     "output-pi": {
+        "name": "Output-Pi",
         "ip": "192.168.50.200",
         "user": "pi",
         "password": "raspberry",
