@@ -12,20 +12,26 @@ function targetPiByArgs(task, cb){
     const hasArguments = Object.keys(argv).length > 2
     if (hasArguments){
         if (argv.in){
-            return cb ?
+            if (cb == undefined){
+                return task('input-pi')
+            } else {
                 task('input-pi', cb)
-                : task('input-pi')
+            }
         } else if (argv.out){
-            return cb ? 
+            if (cb == undefined){
+                return task('output-pi')
+            } else {
                 task('output-pi', cb)
-                : task ('output-pi')
+            } 
         }
     } else {
-        return cb ?
-            merge(task('input-pi', cb), task('output-pi', cb))
-            : merge(task('input-pi'), task('output-pi'))
+        if (cb == undefined){
+            return merge(task('input-pi'), task('output-pi'))
+        } else {
+            task('input-pi', cb)
+            task('output-pi', cb)
+        }
     }
-    cb()
 }
 
 // Tasks by Target
@@ -42,11 +48,10 @@ function connectToPi(target){
 function initPi(target){
     console.log("Initializing: ", target)
     const conn = connectToPi(target)
-    return src("./virtual/" + target + "/*")
+    return src("./virtual/" + target + "/**")
     .pipe(conn.dest("/home/pi"))
 }
 
-//FIXME: Stupid Hack
 function cleanPi(target, cb){
     console.log("Cleaning: ", target)
     const conn = connectToPi(target)
@@ -54,7 +59,7 @@ function cleanPi(target, cb){
     for (const dir of targetDirectories){
         conn.rmdir("/home/pi/" + dir, cb)
     }
-    return src("virtual/**")
+    cb()
 }
 
 function deployToPi(target){
@@ -70,30 +75,28 @@ function copyScriptsToPi(target){
         .pipe(conn.dest('/home/pi/MyScripts/'))
 }
 
-//FIXME: Stupid Hack
-function test(pi){
+function test(pi, cb){
     console.log(pi)
-    return src('tasks/*')
+    cb()
 }
 
 // Final Tasks
 
 function testTask(cb){
     console.log("This is a test output for Gulp. Everything seems to work fine!")
-    targetPiByArgs(test)
-    cb()
+    targetPiByArgs(test, cb)
 }
 
 function watchScripts(){
     watch(["./virtual/**/*.py", "./project-settings.json", "./modules/util/*"], series(deployTask, watchScripts))
 }
 
-function deployTask(cb){
-    return targetPiByArgs(deployToPi, cb)
+function deployTask(){
+    return targetPiByArgs(deployToPi)
 }
 
-function initTask(cb){
-    return targetPiByArgs(initPi, cb)
+function initTask(){
+    return targetPiByArgs(initPi)
 }
 
 function cleanTask(cb){
