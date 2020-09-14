@@ -4,7 +4,7 @@ import time
 from fractions import Fraction
 from files import *
 
-cameraSettings = get_json_settings('MyScripts/project-settings.json')['output-pi']['camera']
+cameraSettings = get_json_settings('MyScripts/project-settings.json')[get_pi_id()]['camera']
 camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['y']))
 camera.iso = 200
 camera.contrast = 10

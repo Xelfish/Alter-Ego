@@ -28,6 +28,11 @@ def rename_video(oldname, newname):
 def get_os():
     return os
 
+def get_pi_id():
+    with open("./id.txt") as ID:
+        content = ID.read()
+        return content
+
 def get_file_name(path):
     base = os.path.basename(path)
     return os.path.splitext(base)[0]
