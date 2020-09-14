@@ -4,32 +4,32 @@
     },
     "input-pi": {
         "name": "Input-Pi",
-        "ip": "192.168.50.198",
+        "ip": "172.20.10.3",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "iso": 1200,
             "interval": 2.0,
             "res": {
-                "x": 1000,
-                "y": 1000
+                "x": 2400,
+                "y": 2400
             },
-            "zoom": 0.4
+            "zoom": 0
         }
     },
     "output-pi": {
         "name": "Output-Pi",
-        "ip": "192.168.50.200",
+        "ip": "172.20.10.4",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "iso": 800,
             "interval": 2.0,
             "res": {
-                "x": 1000,
-                "y": 1000
+                "x": 2400,
+                "y": 2400
             },
-            "zoom": 0.7
+            "zoom": 0
         }
     },
     "api": {

@@ -6,8 +6,6 @@ from files import *
 
 cameraSettings = get_json_settings('MyScripts/project-settings.json')[get_pi_id()]['camera']
 camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['y']))
-camera.iso = 200
-camera.contrast = 10
 camera.brightness = 55
 
 def monitorCamSettings(camera):
@@ -27,12 +25,14 @@ def take_picture(camera):
     path = get_new_file_name("MyPics/")
     camera.capture(path)
 
+#FIXME: check Shutterspeed and White Balance
+
 camera.zoom = setZoom()
 monitorCamSettings(camera)
 
 camera.start_preview()
 
-for i in range(2):
+for i in range(10):
     time.sleep(cameraSettings['interval'])
     print("Taking a picture: " + str(i + 1) + "...")
     take_picture(camera)

@@ -10,6 +10,8 @@ import re
 
 api = get_json_settings('project-settings.json')["api"]
 
+
+#TODO: Modify algorithm: return bounding box of detected faces
 def validate_face(image):
     response = requests.post(
     api["face_recognition"]["url"],

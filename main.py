@@ -102,6 +102,7 @@ def on_new_file_in(newFile):
         newPath = saveImage(resizedImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
     else: print("is not a face")
 
+#TODO: Check identity before processing a deepfake
 @parallel
 def prepare_deepfake(image):
     print("Uploading Image to Deepfake API...")
