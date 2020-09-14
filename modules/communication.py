@@ -15,6 +15,7 @@ def connectToFtp(pi):
     return ftp
 
 def openSSH(pi):
+    print("connecting: ", pi)
     client = paramiko.SSHClient()
     client.load_system_host_keys()
     client.connect(pi["ip"], username=pi["user"], password=pi["password"])

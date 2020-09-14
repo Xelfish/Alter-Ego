@@ -166,8 +166,10 @@ def show_deepfake(identity):
 
 def main():
     run_camera_in()
-    run_ftp_listener_in()
-    run_deepfake_listener()
+    run_camera_out()
+    #run_ftp_listener_in()
+    #run_deepfake_listener()
+    #run_ftp_listener_out()
     while True:
         time.sleep(5)
         monitor_threads()

@@ -4,7 +4,7 @@
     },
     "input-pi": {
         "name": "Input-Pi",
-        "ip": "172.20.10.3",
+        "ip": "192.168.2.10",
         "user": "pi",
         "password": "raspberry",
         "camera": {
@@ -19,7 +19,7 @@
     },
     "output-pi": {
         "name": "Output-Pi",
-        "ip": "172.20.10.4",
+        "ip": "192.168.2.7",
         "user": "pi",
         "password": "raspberry",
         "camera": {
