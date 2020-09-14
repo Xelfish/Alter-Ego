@@ -55,6 +55,8 @@ def rename_video(oldpath, newname):
     os.rename(oldpath, newpath)
     return newpath
 
-def save_video(video):
-   with open(get_new_file_name('test/output/deepfake/', 'deepfake', 'mp4'), 'wb') as video:
+def save_video(video, path):
+    newpath = get_new_file_name(path, 'deepfake', 'mp4')
+    with open(newpath, 'wb') as video:
        video.write(video)
+    return newpath

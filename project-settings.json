@@ -77,7 +77,7 @@
             "height": 256
         },
         "face-ratio":{
-            "min": 0.20,
+            "min": 0.05,
             "max": 0.40
         },
         "preview":{
@@ -105,8 +105,9 @@
     "dir": {
         "root": "test/output/",
         "faces": {
-            "in": "in_faces/",
-            "out": "out_faces/"
+            "root": "faces/",
+            "in": "in/",
+            "out": "out/"
         },
         "deepfake": {
             "root": "deepfakes/",

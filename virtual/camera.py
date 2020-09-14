@@ -5,11 +5,12 @@ from fractions import Fraction
 from files import *
 
 def set_camera_settings(camera, settings):
-    camera.exposure_mode = "off"
-    camera.framerate = Fraction(int(settings["interval"]), 1)
-    camera.iso = 400
-    camera.shutter_speed = 2000
-    camera.brightness = 55
+    camera.exposure_mode = "night"
+    camera.framerate = Fraction(16, int(settings["interval"]))
+    #camera.iso = 800
+    #camera.shutter_speed = 10000
+    camera.sharpness = 80
+    camera.exposure_compensation = 24
     camera.zoom = setZoom(settings)
 
 def monitorCamSettings(camera):
@@ -28,7 +29,7 @@ def setZoom(settings):
 
 def take_picture(camera):
     path = get_new_file_name("MyPics/")
-    camera.capture(path)
+    camera.capture(path, quality=100)
 
 #FIXME: check Shutterspeed and White Balance
 
@@ -36,12 +37,13 @@ def main():
     ID = get_pi_id()
     cameraSettings = get_json_settings('MyScripts/project-settings.json')[ID]['camera']
     camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['y']))
-    #set_camera_settings(camera, cameraSettings)
-    monitorCamSettings(camera)
-    for i in range(1):
+    set_camera_settings(camera, cameraSettings)
+    #monitorCamSettings(camera)
+    for i in range(3):
         print(ID + " taking a picture: " + str(i + 1) + "...")
         take_picture(camera)
-        time.sleep(cameraSettings['interval'])
+        time.sleep(cameraSettings["interval"]/2)
+    camera.close()
 
 if __name__ == "__main__":
     main()

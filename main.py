@@ -61,7 +61,7 @@ def run_ftp_listener_out():
 
 def run_deepfake_listener():
     print("STARTED: Listen for Deepfake Input")
-    watch_directory_for_change("test/output/resized", prepare_deepfake)
+    watch_directory_for_change(build_path_from_settings("", settings, ["dir", "faces", "in"]), prepare_deepfake)
 
 #FIXME: Refactor for better readability
 @parallel_daemon
@@ -79,7 +79,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         after = dict([(f, None) for f in target.listdir(path_to_watch)])
         added = [f for f in after if not f in before]
         if len(added) > 0:
-            time.sleep(interval)
+            time.sleep(interval*2)
             path = path_to_watch + "/" + added[0]
             print(path)
             if remote: 
@@ -117,8 +117,9 @@ def get_deepfake_from_url(url):
     while True: 
         response = download_deepfake(url)
         if response.ok:
-            path = save_video(response.content)
+            path = save_video(response.content, build_path_from_settings("", settings, ["dir", "deepfake"]))
             return path
+        time.sleep(3)
 
 def on_new_file_out(newFile):
     print("new file detected: ", newFile)
@@ -165,13 +166,13 @@ def show_deepfake(identity):
     pass
 
 def main():
-    run_camera_in()
-    run_camera_out()
+    #run_camera_in()
+    #run_camera_out()
     #run_ftp_listener_in()
-    #run_deepfake_listener()
+    run_deepfake_listener()
     #run_ftp_listener_out()
     while True:
-        time.sleep(5)
+        time.sleep(60)
         monitor_threads()
 
 # Operations before loop
