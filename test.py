@@ -91,9 +91,6 @@ def connectionToOutputPi():
     ftp = main.connectToFtp(settings["output-pi"])
     print(ftp)
 
-print("This is the output of a TEST command")
-#testFreezeVideo("test/input/hottie.mp4")
-
-#testSuperRes()
-#testDeepFake("seb-mask.jpg")
-testRenameDeepFake()
+if __name__ == "__main__":
+    print("This is the output of a TEST command")
+    
