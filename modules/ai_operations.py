@@ -27,7 +27,7 @@ def validate_face(image):
         if len(faces) == 1:
             face = faces[0]
             if float(face["confidence"]) > 0.97:
-                return evaluate_face_ratio(image, face["bounding_box"])
+                return face["bounding_box"]
     return False
 
 def get_matching_deepfake_identity(image):

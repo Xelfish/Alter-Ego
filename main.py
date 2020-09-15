@@ -93,13 +93,16 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
 #FIXME: Fix threading for this function
 def on_new_file_in(newFile):
     print("new file detected: ", newFile)
-    valid = validate_face(newFile)
-    print(valid)
-    if valid:
+    preSize = (settings["image"]["size"]["preprocess"]["width"], settings["image"]["size"]["preprocess"]["height"])
+    resizedImage = resizeImage(newFile, preSize)
+    face = validate_face(resizedImage)
+    print(face)
+    if face:
         print("is a face")
-        image = loadImage(newFile)
-        resizedImage = resizeImage(image)
-        newPath = saveImage(resizedImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
+        image = loadImage(resizedImage)
+        cropImage = cropSquare(image, face)
+        finalImage = resizeImage(cropImage)
+        newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
     else: print("is not a face")
 
 #TODO: Check identity before processing a deepfake
@@ -123,7 +126,9 @@ def get_deepfake_from_url(url):
 
 def on_new_file_out(newFile):
     print("new file detected: ", newFile)
-    valid = validate_face(newFile)
+    preSize = (settings["image"]["size"]["preprocess"]["width"], settings["image"]["size"]["preprocess"]["height"])
+    resizedImage = resizeImage(newFile, preSize)
+    valid = validate_face(resizedImage)
     print(valid)
     show_intro()
     if valid:

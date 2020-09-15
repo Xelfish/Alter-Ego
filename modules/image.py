@@ -4,7 +4,7 @@ import cv2
 from modules.util.files import *
 
 settings = get_json_settings('project-settings.json')['image']
-RESIZE_FORMAT = (settings["resize"]["width"], settings["resize"]["height"])
+RESIZE_FORMAT = (settings["size"]["deepfake"]["width"], settings["size"]["deepfake"]["height"])
 
 def evaluate_face_ratio(image, bounding_box):
     faceArea = get_bounding_box_area(bounding_box)
@@ -19,14 +19,60 @@ def loadImage(path):
 def openImage(image):
     image.show()
 
-def resizeImage(sourceImage):
-    destinationImage = sourceImage.resize(RESIZE_FORMAT)
+def resizeImage(sourceImage, size=RESIZE_FORMAT):
+    destinationImage = sourceImage.resize(size)
     return destinationImage
 
 def saveImage(image, path):
     path = get_new_file_name(path)
     image.save(path)
     return path
+
+
+def squareBox(box):
+    (left, top, right, bottom) = box
+    width = right - left
+    height = bottom - top
+    if (height > width):
+        ratio = width / height
+        difference = (1 - ratio) * height
+        return (left - (difference/2), top, right + (difference/2), bottom)
+    if (width > height):
+        ratio = height / width
+        difference = (1 - ratio) * width
+        return (left, top - (difference/2), right, bottom + (difference/2))
+    return box
+
+def translate(box, offset):
+    (left, top, right, bottom) = box
+    width = right - left
+    height = bottom - top
+    (leftOff, topOff) = offset
+    return (
+        left + leftOff * width, 
+        top + topOff * height, 
+        right + leftOff * width, 
+        bottom + topOff * height
+    )
+
+def addBleed(box, factor):
+    (left, top, right, bottom) = box
+    width = right - left
+    height = bottom - top
+    newBox = (
+        left - width * factor,
+        top - height * factor,
+        right + width * factor,
+        bottom + height * factor
+    )
+    return newBox
+
+def cropSquare(image, box):
+    [left, top, width, height] = box
+    box = (left, top, left + width, top + height)
+    adjustedBox = translate(addBleed(squareBox(box), 0.3), (0, - 0.1))
+    croppedImage = image.crop(adjustedBox)
+    return croppedImage
 
 def prepare_deepfake_preview(sourcePath):
     targetFrames = {tf for tf in settings["preview"]["frames"]}

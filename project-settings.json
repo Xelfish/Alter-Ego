@@ -72,20 +72,22 @@
         "play": "python MyScripts/play_video.py "
     },
     "image": {
-        "resize": {
-            "width": 256,
-            "height": 256
-        },
-        "face-ratio":{
-            "min": 0.05,
-            "max": 0.40
+        "size": {
+            "preprocess": {
+                "width": 1200,
+                "height": 1200
+            },
+            "deepfake": {
+                "width": 256,
+                "height": 256
+            }
         },
         "preview":{
             "frames":[
-                    100,
-                    150,
-                    200
-                ]
+                100,
+                150,
+                200
+            ]
         }
     },
     "video": {

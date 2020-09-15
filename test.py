@@ -63,12 +63,14 @@ def testBetafaceApi():
     recognize_face(uuid)
 
 def testFaceRecognition():
-    name = "genius-monkey.jpg"
+    name = "trump.jpg"
     img = open("./test/input/" + name, "rb")
-    print(name)
-    if validate_face(img):
-        print("That's a valid Face!")
-    else: print("Not a valid Face...")
+    face = validate_face(img)
+    if face:
+        print(face)
+        cropped = cropSquare(loadImage(img), face)
+        saveImage(cropped, "test/input/cropped/")
+
 
 def testSuperRes():
     time_function(upscale_video, "test\\input\\deep-pasi.mp4", "test\\output\\deepfake\\upscaled\\deepfake.mp4")
@@ -93,3 +95,4 @@ def connectionToOutputPi():
 
 if __name__ == "__main__":
     print("This is the output of a TEST command")
+    testFaceRecognition()
