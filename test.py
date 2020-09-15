@@ -26,7 +26,7 @@ def testResize():
 
 def testDownloadDeepfake(url):
     video = download_deepfake(url)
-    save_video(video)
+    save_video(video.content, build_path_from_settings("", settings, ["dir", "deepfake"]))
 
 def testNameGen():
     generate_identity_name()
@@ -54,7 +54,7 @@ def testSetNewIdentity():
     set_deepfake_identity(face_ids, name)
 
 def testFreezeVideo(path):
-    paths = prepare_deepfake_preview(path)
+    paths = prepare_deepfake_preview(path, "test/output/deepfakes/stills/")
     print(paths)
 
 def testBetafaceApi():
@@ -85,7 +85,7 @@ def testMultithreading():
 
 
 def testRecursivePathBuilder():
-    path = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"])
+    path = build_path_from_settings("", settings, ["dir", "deepfake"])
     print(path)
 
 def connectionToOutputPi():
@@ -93,6 +93,14 @@ def connectionToOutputPi():
     ftp = main.connectToFtp(settings["output-pi"])
     print(ftp)
 
+def testMiddlePipeline():
+    image = open("test\\output\\faces\\in\\image0000.jpg", 'rb')
+    main.prepare_deepfake(image)
+
 if __name__ == "__main__":
     print("This is the output of a TEST command")
-    testFaceRecognition()
+    #testFaceRecognition()
+    #testBetafaceApi()
+    testMiddlePipeline()
+    #testFreezeVideo("test\output\deepfakes\deepfake_seb2.mp4")
+    #testDownloadDeepfake("https://magdalenastorage.blob.core.windows.net/download/4470c691-b03b-4556-b4e2-44dd58c855ea.mp4")

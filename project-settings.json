@@ -102,14 +102,15 @@
     "timing": {
         "interval": 1.0,
         "timeout": 5.0,
-        "process": 300.0
+        "process": 900
     },
     "dir": {
         "root": "test/output/",
         "faces": {
             "root": "faces/",
             "in": "in/",
-            "out": "out/"
+            "out": "out/",
+            "pre": "pre/"
         },
         "deepfake": {
             "root": "deepfakes/",

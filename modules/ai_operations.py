@@ -74,7 +74,7 @@ def set_deepfake_identity(faceIds, deepfakeId):
     response = requests.post(
         get_betaface_url(api["beta-face"]["url"]["person"]),
         json = {
-            "api_key": "d45fd466-51e2-4701-8da8-04351c872236",
+            "api_key": api["beta-face"]["key"],
             "faces_uuids": faceIds,
             "person_id": name
         }
@@ -92,16 +92,18 @@ def get_face_id_by_post(image):
         data={"api_key": api["beta-face"]["key"]},
         files={'file': image}
     )
-    face = response.json()["media"]["faces"][0]
-    print("New Face ID: ", face["face_uuid"])
-    return face["face_uuid"]
+    print(response)
+    if response.ok:
+        face = response.json()["media"]["faces"][0]
+        print("New Face ID: ", face["face_uuid"])
+        return face["face_uuid"]
 
 def recognize_face(uuid):
     target = "all@celebrities.betaface.com"
     response = requests.post(
         get_betaface_url(api["beta-face"]["url"]["recognize"]),
         json = {
-            "api_key": "d45fd466-51e2-4701-8da8-04351c872236",
+            "api_key":  api["beta-face"]["key"],
             "faces_uuids": [
                 uuid
             ],
@@ -110,10 +112,11 @@ def recognize_face(uuid):
             ]
         }
     )
-    matches = response.json()["results"][0]["matches"]
-    for match in matches:
-        print(match["person_id"], ": ", match["confidence"])
-    return match[0]["person_id"]
+    if response.ok:
+        matches = response.json()["results"][0]["matches"]
+        for match in matches:
+            print(match["person_id"], ": ", match["confidence"])
+        return matches[0]["person_id"]
 
 def generate_identity_name():
     now = datetime.datetime.now()
@@ -138,5 +141,5 @@ def get_betaface_url(suffix):
     return prefix + suffix
 
 def scale_deepfake(sourcePath, destPath):
-    upscale_video(sourcePath, destPath)
+    return upscale_video(sourcePath, destPath)
     pass

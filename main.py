@@ -90,20 +90,31 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         before = after
         time.sleep(interval/2)
 
-#FIXME: Fix threading for this function
 def on_new_file_in(newFile):
     print("new file detected: ", newFile)
     preSize = (settings["image"]["size"]["preprocess"]["width"], settings["image"]["size"]["preprocess"]["height"])
-    resizedImage = resizeImage(newFile, preSize)
-    face = validate_face(resizedImage)
+    resizedImage = resizeImage(loadImage(newFile), preSize)
+    path = saveImage(resizedImage, build_path_from_settings("", settings, ["dir", "faces", "pre"]))
+    face = validate_face(open(path, 'rb'))
     print(face)
     if face:
         print("is a face")
-        image = loadImage(resizedImage)
-        cropImage = cropSquare(image, face)
+        cropImage = cropSquare(resizedImage, face)
         finalImage = resizeImage(cropImage)
         newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
     else: print("is not a face")
+
+def on_new_file_out(newFile):
+    print("new file detected: ", newFile)
+    preSize = (settings["image"]["size"]["preprocess"]["width"], settings["image"]["size"]["preprocess"]["height"])
+    resizedImage = resizeImage(newFile, preSize)
+    valid = validate_face(resizedImage)
+    print(valid)
+    if valid:
+        show_intro()
+        identity = get_matching_deepfake_identity(newFile)
+        if identity:
+            show_deepfake(identity)
 
 #TODO: Check identity before processing a deepfake
 @parallel
@@ -113,7 +124,7 @@ def prepare_deepfake(image):
     start = time.time()
     time.sleep(timing["process"])
     path = get_deepfake_from_url(url)
-    print("Downloaded Deepfake at: " + path + "in: " + str(time.time() - start))
+    print("Downloaded Deepfake at: " + path + "in: " + str((time.time() - start) / 60))
     process_deepfake(path)
     
 def get_deepfake_from_url(url):
@@ -122,32 +133,21 @@ def get_deepfake_from_url(url):
         if response.ok:
             path = save_video(response.content, build_path_from_settings("", settings, ["dir", "deepfake"]))
             return path
-        time.sleep(3)
-
-def on_new_file_out(newFile):
-    print("new file detected: ", newFile)
-    preSize = (settings["image"]["size"]["preprocess"]["width"], settings["image"]["size"]["preprocess"]["height"])
-    resizedImage = resizeImage(newFile, preSize)
-    valid = validate_face(resizedImage)
-    print(valid)
-    show_intro()
-    if valid:
-        identity = get_matching_deepfake_identity(newFile)
-        if identity:
-            show_deepfake(identity)
+        time.sleep(10)
 
 def process_deepfake(path):
     name = generate_identity_name()
-    new_path = rename_video(path, name)
-    final_path = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"]) + name
-    file_paths = prepare_deepfake_preview(new_path)
+    renamedVideoPath = rename_video(path, name)
+    upscaledVideoPath = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"]) + name
+    file_paths = prepare_deepfake_preview(renamedVideoPath, build_path_from_settings("", settings, ["dir", "deepfake", "preview"]))
     face_ids = []
     for file in file_paths:
         image = open(file, "rb")
         face_ids.append(get_face_id_by_post(image))
     set_deepfake_identity(face_ids, name)
-    scale_deepfake(new_path, final_path)
-    save_on_ftp(outPi, final_path, remote_path)
+    finalFormattedPath = scale_deepfake(renamedVideoPath, upscaledVideoPath)
+    remotePath = "/home/pi/MyVids/" + get_file_name(finalFormattedPath) + get_file_format(finalFormattedPath)
+    save_on_ftp(outPi, finalFormattedPath, remotePath)
     pass
 
 @parallel_daemon

@@ -38,11 +38,14 @@ def get_secret(name):
 
 def build_path_from_settings(path, settings, keys):
     #find dynamic maybe recursive algorithm.
-    next_entry = settings[keys[0]] 
-    if type(next_entry) == dict:   
-        return build_path_from_settings(path + next_entry["root"], next_entry, keys[1:])
-    else:
-        return path + next_entry
+    if len(keys) > 0:
+        next_entry = settings[keys[0]] 
+        if type(next_entry) == dict:   
+            return build_path_from_settings(path + next_entry["root"], next_entry, keys[1:])
+        else:
+            return path + next_entry
+    else: 
+        return path
 
 def get_file_format(path):
     base = os.path.basename(path)
@@ -55,8 +58,8 @@ def rename_video(oldpath, newname):
     os.rename(oldpath, newpath)
     return newpath
 
-def save_video(video, path):
+def save_video(videoBytes, path):
     newpath = get_new_file_name(path, 'deepfake', 'mp4')
     with open(newpath, 'wb') as video:
-       video.write(video)
+       video.write(videoBytes)
     return newpath

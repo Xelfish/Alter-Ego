@@ -74,7 +74,7 @@ def cropSquare(image, box):
     croppedImage = image.crop(adjustedBox)
     return croppedImage
 
-def prepare_deepfake_preview(sourcePath):
+def prepare_deepfake_preview(sourcePath, folder):
     targetFrames = {tf for tf in settings["preview"]["frames"]}
     cam = cv2.VideoCapture(sourcePath) 
     frameCount = 0
@@ -84,8 +84,8 @@ def prepare_deepfake_preview(sourcePath):
         if not material:
             break 
         if frameCount in targetFrames:
-            name = get_new_file_name('test/output/stills/', get_file_name(sourcePath + "_"))
-            print ('Creating' + name + " from f. " + str(frameCount) + "...") 
+            name = get_new_file_name(folder, get_file_name(sourcePath) + "_")
+            print ('Creating ' + name + " from f. " + str(frameCount) + "...") 
             cv2.imwrite(name, frame) 
             paths.append(name)
         frameCount += 1
