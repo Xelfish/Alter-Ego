@@ -49,12 +49,14 @@ def generate_deepfake(image):
     else:
         print (response)
 
+#TODO: Build more robust session algorithm to avoid timeouts...
 def swap_deepfake_reference(video):
     print("sending post request to swap video...")
     response = requests.post(
         api["deepfake"]["url"]["swapref"],
         files={"file": video}
     )
+    print(response)
     if response.ok:
         print("Video swapped successfully")
     else: 
