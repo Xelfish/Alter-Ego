@@ -35,12 +35,13 @@ def get_matching_deepfake_identity(image):
     name = recognize_face(uuid_target)
     return name
 
+#TODO: Build Try and Catch
 def generate_deepfake(image):
     print("sending request...")
     print(datetime.datetime.now())
     response = requests.post(
         api["deepfake"]["url"]["videourl"],
-        files={"image":image}
+        files={"file": image}
     )
     if response.ok:
         print("response: ", response.json()["video"])

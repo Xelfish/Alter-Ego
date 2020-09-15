@@ -37,7 +37,7 @@ def testRenameDeepFake():
 def testDeepFake(name):
     img = loadImage('test/input/' + name)
     rimg = resizeImage(img)
-    path = saveImage(rimg, "test/output/resized/")
+    path = saveImage(rimg, "test/input/resized/")
     generate_deepfake(open(path, 'rb'))
 
 def testExtractIdentity():
@@ -93,4 +93,3 @@ def connectionToOutputPi():
 
 if __name__ == "__main__":
     print("This is the output of a TEST command")
-    
