@@ -63,7 +63,7 @@
             "namespace": "alterego"
         },
         "superres": {
-            "model": "espcn",
+            "model": "fsrcnn",
             "scale": 4
         }
     },
@@ -96,7 +96,7 @@
             "y": 1024
         },
         "format": "mp4",
-        "codec": "H264",
+        "codec": "AVC1",
         "fps": "30"
     },
     "timing": {

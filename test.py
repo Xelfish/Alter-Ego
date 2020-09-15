@@ -16,6 +16,7 @@ def time_function(function, *args):
     start = time.time()
     function(*args)
     print("It took ", time.time() - start , "to finish.")
+    print("In Minutes: " + str((time.time() -  start) / 60))
 
 def testResize():
     image = loadImage("test/input/mario.jpg")
@@ -94,13 +95,13 @@ def connectionToOutputPi():
     print(ftp)
 
 def testMiddlePipeline():
-    image = open("test\\output\\faces\\in\\image0000.jpg", 'rb')
-    main.prepare_deepfake(image)
+    video = "test\\output\\deepfakes\\ego_15_14_33_53.mp4"
+    main.process_deepfake(video)
 
 if __name__ == "__main__":
     print("This is the output of a TEST command")
     #testFaceRecognition()
     #testBetafaceApi()
-    testMiddlePipeline()
+    time_function(testMiddlePipeline)
     #testFreezeVideo("test\output\deepfakes\deepfake_seb2.mp4")
     #testDownloadDeepfake("https://magdalenastorage.blob.core.windows.net/download/4470c691-b03b-4556-b4e2-44dd58c855ea.mp4")

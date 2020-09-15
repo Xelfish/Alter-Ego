@@ -16,13 +16,14 @@ def upscale_video(sourcePath, destPath):
     cam = cv2.VideoCapture(sourcePath)
     fourcc = cv2.VideoWriter_fourcc(*CODEC)
     print("Upscaling video: ", destPath, "...")
+    superscale = get_superscaler()
     video= cv2.VideoWriter(formattedDestPath, fourcc, int(FPS), SIZE) 
     while True:
         material, frame = cam.read()
         if not material:
             break 
-        upscaled_frame = superscale_frame(frame)
-        fixed_size=cv2.resize(frame, SIZE)
+        upscaled_frame = superscale_frame(frame, superscale)
+        fixed_size=cv2.resize(upscaled_frame, SIZE)
         video.write(fixed_size) 
     cam.release() 
     video.release()
@@ -30,12 +31,15 @@ def upscale_video(sourcePath, destPath):
     cv2.destroyAllWindows()
     return formattedDestPath
 
-def superscale_frame(image):
+def get_superscaler():
     super_res = dnn_superres.DnnSuperResImpl_create()
     path = get_model_path()
     super_res.readModel(path)
     super_res.setModel(superres_settings["model"], superres_settings["scale"])
-    result = super_res.upsample(image)
+    return super_res
+
+def superscale_frame(image, superscale):
+    result = superscale.upsample(image)
     return result
 
 def get_model_path():
