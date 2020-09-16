@@ -5,12 +5,10 @@ from fractions import Fraction
 from files import *
 
 def set_camera_settings(camera, settings):
-    camera.exposure_mode = "night"
-    camera.framerate = Fraction(16, int(settings["interval"]))
-    #camera.iso = 800
-    #camera.shutter_speed = 10000
+    camera.exposure_mode = settings["exp-mode"]
+    camera.framerate = Fraction(settings["framerate"], int(settings["interval"]))
     camera.sharpness = 80
-    camera.exposure_compensation = 24
+    camera.exposure_compensation = settings["exp"]
     camera.zoom = setZoom(settings)
 
 def monitorCamSettings(camera):
@@ -42,7 +40,7 @@ def main():
     for i in range(3):
         print(ID + " taking a picture: " + str(i + 1) + "...")
         take_picture(camera)
-        time.sleep(cameraSettings["interval"]/2)
+        time.sleep(cameraSettings["interval"])
     camera.close()
 
 if __name__ == "__main__":

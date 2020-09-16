@@ -4,11 +4,13 @@
     },
     "input-pi": {
         "name": "Input-Pi",
-        "ip": "192.168.2.10",
+        "ip": "172.20.10.3",
         "user": "pi",
         "password": "raspberry",
         "camera": {
-            "iso": 1200,
+            "exp-mode": "auto",
+            "exp": 10,
+            "framerate": 60,
             "interval": 2.0,
             "res": {
                 "x": 2400,
@@ -19,7 +21,7 @@
     },
     "output-pi": {
         "name": "Output-Pi",
-        "ip": "192.168.2.7",
+        "ip": "172.20.10.4",
         "user": "pi",
         "password": "raspberry",
         "camera": {
