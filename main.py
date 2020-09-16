@@ -96,13 +96,14 @@ def on_new_file_in(newFile):
     preSize = (settings["image"]["size"]["preprocess"]["width"], settings["image"]["size"]["preprocess"]["height"])
     resizedImage = resizeImage(loadImage(newFile), preSize)
     path = saveImage(resizedImage, build_path_from_settings("", settings, ["dir", "faces", "pre"]))
-    face = validate_face(open(path, 'rb'))
-    print(face)
-    if face:
-        print("is a face")
-        cropImage = cropSquare(resizedImage, face)
-        finalImage = resizeImage(cropImage)
-        newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
+    faces = validate_face(newFile)
+    print(faces)
+    if faces:
+        for face in faces:
+            print("is a face")
+            cropImage = cropSquare(resizedImage, face)
+            finalImage = resizeImage(cropImage)
+            newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
     else: print("is not a face")
 
 def on_new_file_out(newFile):
@@ -176,10 +177,10 @@ def show_deepfake(identity):
     pass
 
 def main():
-    #run_camera_in()
+    run_camera_in()
     #run_camera_out()
-    #run_ftp_listener_in()
-    run_deepfake_listener()
+    run_ftp_listener_in()
+    #run_deepfake_listener()
     #run_ftp_listener_out()
     while True:
         time.sleep(60)

@@ -24,10 +24,9 @@ def validate_face(image):
     print(result)
     if result and not ("err" in result.keys()):
         faces = result["output"]["faces"]
-        if len(faces) == 1:
-            face = faces[0]
-            if float(face["confidence"]) > 0.97:
-                return face["bounding_box"]
+        if len(faces) > 0 and len(faces) < 4:
+            bounding_boxes = [f["bounding_box"] for f in faces if float(f["confidence"]) > 0.98 and f["bounding_box"][3] > 180]
+            return bounding_boxes
     return False
 
 def get_matching_deepfake_identity(image):
