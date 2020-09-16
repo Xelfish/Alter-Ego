@@ -157,7 +157,7 @@ def execOnPi(pi, command):
 @parallel
 def show_intro():
     name = "intro.mp4"
-    sourcePath = "MyVids/" + name
+    sourcePath = "MyVids/intro.mp4"
     playDeepfake = command["play"] + sourcePath
     sshCommand(outPi, playDeepfake)
     pass
