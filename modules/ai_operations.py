@@ -140,6 +140,19 @@ def get_betaface_url(suffix):
     prefix = api["beta-face"]["url"]["base"]
     return prefix + suffix
 
+def get_betaface_usage():
+    response = requests.get(
+        get_betaface_url(api["beta-face"]["url"]["admin"]),
+        params = {
+            "api_key": api["beta-face"]["key"],
+            "api_secret": get_secret("betaface")
+        }
+    )
+    if response.ok: 
+        usage = response.json()["usage_daily"]
+        for u in usage:
+            print(u)
+
 def scale_deepfake(sourcePath, destPath):
     return upscale_video(sourcePath, destPath)
     pass
