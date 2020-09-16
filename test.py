@@ -58,11 +58,6 @@ def testFreezeVideo(path):
     paths = prepare_deepfake_preview(path, "test/output/deepfakes/stills/")
     print(paths)
 
-def testBetafaceApi():
-    image = open("test/input/pratt.jpg", "rb")
-    uuid = get_face_id_by_post(image)
-    recognize_face(uuid)
-
 def testFaceRecognition():
     name = "trump.jpg"
     img = open("./test/input/" + name, "rb")
@@ -98,10 +93,37 @@ def testMiddlePipeline():
     video = "test\\output\\deepfakes\\ego_15_14_33_53.mp4"
     main.process_deepfake(video)
 
+def testBetafaceSetIdentity(names):
+    for name in names: 
+        file_paths = [
+            "test\\input\\face-matching\\" + name + "1.jpg",
+            "test\\input\\face-matching\\" + name + "2.jpg",
+            "test\\input\\face-matching\\" + name + "3.jpg"
+            ]
+        face_ids = []
+        for file in file_paths:
+            image = open(file, "rb")
+            face_ids.append(get_face_id_by_post(image))
+        set_deepfake_identity(face_ids, name)
+
+def testBetafaceApi():
+    print ("The Real one")
+    image = open("test\\output\\faces\\in\\image_gimp01.jpg", "rb")
+    uuid = get_face_id_by_post(image)
+    recognize_face(uuid)
+    image = open("test\\output\\faces\\in\\image0021.jpg", "rb")
+    uuid = get_face_id_by_post(image)
+    recognize_face(uuid)
+    image = open("test\\input\\spock.jpg", "rb")
+    uuid = get_face_id_by_post(image)
+    recognize_face(uuid)
+
 if __name__ == "__main__":
     print("This is the output of a TEST command")
     #testFaceRecognition()
     #testBetafaceApi()
-    time_function(testMiddlePipeline)
+    #time_function(testMiddlePipeline)
     #testFreezeVideo("test\output\deepfakes\deepfake_seb2.mp4")
     #testDownloadDeepfake("https://magdalenastorage.blob.core.windows.net/download/4470c691-b03b-4556-b4e2-44dd58c855ea.mp4")
+    testBetafaceSetIdentity(["freitag"])
+    testBetafaceApi()

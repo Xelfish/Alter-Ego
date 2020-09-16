@@ -59,8 +59,8 @@
                 "person": "/v2/person",
                 "recognize": "/v2/recognize"
             },
-            "key": "6241915e-f5a9-11ea-9c46-0cc47a6c4dbd",
-            "namespace": "alterego"
+            "key": "d45fd466-51e2-4701-8da8-04351c872236",
+            "namespace": "ego-test-1"
         },
         "superres": {
             "model": "fsrcnn",
