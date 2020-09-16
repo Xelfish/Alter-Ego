@@ -93,7 +93,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
 
 def on_new_file_in(newFile):
     print("new file detected: ", newFile)
-    faces = validate_face(newFile)
+    faces = validate_face(newFile, 200)
     print(faces)
     if faces:
         for face in faces:
@@ -105,13 +105,13 @@ def on_new_file_in(newFile):
 
 def on_new_file_out(newFile):
     print("new file detected: ", newFile)
-    valid = validate_face(newFile)
-    print(valid)
-    if valid:
-        print("It's a face")
-        image = loadImage(newFile)
-        path = saveImage(image, build_path_from_settings("", settings, ["dir", "faces", "out"]))
+    faces = validate_face(newFile, 80)
+    print(faces)
+    if faces:
         show_intro()
+        print("It's a face")
+        cropImage = cropSquare(loadImage(newFile), faces[0])
+        path = saveImage(cropImage, build_path_from_settings("", settings, ["dir", "faces", "out"]))
         print ("Checking BETAFACE")
         identity = get_matching_deepfake_identity(open(path, 'rb'))
         if identity:
@@ -161,6 +161,7 @@ def process_deepfake(path):
 def execOnPi(pi, command):
     sshCommand(pi,command)
 
+@parallel
 def show_intro():
     sourcePath = "MyVids/intro.mp4"
     playDeepfake = commands["play"] + sourcePath
@@ -175,10 +176,10 @@ def show_deepfake(identity):
 
 def main():
     run_camera_in()
-    #run_camera_out()
+    run_camera_out()
     run_ftp_listener_in()
     #run_deepfake_listener()
-    #run_ftp_listener_out()
+    run_ftp_listener_out()
     while True:
         time.sleep(60)
         monitor_threads()

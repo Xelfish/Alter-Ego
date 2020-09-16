@@ -8,7 +8,7 @@ def turnScreenOff():
     subprocess.Popen(["xscreensaver-command", "-activate"])
 
 def turnScreenOn():
-    subprocess.Popen(["xscreensaver-command", "-deactivate"])
+    subprocess.Popen(["xscreensaver-command", "-exit"])
 
 def playVideo(video_path):
     os.system("export DISPLAY=:0")

@@ -12,7 +12,7 @@ api = get_json_settings('project-settings.json')["api"]
 
 
 #TODO: Modify algorithm: return bounding box of detected faces
-def validate_face(image):
+def validate_face(image, size):
     response = requests.post(
     api["face_recognition"]["url"],
     files={
@@ -25,15 +25,18 @@ def validate_face(image):
     if result and not ("err" in result.keys()):
         faces = result["output"]["faces"]
         if len(faces) > 0 and len(faces) < 4:
-            bounding_boxes = [f["bounding_box"] for f in faces if float(f["confidence"]) > 0.98 and f["bounding_box"][3] > 180]
+            bounding_boxes = [f["bounding_box"] for f in faces if float(f["confidence"]) > 0.98 and f["bounding_box"][3] > size]
             return bounding_boxes
     return False
 
 def get_matching_deepfake_identity(image):
     uuid_target = get_face_id_by_post(image)
     name = recognize_face(uuid_target)
-    identity = extract_name(name)
-    return identity
+    if name: 
+        identity = extract_name(name)
+        return identity
+    else: 
+        return false
 
 #TODO: Build Try and Catch
 def generate_deepfake(image):
@@ -122,7 +125,9 @@ def recognize_face(uuid):
         matches = response.json()["results"][0]["matches"]
         for match in matches:
             print(match["person_id"], ": ", match["confidence"])
-        return matches[0]["person_id"]
+        best_match = matches[0]
+        if best_match["confidence"] > 0.80:
+            return best_match["person_id"]
 
 def generate_identity_name():
     now = datetime.datetime.now()
