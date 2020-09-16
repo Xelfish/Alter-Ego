@@ -79,8 +79,8 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         after = dict([(f, None) for f in target.listdir(path_to_watch)])
         added = [f for f in after if not f in before]
         if len(added) > 0:
-            time.sleep(interval*2)
-            path = path_to_watch + "/" + added[0]
+            time.sleep(interval)
+            path = path_to_watch + "/" + added[-1]
             print(path)
             if remote: 
                 newFile = remote.open(path) 
@@ -93,15 +93,12 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
 
 def on_new_file_in(newFile):
     print("new file detected: ", newFile)
-    preSize = (settings["image"]["size"]["preprocess"]["width"], settings["image"]["size"]["preprocess"]["height"])
-    resizedImage = resizeImage(loadImage(newFile), preSize)
-    path = saveImage(resizedImage, build_path_from_settings("", settings, ["dir", "faces", "pre"]))
     faces = validate_face(newFile)
     print(faces)
     if faces:
         for face in faces:
             print("is a face")
-            cropImage = cropSquare(resizedImage, face)
+            cropImage = cropSquare(loadImage(newFile), face)
             finalImage = resizeImage(cropImage)
             newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
     else: print("is not a face")

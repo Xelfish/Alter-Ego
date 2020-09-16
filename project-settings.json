@@ -8,8 +8,8 @@
         "user": "pi",
         "password": "raspberry",
         "camera": {
-            "exp-mode": "auto",
-            "exp": 10,
+            "exp-mode": "night",
+            "exp": 20,
             "framerate": 60,
             "interval": 2.0,
             "res": {
