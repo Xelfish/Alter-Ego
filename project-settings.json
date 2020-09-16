@@ -43,8 +43,8 @@
         },
         "deepfake": {
             "url": {
-                "videourl": " https://alterego123.azurewebsites.net/api/UploadPicture?code=bgAyJiyTQxOtpzzkK/BSWIv64CXVKjXFoIUOAi3DRAUSFXO35UG2uQ==",
-                "swapref": "https://alterego123.azurewebsites.net/api/UploadVideo?code=onDF6LQBuHhzsUWt/etSACUoFHyDzcioOhOGneXIyR3KUd3J1QuLhQ=="
+                "videourl": "https://alterego123.azurewebsites.net/api/UploadPicture?code=mxzb1Tp/UdL7iWPZ07KJD81a5iim7tBD96pNwjlGek4gvPmtRQxxIA==",
+                "swapref": "https://alterego123.azurewebsites.net/api/UploadVideo?code=U8Ken6ilMC9AaEYV4hlqKaulxIDkeFbjAYawlQelbsBjVupmrT2KVw=="
             }
         },
         "beta-face": {
