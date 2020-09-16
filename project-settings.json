@@ -4,7 +4,7 @@
     },
     "input-pi": {
         "name": "Input-Pi",
-        "ip": "172.20.10.3",
+        "ip": "192.168.2.10",
         "user": "pi",
         "password": "raspberry",
         "camera": {
@@ -21,15 +21,17 @@
     },
     "output-pi": {
         "name": "Output-Pi",
-        "ip": "172.20.10.4",
+        "ip": "192.168.2.7",
         "user": "pi",
         "password": "raspberry",
         "camera": {
-            "iso": 800,
+            "exp-mode": "auto",
+            "exp": 10,
+            "framerate": 60,
             "interval": 2.0,
             "res": {
-                "x": 2400,
-                "y": 2400
+                "x": 1200,
+                "y": 1200
             },
             "zoom": 0
         }
@@ -62,7 +64,7 @@
                 "recognize": "/v2/recognize"
             },
             "key": "d45fd466-51e2-4701-8da8-04351c872236",
-            "namespace": "ego-test-1"
+            "namespace": "egotest2"
         },
         "superres": {
             "model": "fsrcnn",
@@ -104,7 +106,7 @@
     "timing": {
         "interval": 1.0,
         "timeout": 5.0,
-        "process": 900
+        "process": 300
     },
     "dir": {
         "root": "test/output/",

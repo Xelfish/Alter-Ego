@@ -33,7 +33,8 @@ def validate_face(image):
 def get_matching_deepfake_identity(image):
     uuid_target = get_face_id_by_post(image)
     name = recognize_face(uuid_target)
-    return name
+    identity = extract_name(name)
+    return identity
 
 #TODO: Build Try and Catch
 def generate_deepfake(image):
@@ -86,6 +87,7 @@ def set_deepfake_identity(faceIds, deepfakeId):
         return False
 
 def get_face_id_by_post(image):
+    print("Get face with file: ", image)
     payload = {"api_key": api["beta-face"]["key"], "file": image}
     response = requests.post(
         get_betaface_url(api["beta-face"]["url"]["media"]["file"]), 
@@ -116,6 +118,7 @@ def recognize_face(uuid):
             ]
         }
     )
+    print (response.json())
     if response.ok:
         matches = response.json()["results"][0]["matches"]
         for match in matches:
@@ -138,6 +141,7 @@ def compose_namespace(name):
 def extract_name(identity):
     pattern = re.compile("@" + api["beta-face"]["namespace"] + "$")
     name = re.sub(pattern, "" , identity)
+    print("extracted identity: " + name)
     return name
 
 def get_betaface_url(suffix):

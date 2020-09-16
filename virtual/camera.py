@@ -36,11 +36,12 @@ def main():
     cameraSettings = get_json_settings('MyScripts/project-settings.json')[ID]['camera']
     camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['y']))
     set_camera_settings(camera, cameraSettings)
+    interval = cameraSettings["interval"]
     #monitorCamSettings(camera)
     for i in range(3):
+        time.sleep(interval)
         print(ID + " taking a picture: " + str(i + 1) + "...")
         take_picture(camera)
-        time.sleep(cameraSettings["interval"])
     camera.close()
 
 if __name__ == "__main__":

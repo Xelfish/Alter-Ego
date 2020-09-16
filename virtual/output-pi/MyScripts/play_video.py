@@ -20,7 +20,7 @@ def playVideo(video_path):
 def main(): 
     turnScreenOn()
     playVideo(VIDEONAME)
-    turnScreenOff()
+    #turnScreenOff()
 
 if __name__ == "__main__":
     main()

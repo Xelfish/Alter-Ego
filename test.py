@@ -7,6 +7,7 @@ from multiprocessing import Process
 from modules.image import *
 from modules.util.files import *
 from modules.ai_operations import *
+from modules.communication import *
 from ai.superres import *
 import main
 
@@ -118,6 +119,9 @@ def testBetafaceApi():
     uuid = get_face_id_by_post(image)
     recognize_face(uuid)
 
+def testRemoteVideoDisplay():
+    sshCommand(settings["output-pi"], settings["commands"]["play"] + "/home/pi/MyVids/intro.mp4")
+
 if __name__ == "__main__":
     print("This is the output of a TEST command")
     #testFaceRecognition()
@@ -125,5 +129,6 @@ if __name__ == "__main__":
     #time_function(testMiddlePipeline)
     #testFreezeVideo("test\output\deepfakes\deepfake_seb2.mp4")
     #testDownloadDeepfake("https://magdalenastorage.blob.core.windows.net/download/4470c691-b03b-4556-b4e2-44dd58c855ea.mp4")
-    testBetafaceSetIdentity(["freitag"])
-    testBetafaceApi()
+    #testBetafaceSetIdentity(["freitag"])
+    #testBetafaceApi()
+    testRemoteVideoDisplay()

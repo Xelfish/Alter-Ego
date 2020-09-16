@@ -56,7 +56,7 @@ def run_ftp_listener_in():
 
 def run_ftp_listener_out():
     ftp = connectToFtp(outPi)
-    watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
+    watch_directory_for_change("/home/pi/MyPics", on_new_file_out, remote=ftp)
     pass
 
 def run_deepfake_listener():
@@ -86,6 +86,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
                 newFile = remote.open(path) 
             else:
                 newFile = open(path, "rb")
+            #Interrupt when new video comes.    
             on_new_file(newFile)
         before = after
         time.sleep(interval/2)
@@ -106,15 +107,23 @@ def on_new_file_in(newFile):
 
 def on_new_file_out(newFile):
     print("new file detected: ", newFile)
-    preSize = (settings["image"]["size"]["preprocess"]["width"], settings["image"]["size"]["preprocess"]["height"])
-    resizedImage = resizeImage(newFile, preSize)
-    valid = validate_face(resizedImage)
+    valid = validate_face(newFile)
     print(valid)
     if valid:
+        print("It's a face")
+        image = loadImage(newFile)
+        path = saveImage(image, build_path_from_settings("", settings, ["dir", "faces", "out"]))
         show_intro()
-        identity = get_matching_deepfake_identity(newFile)
+        print ("Checking BETAFACE")
+        identity = get_matching_deepfake_identity(open(path, 'rb'))
         if identity:
+            print("Identitity found!: " + identity)
             show_deepfake(identity)
+        else:
+            print("no identity found...Exiting.")
+        time.sleep(settings["timing"]["timeout"])
+    else: 
+        print("Not a face")
 
 #TODO: Check identity before processing a deepfake
 @parallel
@@ -154,19 +163,15 @@ def process_deepfake(path):
 def execOnPi(pi, command):
     sshCommand(pi,command)
 
-@parallel
 def show_intro():
-    name = "intro.mp4"
     sourcePath = "MyVids/intro.mp4"
-    playDeepfake = command["play"] + sourcePath
+    playDeepfake = commands["play"] + sourcePath
     sshCommand(outPi, playDeepfake)
     pass
 
-@parallel
 def show_deepfake(identity):
-    name = extract_name(identity)
-    sourcePath = "test/output/deepfake/" + name
-    playDeepfake = command["play"] + sourcePath
+    sourcePath = "/home/pi/MyVids/" + identity + ".mp4"
+    playDeepfake = commands["play"] + sourcePath
     sshCommand(outPi, playDeepfake)
     pass
 
