@@ -85,7 +85,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
             if remote: 
                 newFile = remote.open(path) 
             else:
-                newFile = open(path, "rb")
+                newFile = open(path, 'rb')
             #Interrupt when new video comes.    
             on_new_file(newFile)
         before = after
@@ -100,7 +100,8 @@ def on_new_file_in(newFile):
             print("is a face")
             cropImage = cropSquare(loadImage(newFile), face)
             finalImage = resizeImage(cropImage)
-            newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
+            newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "pre"]))
+            remove_background(newPath)
     else: print("is not a face")
 
 def on_new_file_out(newFile):
@@ -109,6 +110,7 @@ def on_new_file_out(newFile):
     print(faces)
     if faces:
         show_intro()
+        time.sleep(5)
         print("It's a face")
         cropImage = cropSquare(loadImage(newFile), faces[0])
         path = saveImage(cropImage, build_path_from_settings("", settings, ["dir", "faces", "out"]))
@@ -175,7 +177,7 @@ def show_deepfake(identity):
     pass
 
 def main():
-    #run_ftp_listener_in()
+    run_ftp_listener_in()
     run_deepfake_listener()
     #run_ftp_listener_out()
     while True:

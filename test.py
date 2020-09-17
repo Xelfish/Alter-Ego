@@ -10,6 +10,7 @@ from modules.ai_operations import *
 from modules.communication import *
 from ai.superres import *
 import main
+from rembg.bg import remove
 
 settings = get_json_settings('project-settings.json')
 
@@ -122,6 +123,14 @@ def testBetafaceApi():
 def testRemoteVideoDisplay():
     sshCommand(settings["output-pi"], settings["commands"]["play"] + "/home/pi/MyVids/intro.mp4")
 
+def testBackgroundRemoveOld():
+    with open("test/output/faces/in/hummels2.png", 'rb') as img:
+        with open("test/output/faces/in/hummels_t.png", 'wb+') as finalimg:
+            finalimg.write(remove(img.read()))
+
+def testBackgroundRemove():
+    remove_background("test/output/faces/in/tscharf.jpg")
+
 if __name__ == "__main__":
     print("This is the output of a TEST command")
     #testFaceRecognition()
@@ -131,4 +140,5 @@ if __name__ == "__main__":
     #testDownloadDeepfake("https://magdalenastorage.blob.core.windows.net/download/4470c691-b03b-4556-b4e2-44dd58c855ea.mp4")
     #testBetafaceSetIdentity(["freitag"])
     #testBetafaceApi()
-    time_function(testSuperRes)
+    #time_function(testSuperRes)
+    time_function(testBackgroundRemove)

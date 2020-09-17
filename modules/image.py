@@ -1,7 +1,10 @@
 # This is the main module for image and video manipulations
+import sys
+import io
 from PIL import Image
 import cv2
 from modules.util.files import *
+from rembg.bg import remove
 
 settings = get_json_settings('project-settings.json')['image']
 RESIZE_FORMAT = (settings["size"]["deepfake"]["width"], settings["size"]["deepfake"]["height"])
@@ -102,3 +105,12 @@ def get_image_area(image):
     width, height = image.size
     area = width * height
     return area
+
+def remove_background(sourcePath):
+    settings = get_json_settings("project-settings.json")
+    destPath = build_path_from_settings("", settings, ["dir", "faces", "in"]) + get_file_name(sourcePath) + "_t.png"
+    print("Removing background from: " + sourcePath + "...")
+    with open(sourcePath, 'rb') as img:
+        with open(destPath, 'wb+') as finalimg:
+            finalimg.write(remove(img.read()))
+    return destPath
