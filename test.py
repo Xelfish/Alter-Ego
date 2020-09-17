@@ -70,7 +70,7 @@ def testFaceRecognition():
 
 
 def testSuperRes():
-    time_function(upscale_video, "test\\input\\deep-pasi.mp4", "test\\output\\deepfake\\upscaled\\deepfake.mp4")
+    upscale_video("test\\output\\deepfakes\\ego_16_23_39_33.mp4", "test\\output\\deepfakes\\upscaled\\ego_16_23_39_33_new")
 
 def testMultithreading():
     count = 0
@@ -131,4 +131,4 @@ if __name__ == "__main__":
     #testDownloadDeepfake("https://magdalenastorage.blob.core.windows.net/download/4470c691-b03b-4556-b4e2-44dd58c855ea.mp4")
     #testBetafaceSetIdentity(["freitag"])
     #testBetafaceApi()
-    testRemoteVideoDisplay()
+    time_function(testSuperRes)

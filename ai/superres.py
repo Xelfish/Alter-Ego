@@ -18,13 +18,16 @@ def upscale_video(sourcePath, destPath):
     print("Upscaling video: ", destPath, "...")
     superscale = get_superscaler()
     video= cv2.VideoWriter(formattedDestPath, fourcc, int(FPS), SIZE) 
+    frameCount = 0
     while True:
         material, frame = cam.read()
         if not material:
             break 
-        upscaled_frame = superscale_frame(frame, superscale)
-        fixed_size=cv2.resize(upscaled_frame, SIZE)
-        video.write(fixed_size) 
+        if frameCount > video_settings["begin"] and frameCount < video_settings["end"]:
+            fixed_size=cv2.resize(frame, (256, 256))
+            upscaled_frame = superscale_frame(fixed_size, superscale)
+            video.write(upscaled_frame)
+        frameCount += 1 
     cam.release() 
     video.release()
     print("Video done")

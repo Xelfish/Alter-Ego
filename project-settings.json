@@ -67,7 +67,7 @@
             "namespace": "egotest2"
         },
         "superres": {
-            "model": "fsrcnn",
+            "model": "espcn",
             "scale": 4
         }
     },
@@ -101,7 +101,9 @@
         },
         "format": "mp4",
         "codec": "AVC1",
-        "fps": "30"
+        "fps": "30",
+        "begin": 30,
+        "end": 1030
     },
     "timing": {
         "interval": 1.0,
