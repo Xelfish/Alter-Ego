@@ -1,6 +1,7 @@
 import asyncio
 import time
 import threading
+import io
 
 from multiprocessing import Process
 
@@ -37,11 +38,10 @@ def testNameGen():
 def testRenameDeepFake():
     rename_video("test/output/deepfakes/adb77a0b-140a-48a5-951e-2bfafe7a7565.mp4", generate_identity_name())
 
-def testDeepFake(name):
-    img = loadImage('test/input/' + name)
-    rimg = resizeImage(img)
-    path = saveImage(rimg, "test/input/resized/")
-    generate_deepfake(open(path, 'rb'))
+def testDeepFake():
+    url = generate_deepfake(open("test\output\\faces\pre\hummels_t.png", 'rb'))
+    time.sleep(300)
+    main.get_deepfake_from_url(url)
 
 def testExtractIdentity():
     extract_name("test@alterego")
@@ -132,6 +132,9 @@ def testBackgroundRemove():
         with open("test/output/faces/in/hilfe.jpg", 'wb+') as new:
             new.write(remove_background(open("test/output/faces/in/maxresdefault.jpg", 'rb')))
 
+def testBuffer():
+    data = io.
+
 if __name__ == "__main__":
     print("This is the output of a TEST command")
     #testFaceRecognition()
@@ -143,4 +146,4 @@ if __name__ == "__main__":
     #testBetafaceApi()
     #time_function(testSuperRes)
     #time_function(testBackgroundRemoveOld)
-    time_function(testFaceRecognition)
+    time_function(testDeepFake)

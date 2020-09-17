@@ -109,7 +109,7 @@ def on_new_file_in(newFile):
 
 def on_new_file_out(newFile):
     print("new file detected from output: ", newFile)
-    faces = validate_face(newFile, 80)
+    faces = validate_face(newFile, 50)
     print(faces)
     if faces:
         show_intro()
