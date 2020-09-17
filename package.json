@@ -5,7 +5,11 @@
   "main": "main.py",
   "scripts": {
     "test": "py test.py",
-    "start": "py main.py"
+    "start": "py main.py",
+    "reboot": "py tasks/reboot.py",
+    "swap": "py tasks/swap.py",
+    "bf-usage": "py tasks/bf_usage.py",
+    "camera": "py tasks/camera.py"
   },
   "repository": {
     "type": "git",

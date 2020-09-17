@@ -19,34 +19,56 @@ def get_new_file_name(targetdir, basename="image", filetype="jpg"):
         fileNumber += 1
     return (targetdir + basename + make_padded_number(fileNumber) + "." + filetype)
 
-def rename_video(oldname, newname):
-    directory = "test/output/deepfake/"
-    newpath = directory + newname + ".mp4"
-    os.rename(directory + oldname, newpath)
-    return newpath
-
 def get_os():
     return os
+
+def get_pi_id():
+    with open("./id.txt") as ID:
+        content = ID.read()
+        return content
 
 def get_file_name(path):
     base = os.path.basename(path)
     return os.path.splitext(base)[0]
 
-def get_secret():
-    with open("./secret.txt") as secret:
+def get_secret(name):
+    with open("secrets/" + name + ".txt") as secret:
         content = secret.read()
         return content
 
 def build_path_from_settings(path, settings, keys):
     #find dynamic maybe recursive algorithm.
-    next_entry = settings[keys[0]] 
-    if type(next_entry) == dict:   
-        return build_path_from_settings(path + next_entry["root"], next_entry, keys[1:])
-    else:
-        return path + next_entry
+    if len(keys) > 0:
+        next_entry = settings[keys[0]] 
+        if type(next_entry) == dict:   
+            return build_path_from_settings(path + next_entry["root"], next_entry, keys[1:])
+        else:
+            return path + next_entry
+    else: 
+        return path
 
-def save_video(video):
-    open(get_new_file_name('test/output/deepfake/', 'deepfake', 'mp4'), 'wb').write(video)
+def get_file_format(path):
+    base = os.path.basename(path)
+    return os.path.splitext(base)[1]
 
-def find_file(directory, name):
-    pass
+def rename_video(oldpath, newname):
+    FORMAT = get_file_format(oldpath)
+    directory = os.path.dirname(oldpath)
+    newpath = os.path.join(directory, newname + FORMAT) 
+    os.rename(oldpath, newpath)
+    return newpath
+
+def get_new_modified_path(oldpath, modifier, ff=None):
+    if not ff:
+        FORMAT = get_file_format(oldpath)
+        ff = FORMAT
+    directory = os.path.dirname(oldpath)
+    name = get_file_name(oldpath) + modifier + "." + ff
+    newpath = os.path.join(directory, name)
+    return newpath
+
+def save_video(videoBytes, path):
+    newpath = get_new_file_name(path, 'deepfake', 'mp4')
+    with open(newpath, 'wb') as video:
+       video.write(videoBytes)
+    return newpath

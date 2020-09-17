@@ -1,5 +1,11 @@
 test
-output
+output/deepfakes/*.*
+output/deepfakes/stills/*
+output/deepfakes/upscaled/*
+output/in_faces/*
+output/out_faces/*
 /node_modules
 /modules/__pycache__
-secret.txt
+secrets/*
+ai/deepfake_ref/*.mp4
+ai/deepfake_ref/**/*.mp4

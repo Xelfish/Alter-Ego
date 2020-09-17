@@ -12,20 +12,26 @@ function targetPiByArgs(task, cb){
     const hasArguments = Object.keys(argv).length > 2
     if (hasArguments){
         if (argv.in){
-            return cb ?
+            if (cb == undefined){
+                return task('input-pi')
+            } else {
                 task('input-pi', cb)
-                : task('input-pi')
+            }
         } else if (argv.out){
-            return cb ? 
+            if (cb == undefined){
+                return task('output-pi')
+            } else {
                 task('output-pi', cb)
-                : task ('output-pi')
+            } 
         }
     } else {
-        return cb ?
-            parallel(task('input-pi', cb), task('output-pi', cb))
-            : parallel(task('input-pi'), task('output-pi'))
+        if (cb == undefined){
+            return merge(task('input-pi'), task('output-pi'))
+        } else {
+            task('input-pi', cb)
+            task('output-pi', cb)
+        }
     }
-    cb()
 }
 
 // Tasks by Target
@@ -42,18 +48,18 @@ function connectToPi(target){
 function initPi(target){
     console.log("Initializing: ", target)
     const conn = connectToPi(target)
-    return src("./virtual/" + target + "/*")
+    return src("./virtual/" + target + "/**")
     .pipe(conn.dest("/home/pi"))
 }
 
 function cleanPi(target, cb){
     console.log("Cleaning: ", target)
     const conn = connectToPi(target)
-    const targetDirectories = ["MyScripts", "MyPics"]
+    const targetDirectories = target == "output-pi" ? ["MyScripts", "MyPics", "MyVids"] : ["MyScripts", "MyPics"]
     for (const dir of targetDirectories){
-        const path = '/home/pi/' + dir
-        conn.rmdir(path, cb)
+        conn.rmdir("/home/pi/" + dir, cb)
     }
+    cb()
 }
 
 function deployToPi(target){
@@ -63,34 +69,33 @@ function deployToPi(target){
 
 function copyScriptsToPi(target){
     const conn = connectToPi(target)
-    const globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json']
+    const globs = ['./virtual/' + target + '/MyScripts/**', './modules/util/*', 'project-settings.json', './virtual/*.py']
     return src(globs)
         .pipe(conn.newer('/home/pi/MyScripts/'))
         .pipe(conn.dest('/home/pi/MyScripts/'))
 }
 
-function test(pi){
+function test(pi, cb){
     console.log(pi)
+    cb()
 }
 
 // Final Tasks
 
 function testTask(cb){
     console.log("This is a test output for Gulp. Everything seems to work fine!")
-    targetPiByArgs(test)
-    cb()
+    targetPiByArgs(test, cb)
 }
 
-//TODO: add project-settings to watch
 function watchScripts(){
-    watch("./virtual/**/*.py", series(deployTask, watchScripts))
+    watch(["./virtual/**/*.py", "./project-settings.json", "./modules/util/*"], series(deployTask, watchScripts))
 }
 
-function deployTask(cb){
+function deployTask(){
     return targetPiByArgs(deployToPi)
 }
 
-function initTask(cb){
+function initTask(){
     return targetPiByArgs(initPi)
 }
 

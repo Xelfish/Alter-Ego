@@ -3,31 +3,39 @@
         "ip": "192.168.50.81"
     },
     "input-pi": {
-        "ip": "192.168.50.198",
+        "name": "Input-Pi",
+        "ip": "192.168.2.10",
         "user": "pi",
         "password": "raspberry",
         "camera": {
-            "iso": 1200,
+            "max-pics": 100,
+            "exp-mode": "auto",
+            "exp": 10,
+            "framerate": 100,
             "interval": 2.0,
             "res": {
-                "x": 1000,
-                "y": 1000
+                "x": 2048,
+                "y": 2048
             },
-            "zoom": 0.4
+            "zoom": 0
         }
     },
     "output-pi": {
-        "ip": "192.168.50.200",
+        "name": "Output-Pi",
+        "ip": "192.168.2.7",
         "user": "pi",
         "password": "raspberry",
         "camera": {
-            "iso": 800,
-            "interval": 2.0,
+            "max-pics": 500,
+            "exp-mode": "auto",
+            "exp": 10,
+            "framerate": 100,
+            "interval": 1.0,
             "res": {
-                "x": 1000,
-                "y": 1000
+                "x": 1024,
+                "y": 1024
             },
-            "zoom": 0.7
+            "zoom": 0
         }
     },
     "api": {
@@ -37,8 +45,8 @@
         },
         "deepfake": {
             "url": {
-                "videourl": " https://alterego123.azurewebsites.net/api/UploadPicture?code=bgAyJiyTQxOtpzzkK/BSWIv64CXVKjXFoIUOAi3DRAUSFXO35UG2uQ==",
-                "swapref": "https://alterego123.azurewebsites.net/api/UploadVideo?code=onDF6LQBuHhzsUWt/etSACUoFHyDzcioOhOGneXIyR3KUd3J1QuLhQ=="
+                "videourl": "https://alterego123.azurewebsites.net/api/UploadPicture?code=mxzb1Tp/UdL7iWPZ07KJD81a5iim7tBD96pNwjlGek4gvPmtRQxxIA==",
+                "swapref": "https://alterego123.azurewebsites.net/api/UploadVideo?code=U8Ken6ilMC9AaEYV4hlqKaulxIDkeFbjAYawlQelbsBjVupmrT2KVw=="
             }
         },
         "beta-face": {
@@ -58,31 +66,7 @@
                 "recognize": "/v2/recognize"
             },
             "key": "d45fd466-51e2-4701-8da8-04351c872236",
-            "namespace": "alterego"
-        },
-        "video-enhancer": {
-            "dir": "C:/Program Files/Topaz Labs LLC/Topaz Video Enhance AI",
-            "scale": 4.0,
-            "models": [
-                "thd",
-                "thf",
-                "ghq",
-                "gcg",
-                "ahq",
-                "alq"
-            ],
-            "model-names": {
-                "thd": "Theia-Detail: EU,P",
-                "thf": "Theia-Fidelity: EU,P",
-                "ghq": "Gaia-HQ: P,HQ",
-                "gcg": "Gaia-CG: P,CG,HQ",
-                "ahq": "Artemis-HQ: P,HQ,MC",
-                "alq": "Artemis-LQ: P,LQ,MC"
-            }
-        },
-        "isize": {
-            "key": "RdlCixsRfUTjcrNtlQhjVg73+cK3saYgflQnFbQvnUDi2kbCWJV0Ag",
-            "url": "https://api.bitsave.tech/encode/1.01/"
+            "namespace": "egotest2"
         },
         "superres": {
             "model": "espcn",
@@ -91,24 +75,25 @@
     },
     "commands": {
         "camera": "python MyScripts/camera.py",
-        "play": "python MyScripts/play_video.py ",
-        "upscale": "veai.exe -f mp4"
+        "play": "python MyScripts/play_video.py "
     },
     "image": {
-        "resize": {
-            "width": 256,
-            "height": 256
-        },
-        "face-ratio":{
-            "min": 0.20,
-            "max": 0.40
+        "size": {
+            "preprocess": {
+                "width": 1200,
+                "height": 1200
+            },
+            "deepfake": {
+                "width": 256,
+                "height": 256
+            }
         },
         "preview":{
             "frames":[
-                    100,
-                    150,
-                    200
-                ]
+                100,
+                150,
+                200
+            ]
         }
     },
     "video": {
@@ -117,19 +102,23 @@
             "y": 1024
         },
         "format": "mp4",
-        "codec": "H264",
-        "fps": "30"
+        "codec": "AVC1",
+        "fps": "30",
+        "begin": 30,
+        "end": 1030
     },
     "timing": {
         "interval": 1.0,
         "timeout": 5.0,
-        "process": 300.0
+        "process": 300
     },
     "dir": {
-        "root": "output/",
+        "root": "test/output/",
         "faces": {
-            "input-pi": "in_faces/",
-            "output-pi": "out_faces/"
+            "root": "faces/",
+            "in": "in/",
+            "out": "out/",
+            "pre": "pre/"
         },
         "deepfake": {
             "root": "deepfakes/",

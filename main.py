@@ -1,14 +1,12 @@
 # This is the main entry-point for Alter Ego
 
-import socket
-import paramiko
-import json
 import time
 import threading
 
 from modules.image import *
 from modules.ai_operations import *
 from modules.util.files import *
+from modules.communication import *
 
 # setup
 
@@ -42,7 +40,6 @@ def monitor_threads():
 
 # Parallel High-Level Tasks
 
-# run "camera" on IN and OUT Pis with ssh
 def run_camera_in():
     print("STARTED: Run Camera Input")
     execOnPi(inPi, commands['camera'])
@@ -52,22 +49,19 @@ def run_camera_out():
     execOnPi(outPi, commands['camera'])
     pass
 
-# Run FTP Folder listener on IN and OUT Pis
 def run_ftp_listener_in():
     print("STARTED: FTP Listener Input Pics")
     ftp = connectToFtp(inPi)
     watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
 
 def run_ftp_listener_out():
-    # listen for pictures from Input-PI and if new picture comes in run event
     ftp = connectToFtp(outPi)
-    watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
+    watch_directory_for_change("/home/pi/MyPics", on_new_file_out, remote=ftp)
     pass
 
-# Run Deepfake generator
 def run_deepfake_listener():
     print("STARTED: Listen for Deepfake Input")
-    watch_directory_for_change("test/output/resized", prepare_deepfake)
+    watch_directory_for_change(build_path_from_settings("", settings, ["dir", "faces", "in"]), prepare_deepfake)
 
 #FIXME: Refactor for better readability
 @parallel_daemon
@@ -86,28 +80,58 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         added = [f for f in after if not f in before]
         if len(added) > 0:
             time.sleep(interval)
-            path = path_to_watch + "/" + added[0]
+            path = path_to_watch + "/" + added[-1]
             print(path)
             if remote: 
                 newFile = remote.open(path) 
             else:
-                newFile = open(path, "rb")
+                newFile = open(path, 'rb')
+            #Interrupt when new video comes.    
             on_new_file(newFile)
         before = after
         time.sleep(interval/2)
 
-#FIXME: Fix threading for this function
 def on_new_file_in(newFile):
+    print("From input")
     print("new file detected: ", newFile)
-    valid = validate_face(newFile)
-    print(valid)
-    if valid:
-        print("is a face")
-        image = loadImage(newFile)
-        resizedImage = resizeImage(image)
-        newPath = saveImage(resizedImage, "test/output/resized/")
-    else: print("is not a face")
+    faces = validate_face(newFile, 200)
+    print(faces)
+    if faces:
+        for face in faces:
+            print("from input")
+            print("is a face")
+            cropImage = cropSquare(loadImage(newFile), face)
+            finalImage = resizeImage(cropImage)
+            newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "pre"]))
+            write_image(newPath, build_path_from_settings("", settings, ["dir", "faces", "in"]) + get_file_name(newPath) + "." + get_file_format(newPath))
+    else:
+        print("from input") 
+        print("is not a face")
 
+def on_new_file_out(newFile):
+    print("new file detected from output: ", newFile)
+    faces = validate_face(newFile, 50)
+    print(faces)
+    if faces:
+        show_intro()
+        time.sleep(8)
+        print("from output")
+        print("It's a face")
+        cropImage = cropSquare(loadImage(newFile), faces[0])
+        path = saveImage(cropImage, build_path_from_settings("", settings, ["dir", "faces", "out"]))
+        print ("Checking BETAFACE")
+        identity = get_matching_deepfake_identity(open(path, 'rb'))
+        if identity:
+            print("Identitity found!: " + identity)
+            show_deepfake(identity)
+        else:
+            print("no identity found...Exiting.")
+        time.sleep(settings["timing"]["timeout"])
+    else: 
+        print("from output")
+        print("Not a face")
+
+#TODO: Check identity before processing a deepfake
 @parallel
 def prepare_deepfake(image):
     print("Uploading Image to Deepfake API...")
@@ -115,87 +139,55 @@ def prepare_deepfake(image):
     start = time.time()
     time.sleep(timing["process"])
     path = get_deepfake_from_url(url)
-    print("Downloaded Deepfake at: " + path + "in: " + str(time.time() - start))
+    print("Downloaded Deepfake at: " + path + " in Minutes: " + str(int((time.time() - start) / 60)))
     process_deepfake(path)
     
 def get_deepfake_from_url(url):
     while True: 
         response = download_deepfake(url)
         if response.ok:
-            path = save_video(response.content)
+            path = save_video(response.content, build_path_from_settings("", settings, ["dir", "deepfake"]))
             return path
-
-def on_new_file_out(newFile):
-    print("new file detected: ", newFile)
-    valid = validate_face(newFile)
-    print(valid)
-    show_intro()
-    if valid:
-        identity = get_matching_deepfake_identity(newFile)
-        if identity:
-            show_deepfake(identity)
+        time.sleep(10)
 
 def process_deepfake(path):
     name = generate_identity_name()
-    new_path = rename_video(path, name)
-    final_path = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"]) + name
-    file_paths = prepare_deepfake_preview(new_path)
+    renamedVideoPath = rename_video(path, name)
+    upscaledVideoPath = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"]) + name
+    file_paths = prepare_deepfake_preview(renamedVideoPath, build_path_from_settings("", settings, ["dir", "deepfake", "preview"]))
     face_ids = []
     for file in file_paths:
         image = open(file, "rb")
         face_ids.append(get_face_id_by_post(image))
     set_deepfake_identity(face_ids, name)
-    scale_deepfake(new_path, final_path)
-    save_on_ftp(outPi, final_path, remote_path)
+    finalFormattedPath = scale_deepfake(renamedVideoPath, upscaledVideoPath)
+    remotePath = "/home/pi/MyVids/" + get_file_name(finalFormattedPath) + get_file_format(finalFormattedPath)
+    save_on_ftp(outPi, finalFormattedPath, remotePath)
     pass
-
-def save_on_ftp(outPi, local_path, remote_path):
-    ftp = connectToFtp(outPi)
-    ftp.put(local_path, remote_path)
-    pass 
-
-# Remote Communication tasks
-
-def openSSH(pi):
-    client = paramiko.SSHClient()
-    client.load_system_host_keys()
-    client.connect(pi["ip"], username=pi["user"], password=pi["password"])
-    return client
 
 @parallel_daemon
 def execOnPi(pi, command):
-    client = openSSH(pi)
-    print('started exec of ' + command + '...')
-    stdin, stdout, stderr = client.exec_command(command, get_pty=True)
-    for line in iter(stdout.readline, ""):
-        print(line, end="")
-    print('finished.')
-    client.close()
-
-def connectToFtp(pi):
-    client = openSSH(pi)
-    ftp = client.open_sftp()
-    return ftp
+    sshCommand(pi,command)
 
 @parallel
 def show_intro():
-    #implement
+    sourcePath = "MyVids/intro.mp4"
+    playDeepfake = commands["play"] + sourcePath
+    sshCommand(outPi, playDeepfake)
     pass
 
-@parallel
 def show_deepfake(identity):
-    name = extract_name(identity)
-    sourcePath = "test/output/deepfake/" + name
-    playDeepfake = command["play"] + sourcePath
-    execOnPi(outPi, playDeepfake)
+    sourcePath = "/home/pi/MyVids/" + identity + ".mp4"
+    playDeepfake = commands["play"] + sourcePath
+    sshCommand(outPi, playDeepfake)
     pass
 
 def main():
-    run_camera_in()
     run_ftp_listener_in()
     run_deepfake_listener()
+    run_ftp_listener_out()
     while True:
-        time.sleep(5)
+        time.sleep(60)
         monitor_threads()
 
 # Operations before loop

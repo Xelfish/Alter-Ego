@@ -1,10 +1,13 @@
 # This is the main module for image and video manipulations
+import sys
+import io
 from PIL import Image
 import cv2
 from modules.util.files import *
+from rembg.bg import remove
 
 settings = get_json_settings('project-settings.json')['image']
-RESIZE_FORMAT = (settings["resize"]["width"], settings["resize"]["height"])
+RESIZE_FORMAT = (settings["size"]["deepfake"]["width"], settings["size"]["deepfake"]["height"])
 
 def evaluate_face_ratio(image, bounding_box):
     faceArea = get_bounding_box_area(bounding_box)
@@ -19,8 +22,8 @@ def loadImage(path):
 def openImage(image):
     image.show()
 
-def resizeImage(sourceImage):
-    destinationImage = sourceImage.resize(RESIZE_FORMAT)
+def resizeImage(sourceImage, size=RESIZE_FORMAT):
+    destinationImage = sourceImage.resize(size)
     return destinationImage
 
 def saveImage(image, path):
@@ -28,7 +31,53 @@ def saveImage(image, path):
     image.save(path)
     return path
 
-def prepare_deepfake_preview(sourcePath):
+
+def squareBox(box):
+    (left, top, right, bottom) = box
+    width = right - left
+    height = bottom - top
+    if (height > width):
+        ratio = width / height
+        difference = (1 - ratio) * height
+        return (left - (difference/2), top, right + (difference/2), bottom)
+    if (width > height):
+        ratio = height / width
+        difference = (1 - ratio) * width
+        return (left, top - (difference/2), right, bottom + (difference/2))
+    return box
+
+def translate(box, offset):
+    (left, top, right, bottom) = box
+    width = right - left
+    height = bottom - top
+    (leftOff, topOff) = offset
+    return (
+        left + leftOff * width, 
+        top + topOff * height, 
+        right + leftOff * width, 
+        bottom + topOff * height
+    )
+
+def addBleed(box, factor):
+    (left, top, right, bottom) = box
+    width = right - left
+    height = bottom - top
+    newBox = (
+        left - width * factor,
+        top - height * factor,
+        right + width * factor,
+        bottom + height * factor
+    )
+    return newBox
+
+def cropSquare(image, box):
+    [left, top, width, height] = box
+    box = (left, top, left + width, top + height)
+    adjustedBox = translate(addBleed(squareBox(box), 0.2), (0, - 0.1))
+    croppedImage = image.crop(adjustedBox)
+    return croppedImage
+
+def prepare_deepfake_preview(sourcePath, folder):
     targetFrames = {tf for tf in settings["preview"]["frames"]}
     cam = cv2.VideoCapture(sourcePath) 
     frameCount = 0
@@ -38,8 +87,8 @@ def prepare_deepfake_preview(sourcePath):
         if not material:
             break 
         if frameCount in targetFrames:
-            name = get_new_file_name('test/output/stills/', get_file_name(sourcePath + "_"))
-            print ('Creating' + name + " from f. " + str(frameCount) + "...") 
+            name = get_new_file_name(folder, get_file_name(sourcePath) + "_")
+            print ('Creating ' + name + " from f. " + str(frameCount) + "...") 
             cv2.imwrite(name, frame) 
             paths.append(name)
         frameCount += 1
@@ -56,3 +105,19 @@ def get_image_area(image):
     width, height = image.size
     area = width * height
     return area
+
+def remove_background(file):
+    alpha = io.BytesIO(remove(file.read()))
+    image = Image.open(alpha)
+    image.load()
+    
+    black = Image.new("RGB", image.size, color=0)
+    black.paste(image, mask=image.split()[3])
+
+    finalImage = io.BytesIO()
+    black.save(finalImage, "JPEG")
+    return finalImage.getbuffer()
+
+def write_image(file, path):
+    data = io.BytesIO(remove_background(open(file, 'rb'))).read()
+    open(path, 'wb+').write(data)
