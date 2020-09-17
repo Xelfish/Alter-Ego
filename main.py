@@ -92,25 +92,30 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         time.sleep(interval/2)
 
 def on_new_file_in(newFile):
+    print("From input")
     print("new file detected: ", newFile)
     faces = validate_face(newFile, 200)
     print(faces)
     if faces:
         for face in faces:
+            print("from input")
             print("is a face")
             cropImage = cropSquare(loadImage(newFile), face)
             finalImage = resizeImage(cropImage)
             newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "pre"]))
             remove_background(newPath)
-    else: print("is not a face")
+    else:
+        print("from input") 
+        print("is not a face")
 
 def on_new_file_out(newFile):
-    print("new file detected: ", newFile)
+    print("new file detected from output: ", newFile)
     faces = validate_face(newFile, 80)
     print(faces)
     if faces:
         show_intro()
         time.sleep(5)
+        print("from output")
         print("It's a face")
         cropImage = cropSquare(loadImage(newFile), faces[0])
         path = saveImage(cropImage, build_path_from_settings("", settings, ["dir", "faces", "out"]))
@@ -123,6 +128,7 @@ def on_new_file_out(newFile):
             print("no identity found...Exiting.")
         time.sleep(settings["timing"]["timeout"])
     else: 
+        print("from output")
         print("Not a face")
 
 #TODO: Check identity before processing a deepfake

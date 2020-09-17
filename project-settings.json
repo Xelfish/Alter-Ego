@@ -11,11 +11,11 @@
             "max-pics": 100,
             "exp-mode": "auto",
             "exp": 10,
-            "framerate": 60,
+            "framerate": 100,
             "interval": 2.0,
             "res": {
-                "x": 3000,
-                "y": 3000
+                "x": 2048,
+                "y": 2048
             },
             "zoom": 0
         }
@@ -29,11 +29,11 @@
             "max-pics": 500,
             "exp-mode": "auto",
             "exp": 10,
-            "framerate": 60,
+            "framerate": 100,
             "interval": 2.0,
             "res": {
-                "x": 800,
-                "y": 800
+                "x": 1024,
+                "y": 1024
             },
             "zoom": 0
         }

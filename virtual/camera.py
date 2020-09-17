@@ -8,7 +8,7 @@ from files import *
 def set_camera_settings(camera, settings):
     camera.exposure_mode = settings["exp-mode"]
     camera.framerate = Fraction(settings["framerate"], int(settings["interval"]))
-    camera.sharpness = 80
+    #camera.sharpness = 80
     camera.exposure_compensation = settings["exp"]
     camera.zoom = setZoom(settings)
 
@@ -26,8 +26,8 @@ def setZoom(settings):
     width = height = 1.0 - x * 2
     return (x, y, width, height)
 
-def take_picture(camera):
-    path = get_new_file_name("MyPics/")
+def take_picture(camera, name):
+    path = get_new_file_name("MyPics/", name + "_")
     camera.capture(path, quality=100)
 
 def clearFolder(max_amount):
@@ -54,7 +54,7 @@ def main():
             time.sleep(interval)
             print(ID + " taking a picture: " + str(i) + "...")
             clearFolder(cameraSettings["max-pics"])
-            take_picture(camera)
+            take_picture(camera, ID)
             i += 1
     except KeyboardInterrupt, SystemExit:
         print("Finished")
