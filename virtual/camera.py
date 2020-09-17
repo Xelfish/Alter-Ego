@@ -1,5 +1,6 @@
 #This executes the camera on the Input-PI
 from picamera import PiCamera
+import os
 import time
 from fractions import Fraction
 from files import *
@@ -29,6 +30,15 @@ def take_picture(camera):
     path = get_new_file_name("MyPics/")
     camera.capture(path, quality=100)
 
+def clearFolder():
+    pics = os.listdir("MyPics")
+    if len(pics) > 100:
+        sorted_pics = sorted(pics, key=lambda x: os.path.getmtime(x))
+        old_pics = pics[0:50]
+        for pic in old_pics:
+            print(os.path.join("MyPics", pic))
+            #os.remove(os.path.join("MyPics", pic))
+
 #FIXME: check Shutterspeed and White Balance
 
 def main():
@@ -41,6 +51,7 @@ def main():
     for i in range(3):
         time.sleep(interval)
         print(ID + " taking a picture: " + str(i + 1) + "...")
+        clearFolder()
         take_picture(camera)
     camera.close()
 
