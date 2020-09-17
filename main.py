@@ -131,7 +131,7 @@ def prepare_deepfake(image):
     start = time.time()
     time.sleep(timing["process"])
     path = get_deepfake_from_url(url)
-    print("Downloaded Deepfake at: " + path + "in: " + str((time.time() - start) / 60))
+    print("Downloaded Deepfake at: " + path + "in Minutes: " + str(int((time.time() - start) / 60)))
     process_deepfake(path)
     
 def get_deepfake_from_url(url):
