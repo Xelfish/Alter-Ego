@@ -8,13 +8,13 @@
         "user": "pi",
         "password": "raspberry",
         "camera": {
-            "exp-mode": "night",
-            "exp": 20,
+            "exp-mode": "auto",
+            "exp": 10,
             "framerate": 60,
             "interval": 2.0,
             "res": {
-                "x": 2400,
-                "y": 2400
+                "x": 3000,
+                "y": 3000
             },
             "zoom": 0
         }
