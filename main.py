@@ -102,8 +102,7 @@ def on_new_file_in(newFile):
             print("is a face")
             cropImage = cropSquare(loadImage(newFile), face)
             finalImage = resizeImage(cropImage)
-            newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "pre"]))
-            remove_background(newPath)
+            newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
     else:
         print("from input") 
         print("is not a face")
@@ -135,11 +134,11 @@ def on_new_file_out(newFile):
 @parallel
 def prepare_deepfake(image):
     print("Uploading Image to Deepfake API...")
-    url = generate_deepfake(image)
+    url = generate_deepfake(remove_background(image))
     start = time.time()
     time.sleep(timing["process"])
     path = get_deepfake_from_url(url)
-    print("Downloaded Deepfake at: " + path + "in Minutes: " + str(int((time.time() - start) / 60)))
+    print("Downloaded Deepfake at: " + path + " in Minutes: " + str(int((time.time() - start) / 60)))
     process_deepfake(path)
     
 def get_deepfake_from_url(url):
@@ -183,7 +182,7 @@ def show_deepfake(identity):
     pass
 
 def main():
-    run_ftp_listener_in()
+    #run_ftp_listener_in()
     run_deepfake_listener()
     run_ftp_listener_out()
     while True:

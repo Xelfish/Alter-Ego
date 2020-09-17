@@ -106,11 +106,14 @@ def get_image_area(image):
     area = width * height
     return area
 
-def remove_background(sourcePath):
-    settings = get_json_settings("project-settings.json")
-    destPath = build_path_from_settings("", settings, ["dir", "faces", "in"]) + get_file_name(sourcePath) + "_t.png"
-    print("Removing background from: " + sourcePath + "...")
-    with open(sourcePath, 'rb') as img:
-        with open(destPath, 'wb+') as finalimg:
-            finalimg.write(remove(img.read()))
-    return destPath
+def remove_background(file):
+    alpha = io.BytesIO(remove(file.read()))
+    image = Image.open(alpha)
+    image.load()
+    
+    black = Image.new("RGB", image.size, color=0)
+    black.paste(image, mask=image.split()[3])
+
+    finalImage = io.BytesIO()
+    black.save(finalImage, "JPEG")
+    return finalImage.getbuffer()

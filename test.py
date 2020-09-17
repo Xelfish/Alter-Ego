@@ -62,8 +62,8 @@ def testFreezeVideo(path):
 
 def testFaceRecognition():
     name = "trump.jpg"
-    img = open("./test/input/" + name, "rb")
-    face = validate_face(img)
+    img = remove_background(open("test\\output\\faces\\out\\image0002.jpg", "rb"))
+    face = validate_face(img, 300)
     if face:
         print(face)
         cropped = cropSquare(loadImage(img), face)
@@ -124,12 +124,13 @@ def testRemoteVideoDisplay():
     sshCommand(settings["output-pi"], settings["commands"]["play"] + "/home/pi/MyVids/intro.mp4")
 
 def testBackgroundRemoveOld():
-    with open("test/output/faces/in/hummels2.png", 'rb') as img:
-        with open("test/output/faces/in/hummels_t.png", 'wb+') as finalimg:
+    with open("test/output/faces/pre/hummels2.jpg", 'rb') as img:
+        with open("test/output/faces/pre/hummels_t.png", 'wb+') as finalimg:
             finalimg.write(remove(img.read()))
 
 def testBackgroundRemove():
-    remove_background("test/output/faces/in/tscharf.jpg")
+        with open("test/output/faces/in/hilfe.jpg", 'wb+') as new:
+            new.write(remove_background(open("test/output/faces/in/maxresdefault.jpg", 'rb')))
 
 if __name__ == "__main__":
     print("This is the output of a TEST command")
@@ -141,4 +142,5 @@ if __name__ == "__main__":
     #testBetafaceSetIdentity(["freitag"])
     #testBetafaceApi()
     #time_function(testSuperRes)
-    time_function(testBackgroundRemove)
+    #time_function(testBackgroundRemoveOld)
+    time_function(testFaceRecognition)
