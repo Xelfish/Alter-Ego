@@ -30,7 +30,7 @@
             "exp-mode": "auto",
             "exp": 10,
             "framerate": 100,
-            "interval": 2.0,
+            "interval": 1.0,
             "res": {
                 "x": 1024,
                 "y": 1024

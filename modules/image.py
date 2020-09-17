@@ -73,7 +73,7 @@ def addBleed(box, factor):
 def cropSquare(image, box):
     [left, top, width, height] = box
     box = (left, top, left + width, top + height)
-    adjustedBox = translate(addBleed(squareBox(box), 0.3), (0, - 0.1))
+    adjustedBox = translate(addBleed(squareBox(box), 0.2), (0, - 0.1))
     croppedImage = image.crop(adjustedBox)
     return croppedImage
 

@@ -25,7 +25,7 @@ def validate_face(image, size):
     if result and not ("err" in result.keys()):
         faces = result["output"]["faces"]
         if len(faces) > 0 and len(faces) < 4:
-            bounding_boxes = [f["bounding_box"] for f in faces if float(f["confidence"]) > 0.98 and f["bounding_box"][3] > size]
+            bounding_boxes = [f["bounding_box"] for f in faces if float(f["confidence"]) > 0.95 and f["bounding_box"][3] > size]
             return bounding_boxes
     return False
 

@@ -133,7 +133,10 @@ def testBackgroundRemove():
             new.write(remove_background(open("test/output/faces/in/maxresdefault.jpg", 'rb')))
 
 def testBuffer():
-    data = io.
+    file = "test\output\\faces\pre\image0002.jpg"
+    data = io.BytesIO(remove_background(open(file, 'rb'))).read()
+    print(data)
+    open("test\output\\faces\pre\image0002_.jpg", 'wb+').write(data)
 
 if __name__ == "__main__":
     print("This is the output of a TEST command")
@@ -146,4 +149,4 @@ if __name__ == "__main__":
     #testBetafaceApi()
     #time_function(testSuperRes)
     #time_function(testBackgroundRemoveOld)
-    time_function(testDeepFake)
+    testBuffer()

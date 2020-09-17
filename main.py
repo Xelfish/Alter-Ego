@@ -113,7 +113,7 @@ def on_new_file_out(newFile):
     print(faces)
     if faces:
         show_intro()
-        time.sleep(5)
+        time.sleep(8)
         print("from output")
         print("It's a face")
         cropImage = cropSquare(loadImage(newFile), faces[0])
@@ -134,7 +134,7 @@ def on_new_file_out(newFile):
 @parallel
 def prepare_deepfake(image):
     print("Uploading Image to Deepfake API...")
-    url = generate_deepfake(remove_background(image))
+    url = generate_deepfake(image)
     start = time.time()
     time.sleep(timing["process"])
     path = get_deepfake_from_url(url)
