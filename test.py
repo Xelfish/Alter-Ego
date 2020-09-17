@@ -39,9 +39,11 @@ def testRenameDeepFake():
     rename_video("test/output/deepfakes/adb77a0b-140a-48a5-951e-2bfafe7a7565.mp4", generate_identity_name())
 
 def testDeepFake():
-    url = generate_deepfake(open("test\output\\faces\pre\hummels_t.png", 'rb'))
-    time.sleep(300)
-    main.get_deepfake_from_url(url)
+    newPath = "test/output/faces/in/test.jpg"
+    oldPath = "test/output/faces/pre/johannes_.jpg"
+    write_image(oldPath, newPath)
+    main.prepare_deepfake(open(newPath, 'rb'))
+    main.prepare_deepfake(open(oldPath, 'rb'))
 
 def testExtractIdentity():
     extract_name("test@alterego")
@@ -149,4 +151,5 @@ if __name__ == "__main__":
     #testBetafaceApi()
     #time_function(testSuperRes)
     #time_function(testBackgroundRemoveOld)
-    testBuffer()
+    #testBuffer()
+    time_function(testDeepFake)

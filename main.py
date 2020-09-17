@@ -102,7 +102,8 @@ def on_new_file_in(newFile):
             print("is a face")
             cropImage = cropSquare(loadImage(newFile), face)
             finalImage = resizeImage(cropImage)
-            newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "in"]))
+            newPath = saveImage(finalImage, build_path_from_settings("", settings, ["dir", "faces", "pre"]))
+            write_image(newPath, build_path_from_settings("", settings, ["dir", "faces", "in"]) + get_file_name(newPath) + "." + get_file_format(newPath))
     else:
         print("from input") 
         print("is not a face")
@@ -182,7 +183,7 @@ def show_deepfake(identity):
     pass
 
 def main():
-    #run_ftp_listener_in()
+    run_ftp_listener_in()
     run_deepfake_listener()
     run_ftp_listener_out()
     while True:

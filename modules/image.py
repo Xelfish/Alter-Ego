@@ -117,3 +117,7 @@ def remove_background(file):
     finalImage = io.BytesIO()
     black.save(finalImage, "JPEG")
     return finalImage.getbuffer()
+
+def write_image(file, path):
+    data = io.BytesIO(remove_background(open(file, 'rb'))).read()
+    open(path, 'wb+').write(data)
