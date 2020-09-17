@@ -8,6 +8,7 @@
         "user": "pi",
         "password": "raspberry",
         "camera": {
+            "max-pics": 100,
             "exp-mode": "auto",
             "exp": 10,
             "framerate": 60,
@@ -25,6 +26,7 @@
         "user": "pi",
         "password": "raspberry",
         "camera": {
+            "max-pics": 500,
             "exp-mode": "auto",
             "exp": 10,
             "framerate": 60,

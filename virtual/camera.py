@@ -30,14 +30,14 @@ def take_picture(camera):
     path = get_new_file_name("MyPics/")
     camera.capture(path, quality=100)
 
-def clearFolder():
+def clearFolder(max_amount):
     pics = os.listdir("MyPics")
-    if len(pics) > 100:
-        sorted_pics = sorted(pics, key=lambda x: os.path.getmtime(x))
-        old_pics = pics[0:50]
+    if len(pics) > max_amount:
+        sorted_pics = sorted(pics, key=lambda x: os.path.getmtime(os.path.join("MyPics",x) ))
+        old_pics = sorted_pics[:int(max_amount/2)]
         for pic in old_pics:
             print(os.path.join("MyPics", pic))
-            #os.remove(os.path.join("MyPics", pic))
+            os.remove(os.path.join("MyPics", pic))
 
 #FIXME: check Shutterspeed and White Balance
 
@@ -48,12 +48,17 @@ def main():
     set_camera_settings(camera, cameraSettings)
     interval = cameraSettings["interval"]
     #monitorCamSettings(camera)
-    for i in range(3):
-        time.sleep(interval)
-        print(ID + " taking a picture: " + str(i + 1) + "...")
-        clearFolder()
-        take_picture(camera)
-    camera.close()
+    i = 1
+    try:
+        while True:
+            time.sleep(interval)
+            print(ID + " taking a picture: " + str(i) + "...")
+            clearFolder(cameraSettings["max-pics"])
+            take_picture(camera)
+            i += 1
+    except KeyboardInterrupt, SystemExit:
+        print("Finished")
+        camera.close()
 
 if __name__ == "__main__":
     main()
