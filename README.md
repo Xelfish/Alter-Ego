@@ -19,3 +19,7 @@ The personal data that we have claimed in form of pictures are exclusively used 
 <!-- Begin Betafaceapi.com Attribution Snippet -->
 <a href="http://betafaceapi.com/" onclick="__gaTracker('send', 'event', 'outbound-article', 'http://betafaceapi.com/', 'Face Recognition by betafaceapi.com');" title="Face Recognition by betafaceapi.com">Face Comparison by betafaceapi.com</a>
 <!-- End Betafaceapi.com Attribution Snippet -->
+
+<!-- Begin Background Removal attribution>
+<a href="https://github.com/rorodata/background-removal">Background Removal by rorodata</a>
+<!-- Begin Background Removal attribution>
