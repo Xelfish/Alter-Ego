@@ -36,7 +36,7 @@ def get_matching_deepfake_identity(image):
         identity = extract_name(name)
         return identity
     else: 
-        return false
+        return False
 
 #TODO: Build Try and Catch
 def generate_deepfake(image):
