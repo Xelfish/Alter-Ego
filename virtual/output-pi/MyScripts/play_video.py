@@ -16,8 +16,7 @@ def playVideo(video_path):
     print(command)
     pass
 
-def check_file_integrity(file: str) -> bool:
-
+def check_file_integrity(file):
     os.system("ffmpeg -v error -i {} -f null - >error.log 2>&1".format(file))
     return os.path.getsize("error.log") == 0
 

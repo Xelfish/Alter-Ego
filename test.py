@@ -39,9 +39,9 @@ def testRenameDeepFake():
     rename_video("test/output/deepfakes/adb77a0b-140a-48a5-951e-2bfafe7a7565.mp4", generate_identity_name())
 
 def testDeepFake():
-    for _ in range(10):
-        path = "test\output\\faces\in\image0011..jpg"
-        main.prepare_deepfake(open(path, 'rb'))
+    
+    path = "test\input\\seb_joh.jpg"
+    main.on_new_file_in(open(path, 'rb'))
 
 def testExtractIdentity():
     extract_name("test@alterego")
@@ -151,3 +151,4 @@ if __name__ == "__main__":
     #time_function(testBackgroundRemoveOld)
     #testBuffer()
     time_function(testDeepFake)
+    #testRemoteVideoDisplay()

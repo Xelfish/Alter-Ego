@@ -184,8 +184,8 @@ def show_deepfake(identity):
     pass
 
 def main():
-    run_ftp_listener_in()
-    run_deepfake_listener()
+    #run_ftp_listener_in()
+    #run_deepfake_listener()
     run_ftp_listener_out()
     while True:
         time.sleep(60)
