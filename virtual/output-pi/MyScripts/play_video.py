@@ -17,9 +17,17 @@ def playVideo(video_path):
     print(command)
     pass
 
-def main(): 
-    turnScreenOn()
-    playVideo(VIDEONAME)
+def check_file_integrity(file: str) -> bool:
+
+    os.system("ffmpeg -v error -i {} -f null - >error.log 2>&1".format(file))
+    return os.path.getsize("error.log") == 0
+
+
+def main():
+
+    if check_file_integrity(VIDEONAME):
+        turnScreenOn()
+        playVideo(VIDEONAME)
     #turnScreenOff()
 
 if __name__ == "__main__":
