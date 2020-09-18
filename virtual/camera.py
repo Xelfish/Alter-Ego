@@ -8,7 +8,8 @@ from files import *
 def set_camera_settings(camera, settings):
     camera.exposure_mode = settings["exp-mode"]
     camera.framerate = Fraction(settings["framerate"], int(settings["interval"]))
-    #camera.sharpness = 80
+    camera.sharpness = 80
+    camera.contrast = 10
     camera.exposure_compensation = settings["exp"]
     camera.zoom = setZoom(settings)
 

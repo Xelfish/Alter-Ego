@@ -11,7 +11,6 @@ def turnScreenOn():
     subprocess.Popen(["xscreensaver-command", "-exit"])
 
 def playVideo(video_path):
-    os.system("export DISPLAY=:0")
     subprocess.call(["cvlc", "--fullscreen", "--intf", "dummy", "--play-and-exit", VIDEONAME])
     command = "cvlc --fullscreen --intf 'dummy' --play-and-exit " + VIDEONAME
     print(command)

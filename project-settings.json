@@ -1,36 +1,36 @@
 {
     "main": {
-        "ip": "192.168.50.81"
+        "ip": "192.168.0.102"
     },
     "input-pi": {
         "name": "Input-Pi",
-        "ip": "192.168.2.10",
+        "ip": "192.168.0.156",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "max-pics": 100,
-            "exp-mode": "auto",
-            "exp": 10,
-            "framerate": 100,
+            "exp-mode": "antishake",
+            "exp": 15,
+            "framerate": 120,
             "interval": 2.0,
             "res": {
-                "x": 2048,
-                "y": 2048
+                "x": 800,
+                "y": 800
             },
             "zoom": 0
         }
     },
     "output-pi": {
         "name": "Output-Pi",
-        "ip": "192.168.2.7",
+        "ip": "192.168.0.105",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "max-pics": 500,
             "exp-mode": "auto",
             "exp": 10,
-            "framerate": 100,
-            "interval": 1.0,
+            "framerate": 40,
+            "interval": 2.0,
             "res": {
                 "x": 1024,
                 "y": 1024

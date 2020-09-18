@@ -78,8 +78,9 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
             printpath = printpath + " : " + str(remote.get_channel().get_id())
         after = dict([(f, None) for f in target.listdir(path_to_watch)])
         added = [f for f in after if not f in before]
+        before = after
         if len(added) > 0:
-            time.sleep(interval)
+            time.sleep(interval/2)
             path = path_to_watch + "/" + added[-1]
             print(path)
             if remote: 
@@ -88,13 +89,13 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
                 newFile = open(path, 'rb')
             #Interrupt when new video comes.    
             on_new_file(newFile)
-        before = after
-        time.sleep(interval/2)
+        else:
+            time.sleep(interval/4)
 
 def on_new_file_in(newFile):
     print("From input")
     print("new file detected: ", newFile)
-    faces = validate_face(newFile, 200)
+    faces = validate_face(newFile, 100)
     print(faces)
     if faces:
         for face in faces:
