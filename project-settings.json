@@ -1,35 +1,35 @@
 {
     "main": {
-        "ip": "192.168.0.102"
+        "ip": "192.168.0.156"
     },
     "input-pi": {
         "name": "Input-Pi",
-        "ip": "192.168.0.105",
+        "ip": "192.168.0.156",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "max-pics": 100,
             "exp-mode": "antishake",
-            "exp": 6,
+            "exp": 0,
             "framerate": 120,
             "interval": 2.0,
             "res": {
-                "x": 1024,
-                "y": 1024
+                "x": 3000,
+                "y": 3000
             },
             "zoom": 0
         }
     },
     "output-pi": {
         "name": "Output-Pi",
-        "ip": "192.168.0.156",
+        "ip": "192.168.0.105",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "max-pics": 500,
             "exp-mode": "auto",
             "exp": 12,
-            "framerate": 120,
+            "framerate": 60,
             "interval": 2.0,
             "res": {
                 "x": 1024,
@@ -41,7 +41,7 @@
     "api": {
         "face_recognition": {
             "url": "https://api.deepai.org/api/facial-recognition",
-            "key": "18396def-985f-4fd6-a896-9c023b442bc2"
+            "key": "46520ef2-c1ab-4ad3-8000-6be0c7a0d686" 
         },
         "deepfake": {
             "url": {
@@ -74,7 +74,7 @@
         }
     },
     "commands": {
-        "camera": "python MyScripts/camera.py",
+        "camera": "raspistill",
         "play": "python MyScripts/play_video.py "
     },
     "image": {

@@ -40,7 +40,7 @@ def testRenameDeepFake():
 
 def testDeepFake():
     
-    path = "test\input\\seb_joh.jpg"
+    path = "test\input\\test.jpg"
     main.on_new_file_in(open(path, 'rb'))
 
 def testExtractIdentity():

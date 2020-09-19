@@ -8,9 +8,11 @@ from util.files import *
 settings = get_json_settings("project-settings.json")
 
 def runCamera(pi):
+    ftp = connectToFtp(pi)
     while True:
+        filename = get_new_name_remote(ftp,  "/home/pi/MyPics/", pi["name"] + "_")
         print("running: ", pi["name"])
-        sshCommand(pi, settings["commands"]["camera"])
+        sshCommand(pi, settings["commands"]["camera"] + " -o " + filename)
 
 def main():
     if len(sys.argv) > 1:

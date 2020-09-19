@@ -13,6 +13,13 @@ def make_padded_number(number):
     fileNumberString = str(number)
     return fileNumberString.zfill(4)   
 
+def get_new_name_remote(ftp, targetdir, basename="image", filetype="jpg"):
+    fileNumber = 0
+    files = ftp.listdir(targetdir)
+    while (basename + make_padded_number(fileNumber) + "." + filetype) in files:
+        fileNumber += 1
+    return (targetdir + basename + make_padded_number(fileNumber) + "." + filetype)
+
 def get_new_file_name(targetdir, basename="image", filetype="jpg"):
     fileNumber = 0
     while (os.path.isfile(targetdir + basename + make_padded_number(fileNumber) + "." + filetype)):
