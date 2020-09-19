@@ -9,7 +9,8 @@
     "reboot": "py tasks/reboot.py",
     "swap": "py tasks/swap.py",
     "bf-usage": "py tasks/bf_usage.py",
-    "camera": "py tasks/camera.py"
+    "camera": "py tasks/camera.py",
+    "google-pics": "py tasks/download_pictures.py"
   },
   "repository": {
     "type": "git",

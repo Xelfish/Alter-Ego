@@ -9,7 +9,7 @@ from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 
 
-CLIENT_SECRET_FILE = "client_secret_939763561596-e76gug5q1jgbsep86pjk3ok8ka382jn8.apps.googleusercontent.com.json"
+CLIENT_SECRET_FILE = "secrets\client_secret_410744381950-lqd7vj2nn2itp5shc9646d6h9hfrbtoo.apps.googleusercontent.com.json"
 API_NAME = "photoslibrary"
 API_VERSION = "v1"
 SCOPES = ["https://www.googleapis.com/auth/photoslibrary"]
