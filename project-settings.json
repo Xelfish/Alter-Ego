@@ -22,14 +22,14 @@
     },
     "output-pi": {
         "name": "Output-Pi",
-        "ip": "192.168.0.105",
+        "ip": "192.168.0.156",
         "user": "pi",
         "password": "raspberry",
         "camera": {
             "max-pics": 500,
             "exp-mode": "auto",
-            "exp": 10,
-            "framerate": 40,
+            "exp": 12,
+            "framerate": 120,
             "interval": 2.0,
             "res": {
                 "x": 1024,
@@ -41,7 +41,7 @@
     "api": {
         "face_recognition": {
             "url": "https://api.deepai.org/api/facial-recognition",
-            "key": "46520ef2-c1ab-4ad3-8000-6be0c7a0d686"
+            "key": "18396def-985f-4fd6-a896-9c023b442bc2"
         },
         "deepfake": {
             "url": {
@@ -65,8 +65,8 @@
                 "person": "/v2/person",
                 "recognize": "/v2/recognize"
             },
-            "key": "d45fd466-51e2-4701-8da8-04351c872236",
-            "namespace": "egotest2"
+            "key": " 6241915e-f5a9-11ea-9c46-0cc47a6c4dbd",
+            "namespace": "alterego"
         },
         "superres": {
             "model": "espcn",
@@ -113,7 +113,7 @@
         "process": 300
     },
     "dir": {
-        "root": "test/output/",
+        "root": "output/",
         "faces": {
             "root": "faces/",
             "in": "in/",

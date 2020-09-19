@@ -51,8 +51,7 @@ def run_camera_out():
 
 def run_ftp_listener_in():
     print("STARTED: FTP Listener Input Pics")
-    ftp = connectToFtp(inPi)
-    watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
+    watch_directory_for_change("pictures", on_new_file_in)
 
 def run_ftp_listener_out():
     ftp = connectToFtp(outPi)
@@ -186,7 +185,7 @@ def show_deepfake(identity):
 def main():
     run_ftp_listener_in()
     run_deepfake_listener()
-    run_ftp_listener_out()
+    #run_ftp_listener_out()
     while True:
         time.sleep(60)
         monitor_threads()
