@@ -50,8 +50,9 @@ def run_camera_out():
     pass
 
 def run_ftp_listener_in():
+    ftp = connectToFtp(inPi)
     print("STARTED: FTP Listener Input Pics")
-    watch_directory_for_change("pictures", on_new_file_in)
+    watch_directory_for_change("/home/pi/MyPics", on_new_file_in, remote=ftp)
 
 def run_ftp_listener_out():
     ftp = connectToFtp(outPi)
@@ -80,7 +81,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         before = after
         if len(added) > 0:
             time.sleep(interval/2)
-            path = path_to_watch + "/" + added[-1]
+            path = fix_file_name(path_to_watch + "/" + added[-1])
             print(path)
             if remote: 
                 newFile = remote.open(path) 
@@ -94,7 +95,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
 def on_new_file_in(newFile):
     print("From input")
     print("new file detected: ", newFile)
-    faces = validate_face(newFile, 75)
+    faces = validate_face(newFile, 180)
     print(faces)
     if faces:
         for face in faces:
@@ -110,11 +111,10 @@ def on_new_file_in(newFile):
 
 def on_new_file_out(newFile):
     print("new file detected from output: ", newFile)
-    faces = validate_face(newFile, 50)
+    faces = validate_face(newFile, 75)
     print(faces)
     if faces:
         show_intro()
-        time.sleep(8)
         print("from output")
         print("It's a face")
         cropImage = cropSquare(loadImage(newFile), faces[0])
@@ -122,6 +122,7 @@ def on_new_file_out(newFile):
         print ("Checking BETAFACE")
         identity = get_matching_deepfake_identity(open(path, 'rb'))
         if identity:
+            time.sleep(4)
             print("Identitity found!: " + identity)
             show_deepfake(identity)
         else:
@@ -183,8 +184,8 @@ def show_deepfake(identity):
     pass
 
 def main():
-    run_ftp_listener_in()
-    run_deepfake_listener()
+    #run_ftp_listener_in()
+    #run_deepfake_listener()
     run_ftp_listener_out()
     while True:
         time.sleep(60)

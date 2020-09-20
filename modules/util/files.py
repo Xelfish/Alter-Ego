@@ -1,6 +1,7 @@
 # utility functions to handle and load files
 import os
 import json
+import re
 
 def get_json_settings(path="project-settings.json"):
     fileDir = os.path.dirname(os.path.realpath('__file__'))
@@ -12,6 +13,11 @@ def get_json_settings(path="project-settings.json"):
 def make_padded_number(number):
     fileNumberString = str(number)
     return fileNumberString.zfill(4)   
+
+def fix_file_name(path):
+    pattern = re.compile("~")
+    name = re.sub(pattern, "" , path)
+    return name
 
 def get_new_name_remote(ftp, targetdir, basename="image", filetype="jpg"):
     fileNumber = 0

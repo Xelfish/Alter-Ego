@@ -10,4 +10,4 @@ secrets/*
 ai/deepfake_ref/*.mp4
 ai/deepfake_ref/**/*.mp4
 /pictures/*
-/out/**/*.*
+/output/**

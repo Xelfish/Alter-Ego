@@ -86,6 +86,7 @@ def set_deepfake_identity(faceIds, deepfakeId):
         print("Successfully set new Identity: ", name)
         return True
     else:
+        print(response)
         return False
 
 def get_face_id_by_post(image):

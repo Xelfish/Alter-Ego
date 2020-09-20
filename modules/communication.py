@@ -25,5 +25,6 @@ def save_on_ftp(outPi, local_path, remote_path):
     ftp = connectToFtp(outPi)
     print ("trying to transfer to pi: " + remote_path)
     ftp.put(local_path, remote_path)
+    ftp.close()
     print ("Upload successfull!")
     pass 

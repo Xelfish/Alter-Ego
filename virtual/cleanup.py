@@ -47,20 +47,8 @@ def main():
     cameraSettings = get_json_settings('MyScripts/project-settings.json')[ID]['camera']
     camera = PiCamera(resolution=(cameraSettings['res']['x'],cameraSettings['res']['y']))
     set_camera_settings(camera, cameraSettings)
-    interval = cameraSettings["interval"]
-    #monitorCamSettings(camera)
-    i = 1
-    try:
-        while True:
-            time.sleep(interval)
-            print(ID + " taking a picture: " + str(i) + "...")
-            clearFolder(cameraSettings["max-pics"])
-            take_picture(camera, ID)
-            i += 1
-    except KeyboardInterrupt, SystemExit:
-        print("Finished")
-        camera.close()
-
+    clearFolder(cameraSettings["max-pics"])
+    
 if __name__ == "__main__":
     main()
     

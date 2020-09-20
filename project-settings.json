@@ -14,15 +14,15 @@
             "framerate": 120,
             "interval": 2.0,
             "res": {
-                "x": 3000,
-                "y": 3000
+                "x": 1024,
+                "y": 1024
             },
             "zoom": 0
         }
     },
     "output-pi": {
         "name": "Output-Pi",
-        "ip": "192.168.0.105",
+        "ip": "192.168.0.106",
         "user": "pi",
         "password": "raspberry",
         "camera": {
@@ -32,8 +32,8 @@
             "framerate": 60,
             "interval": 2.0,
             "res": {
-                "x": 1024,
-                "y": 1024
+                "x": 2048,
+                "y": 2048
             },
             "zoom": 0
         }
@@ -74,8 +74,9 @@
         }
     },
     "commands": {
-        "camera": "raspistill",
-        "play": "python MyScripts/play_video.py "
+        "camera": "raspistill --nopreview -ex sports -t 500",
+        "play": "python MyScripts/play_video.py ",
+        "clear": "python MyScripts/cleanup.py"
     },
     "image": {
         "size": {
@@ -109,7 +110,7 @@
     },
     "timing": {
         "interval": 1.0,
-        "timeout": 5.0,
+        "timeout": 3.0,
         "process": 300
     },
     "dir": {

@@ -132,6 +132,11 @@ def testBackgroundRemove():
         with open("test/output/faces/in/hilfe.jpg", 'wb+') as new:
             new.write(remove_background(open("test/output/faces/in/maxresdefault.jpg", 'rb')))
 
+def playOutput():
+    main.show_intro()
+    time.sleep(10)
+    main.show_deepfake("ego_20_14_23_35")
+
 def testBuffer():
     file = "test\output\\faces\pre\image0002.jpg"
     data = io.BytesIO(remove_background(open(file, 'rb'))).read()
@@ -150,5 +155,6 @@ if __name__ == "__main__":
     #time_function(testSuperRes)
     #time_function(testBackgroundRemoveOld)
     #testBuffer()
-    time_function(testDeepFake)
+    #time_function(testDeepFake)
     #testRemoteVideoDisplay()
+    playOutput()
