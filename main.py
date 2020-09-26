@@ -92,6 +92,7 @@ def watch_directory_for_change(directory, on_new_file, interval=timing["interval
         else:
             time.sleep(interval/4)
 
+#TODO: refactor for easier tweaking 
 def on_new_file_in(newFile):
     print("From input")
     print("new file detected: ", newFile)
@@ -109,6 +110,7 @@ def on_new_file_in(newFile):
         print("from input") 
         print("is not a face")
 
+#TODO: refactor for easier tweaking 
 def on_new_file_out(newFile):
     print("new file detected from output: ", newFile)
     faces = validate_face(newFile, 75)
@@ -184,8 +186,8 @@ def show_deepfake(identity):
     pass
 
 def main():
-    #run_ftp_listener_in()
-    #run_deepfake_listener()
+    run_ftp_listener_in()
+    run_deepfake_listener()
     run_ftp_listener_out()
     while True:
         time.sleep(60)

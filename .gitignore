@@ -1,13 +1,7 @@
 test
-output/deepfakes/*.*
-output/deepfakes/stills/*
-output/deepfakes/upscaled/*
-output/in_faces/*
-output/out_faces/*
+output
 /node_modules
 /modules/__pycache__
 secrets/*
 ai/deepfake_ref/*.mp4
 ai/deepfake_ref/**/*.mp4
-/pictures/*
-/output/**

@@ -116,7 +116,6 @@ def recognize_face(uuid):
                 uuid
             ],
             "targets": [
-                #"all@celebrities.betaface.com",
                 target
             ]
         }
