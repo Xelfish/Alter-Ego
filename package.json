@@ -10,7 +10,8 @@
     "swap": "py tasks/swap.py",
     "bf-usage": "py tasks/bf_usage.py",
     "camera": "py tasks/camera.py",
-    "google-pics": "py tasks/download_pictures.py"
+    "google-pics": "py tasks/download_pictures.py",
+    "reset-faces": "py tasks/reset_faces.py"
   },
   "repository": {
     "type": "git",

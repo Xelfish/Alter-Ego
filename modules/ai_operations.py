@@ -73,22 +73,59 @@ def download_deepfake(url):
     pass
 
 def set_deepfake_identity(faceIds, deepfakeId):
-    name = compose_namespace(deepfakeId)
     response = requests.post(
         get_betaface_url(api["beta-face"]["url"]["person"]),
         json = {
             "api_key": api["beta-face"]["key"],
             "faces_uuids": faceIds,
-            "person_id": name
+            "person_id": deepfakeId
         }
     )
     if response.ok:
-        print("Successfully set new Identity: ", name)
+        print("Successfully set new Identity: ", deepfakeId)
         return True
     else:
         print(response)
         return False
 
+def reset_face_ids(namespace):
+    response = requests.get(
+        get_betaface_url(api["beta-face"]["url"]["person"]),
+        params = {
+            "api_key": api["beta-face"]["key"],
+            "api_secret": get_secret("betaface"),
+            "person_id": "all@" + namespace
+        }
+    )
+    if response.ok:
+        print ("Resetting faces of namespace " + namespace)
+        ids = response.json()
+        if len(ids) > 0:
+            for pid in ids:
+                print(pid)
+                set_deepfake_identity(pid["faces_uuids"], "")
+
+            response = requests.get(
+                get_betaface_url(api["beta-face"]["url"]["person"]),
+                params = {
+                    "api_key": api["beta-face"]["key"],
+                    "api_secret": get_secret("betaface"),
+                    "person_id": "all@" + namespace
+                }
+            )
+            print(response)
+            if response.ok:
+                print("faces reset succesfully")
+                ids = response.json()
+                for pid in ids:
+                    print(pid)
+        else:
+            print("Namespace does not contain ids. No reset necessary")
+    else:
+        print ("Something went wrong")
+        print (response)
+
+    
 def get_face_id_by_post(image):
     print("Get face with file: ", image)
     payload = {"api_key": api["beta-face"]["key"], "file": image}

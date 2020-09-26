@@ -143,6 +143,9 @@ def testBuffer():
     print(data)
     open("test\output\\faces\pre\image0002_.jpg", 'wb+').write(data)
 
+def testResetNamespace():
+    reset_face_ids("alterego")
+
 if __name__ == "__main__":
     print("This is the output of a TEST command")
     #testFaceRecognition()
@@ -157,4 +160,5 @@ if __name__ == "__main__":
     #testBuffer()
     #time_function(testDeepFake)
     #testRemoteVideoDisplay()
-    playOutput()
+    #playOutput()
+    testResetNamespace()

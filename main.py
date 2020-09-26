@@ -154,7 +154,7 @@ def get_deepfake_from_url(url):
         time.sleep(10)
 
 def process_deepfake(path):
-    name = generate_identity_name()
+    name = compose_namespace(generate_identity_name())
     renamedVideoPath = rename_video(path, name)
     upscaledVideoPath = build_path_from_settings("", settings, ["dir", "deepfake", "upscaled"]) + name
     file_paths = prepare_deepfake_preview(renamedVideoPath, build_path_from_settings("", settings, ["dir", "deepfake", "preview"]))
