@@ -16,6 +16,8 @@ Die von uns erhobenen persönlichen Daten, in Form der aufgenommnen Bilder, werd
 <p> EN:
 The personal data that we have claimed in form of pictures are exclusively used for the artistic means of this installation. They are saved on our private account and will be deleted after they have served their purpose. Please understand that this is imperative, since the sensitivity of personal data is exactly the point we want to express with this work.</p>
 
+<h2> Credits and Attributions: </h2>
+
 <!-- Begin Betafaceapi.com Attribution Snippet -->
 <a href="http://betafaceapi.com/" onclick="__gaTracker('send', 'event', 'outbound-article', 'http://betafaceapi.com/', 'Face Recognition by betafaceapi.com');" title="Face Recognition by betafaceapi.com">Face Comparison by betafaceapi.com</a>
 <!-- End Betafaceapi.com Attribution Snippet -->
@@ -23,3 +25,5 @@ The personal data that we have claimed in form of pictures are exclusively used 
 <!-- Begin Background Removal attribution -->
 <a href="https://github.com/rorodata/background-removal">Background Removal by rorodata</a>
 <!-- Begin Background Removal attribution -->
+
+<a href="https://towardsdatascience.com/deep-learning-based-super-resolution-with-opencv-4fd736678066"> Xavier Weber: Upscaling Algorithm and Models via OpenCV </a>
